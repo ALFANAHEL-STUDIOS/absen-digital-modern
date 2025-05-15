@@ -296,28 +296,28 @@ export default function GroupAttendanceReport() {
         yPos += 7;
         
         // Add a new page if needed
+        // Add a new page if needed
         if (yPos > pageHeight - margin - 40 && index < students.length - 1) {
           doc.addPage();
           
           // Add header to new page (simplified)
-           doc.setFontSize(15);
-      doc.setFont("helvetica");
-      doc.text(schoolInfo.name.toUpperCase(), pageWidth / 2, margin, { align: "center" });
-      
-      doc.setFontSize(14);
-      doc.setFont("helvetica");
-      doc.text(schoolInfo.address, pageWidth / 2, margin + 7, { align: "center" });
-      doc.text(`Kode Pos ${schoolInfo.npsn}`, pageWidth / 2, margin + 14, { align: "center" });
-      doc.setLineWidth(0.5);
-      doc.line(margin, margin + 18, pageWidth - margin, margin + 18);
-
-      
-      // Add report title and class information
-      doc.setFontSize(12);
-      doc.setFont("helvetica");
-      doc.text("REKAPITULASI LAPORAN ABSENSI PEGAWAI", pageWidth / 2, margin + 31, { align: "center" });
-           
-      let yPos = margin + 48;
+          doc.setFontSize(12);
+          doc.setFont("helvetica", "bold");
+          doc.text(schoolInfo.name.toUpperCase(), pageWidth / 2, margin + 6, { align: "center" });
+          doc.setFontSize(9);
+          doc.setFont("helvetica", "normal");
+          doc.text(schoolInfo.address, pageWidth / 2, margin + 12, { align: "center" });
+          doc.text(`NPSN: ${schoolInfo.npsn}`, pageWidth / 2, margin + 18, { align: "center" });
+          
+          // Add horizontal line
+          doc.setLineWidth(0.5);
+          doc.line(margin, margin + 22, pageWidth - margin, margin + 22);
+          
+          // Add title (simplified for continuation pages)
+          doc.setFontSize(12);
+          doc.text(`REKAP LAPORAN KEHADIRAN SISWA - ${selectedClass === "all" ? "Semua Kelas" : selectedClass}`, pageWidth / 2, margin + 30, { align: "center" });
+          
+          yPos = margin + 40;
           
           // Draw header row
           doc.setFillColor(144, 238, 144); // Light green
