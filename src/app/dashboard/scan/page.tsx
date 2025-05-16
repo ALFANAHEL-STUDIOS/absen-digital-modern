@@ -216,7 +216,7 @@ export default function ScanQR() {
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center">
           <QrCode className="h-7 w-7 text-primary mr-3" />
-          <h1 className="text-2xl font-bold text-gray-800">Scan QR Code Pegawai</h1>
+          <h1 className="text-2xl font-bold text-gray-800">Scan QR Pegawai</h1>
         </div>
         
         <button onClick={toggleMute} className="p-2 rounded-full hover:bg-gray-100">
@@ -494,7 +494,7 @@ export default function ScanQR() {
                 <>
                   <h2 className="text-lg font-semibold text-gray-800 mb-2">Siap untuk Scan</h2>
                   <p className="text-gray-500 mb-6 text-sm">
-                    Tekan Tombol Di Bawah Untuk Mengaktifkan Kamera
+                    Tekan Tombol Mulai Untuk Mengaktifkan Kamera
                   </p>
                   <motion.button
                     onClick={() => setScanning(true)}
