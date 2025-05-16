@@ -1,4 +1,4 @@
-"use client";
+a"use client";
 
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
@@ -122,7 +122,7 @@ export default function HomePage() {
             <p className="text-center max-w-3xl mx-auto mb-5 text-slate-600 text-base md:text-lg lg:text-xl">
               Sistem Absensi Digital dengan QR Code yang menghubungkan informasi kehadiran secara real-time.
               Pantau kehadiran dan dapatkan notifikasi otomatis yang terkirim langsung ke
-              Aplikasi Telegram, dan akses laporan lengkap kapan saja.
+              Aplikasi Telegram, dan akses laporan lengkap kapan saja dengan mudah.
             </p>
             
             {/* Smartphone illustration - Enhanced mobile responsiveness */}
