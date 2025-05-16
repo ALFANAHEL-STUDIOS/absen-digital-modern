@@ -805,12 +805,12 @@ export default function MonthlyAttendanceReport() {
             <p className="text-gray-600 font-medium">Sendang Ayu Kecamatan Padang Ratu</p>
           </div>*/}
           <div className="text-center p-4">
-            <h2 className="text-xl font-bold uppercase">{schoolInfo.name}</h2>
+            <h2 className="text-gray-600 font-bold uppercase">{schoolInfo.name}</h2>
             <p className="text-gray-600 font-bold">{schoolInfo.address}</p>
             <p className="text-gray-600 font-bold">Kode Pos {schoolInfo.npsn}</p>
           </div>
           
-          <hr className="border-t border-gray-300 mt-1 mb-3" />
+          <hr className="border-t border-gray-400 mt-1 mb-3" />
           
           <div className="text-center mb-4">
             <h3 className="text-lg uppercase">REKAP LAPORAN KEHADIRAN PEGAWAI</h3>
