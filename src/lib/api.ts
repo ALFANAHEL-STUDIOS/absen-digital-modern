@@ -48,10 +48,10 @@ export const studentApi = {
   create: async (schoolId: string, studentData: any) => {
     try {
       const result = await StudentService.create(schoolId, studentData);
-      toast.success('Siswa berhasil ditambahkan');
+      toast.success('Pegawai berhasil ditambahkan');
       return result;
     } catch (error) {
-      toast.error('Gagal menambahkan siswa');
+      toast.error('Gagal menambahkan Pegawai');
       throw error;
     }
   },
@@ -62,7 +62,7 @@ export const studentApi = {
       const students = await StudentService.getAll(schoolId, [orderBy('name')]);
       return students;
     } catch (error) {
-      toast.error('Gagal mengambil data siswa');
+      toast.error('Gagal mengambil data Pegawai');
       throw error;
     }
   },
@@ -73,7 +73,7 @@ export const studentApi = {
       const students = await StudentService.search(schoolId, 'class', '==', className, [orderBy('name')]);
       return students;
     } catch (error) {
-      toast.error('Gagal mengambil data siswa');
+      toast.error('Gagal mengambil data Pegawai');
       throw error;
     }
   },
@@ -102,7 +102,7 @@ export const studentApi = {
       
       return studentsWithClass;
     } catch (error) {
-      toast.error('Gagal mengambil data siswa dengan kelas');
+      toast.error('Gagal mengambil data Pegawai dengan Jabatan');
       throw error;
     }
   },
@@ -113,7 +113,7 @@ export const studentApi = {
       const student = await StudentService.getById(schoolId, studentId);
       return student;
     } catch (error) {
-      toast.error('Gagal mengambil data siswa');
+      toast.error('Gagal mengambil data Pegawai');
       throw error;
     }
   },
@@ -122,10 +122,10 @@ export const studentApi = {
   update: async (schoolId: string, studentId: string, data: any) => {
     try {
       await StudentService.update(schoolId, studentId, data);
-      toast.success('Data siswa berhasil diperbarui');
+      toast.success('Pegawai siswa berhasil diperbarui');
       return true;
     } catch (error) {
-      toast.error('Gagal memperbarui data siswa');
+      toast.error('Gagal memperbarui data Pegawai');
       throw error;
     }
   },
@@ -134,10 +134,10 @@ export const studentApi = {
   delete: async (schoolId: string, studentId: string) => {
     try {
       await StudentService.delete(schoolId, studentId);
-      toast.success('Siswa berhasil dihapus');
+      toast.success('Pegawai berhasil dihapus');
       return true;
     } catch (error) {
-      toast.error('Gagal menghapus siswa');
+      toast.error('Gagal menghapus Pegawai');
       throw error;
     }
   },
@@ -170,7 +170,7 @@ export const studentApi = {
 
       return uniqueResults;
     } catch (error) {
-      toast.error('Gagal mencari siswa');
+      toast.error('Gagal mencari Pegawai');
       throw error;
     }
   }
@@ -184,10 +184,10 @@ export const classApi = {
   create: async (schoolId: string, classData: any) => {
     try {
       const result = await ClassService.create(schoolId, classData);
-      toast.success('Kelas berhasil ditambahkan');
+      toast.success('Jabatan berhasil ditambahkan');
       return result;
     } catch (error) {
-      toast.error('Gagal menambahkan kelas');
+      toast.error('Gagal menambahkan Jabatan');
       throw error;
     }
   },
@@ -198,7 +198,7 @@ export const classApi = {
       const classes = await ClassService.getAll(schoolId, [orderBy('level'), orderBy('name')]);
       return classes;
     } catch (error) {
-      toast.error('Gagal mengambil data kelas');
+      toast.error('Gagal mengambil data Jabatan');
       throw error;
     }
   },
@@ -209,7 +209,7 @@ export const classApi = {
       const classData = await ClassService.getById(schoolId, classId);
       return classData;
     } catch (error) {
-      toast.error('Gagal mengambil data kelas');
+      toast.error('Gagal mengambil data Jabatan');
       throw error;
     }
   },
@@ -240,7 +240,7 @@ export const classApi = {
       
       return classesWithStudents;
     } catch (error) {
-      toast.error('Gagal mengambil data kelas dengan jumlah siswa');
+      toast.error('Gagal mengambil data Jabatan dengan jumlah pegawai');
       throw error;
     }
   },
@@ -249,10 +249,10 @@ export const classApi = {
   update: async (schoolId: string, classId: string, data: any) => {
     try {
       await ClassService.update(schoolId, classId, data);
-      toast.success('Data kelas berhasil diperbarui');
+      toast.success('Data Jabatan berhasil diperbarui');
       return true;
     } catch (error) {
-      toast.error('Gagal memperbarui data kelas');
+      toast.error('Gagal memperbarui data Jabatan');
       throw error;
     }
   },
@@ -261,10 +261,10 @@ export const classApi = {
   delete: async (schoolId: string, classId: string) => {
     try {
       await ClassService.delete(schoolId, classId);
-      toast.success('Kelas berhasil dihapus');
+      toast.success('Jabatan berhasil dihapus');
       return true;
     } catch (error) {
-      toast.error('Gagal menghapus kelas');
+      toast.error('Gagal menghapus Jabatan');
       throw error;
     }
   }
@@ -352,10 +352,10 @@ export const schoolApi = {
   create: async (schoolData: any, schoolId?: string) => {
     try {
       const result = await SchoolService.create(schoolData, schoolId);
-      toast.success('Sekolah berhasil didaftarkan');
+      toast.success('Instansi berhasil didaftarkan');
       return result;
     } catch (error) {
-      toast.error('Gagal mendaftarkan sekolah');
+      toast.error('Gagal mendaftarkan Instansi');
       throw error;
     }
   },
@@ -366,7 +366,7 @@ export const schoolApi = {
       const school = await SchoolService.getById(schoolId);
       return school;
     } catch (error) {
-      toast.error('Gagal mengambil data sekolah');
+      toast.error('Gagal mengambil data Instansi');
       throw error;
     }
   },
@@ -375,10 +375,10 @@ export const schoolApi = {
   update: async (schoolId: string, data: any) => {
     try {
       await SchoolService.update(schoolId, data);
-      toast.success('Data sekolah berhasil diperbarui');
+      toast.success('Data Instansi berhasil diperbarui');
       return true;
     } catch (error) {
-      toast.error('Gagal memperbarui data sekolah');
+      toast.error('Gagal memperbarui data Instansi');
       throw error;
     }
   }
