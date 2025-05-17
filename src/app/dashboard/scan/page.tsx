@@ -160,13 +160,13 @@ export default function ScanQR() {
           let message = "";
           
           if (attendanceStatus === 'hadir' || attendanceStatus === 'present') {
-            message = `Pegawai dengan Nama : ${student.name} telah hadir di Kantor pada ${formattedDate} pukul ${format(currentDateTime, "HH:mm")} WIB.`;
+            message = `Pegawai dengan nama : ${student.name} telah hadir di Kantor pada ${formattedDate} pukul ${format(currentDateTime, "HH:mm")} WIB.`;
           } else if (attendanceStatus === 'sakit' || attendanceStatus === 'sick') {
-            message = `Pegawai dengan Nama : ${student.name} tidak hadir di Kantor pada ${formattedDate} dengan status SAKIT.${attendanceNotes ? `\n\nKeterangan : ${attendanceNotes}` : ''}`;
+            message = `Pegawai dengan nama : ${student.name} tidak hadir di Kantor pada ${formattedDate} dengan status SAKIT.${attendanceNotes ? `\n\nKeterangan : ${attendanceNotes}` : ''}`;
           } else if (attendanceStatus === 'izin' || attendanceStatus === 'permitted') {
-            message = `Pegawai dengan Nama : ${student.name} tidak hadir di Kantor pada ${formattedDate} dengan status IZIN.${attendanceNotes ? `\n\nKeterangan : ${attendanceNotes}` : ''}`;
+            message = `Pegawai dengan nama : ${student.name} tidak hadir di Kantor pada ${formattedDate} dengan status IZIN.${attendanceNotes ? `\n\nKeterangan : ${attendanceNotes}` : ''}`;
           } else if (attendanceStatus === 'alpha' || attendanceStatus === 'absent') {
-            message = `Pegawai dengan Nama : ${student.name} tidak hadir di Kantor pada ${formattedDate} dengan status ALPHA.${attendanceNotes ? `\n\nKeterangan : ${attendanceNotes}` : ''}`;
+            message = `Pegawai dengan nama : ${student.name} tidak hadir di Kantor pada ${formattedDate} dengan status ALPHA.${attendanceNotes ? `\n\nKeterangan : ${attendanceNotes}` : ''}`;
           }
           
           // Send notification using the Telegram API
