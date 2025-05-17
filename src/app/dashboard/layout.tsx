@@ -415,9 +415,9 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
               >
                 <BookOpen size={20} />
                 <span>Data Kepegawaian</span>
-              </Link>
+              </Link>*/}
               
-              <Link*/} 
+              <Link
                 href="/dashboard/students" 
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${
                   isActive('/dashboard/students') 
