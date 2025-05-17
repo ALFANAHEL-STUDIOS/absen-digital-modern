@@ -221,7 +221,7 @@ export default function UserProfile() {
 
             <div className="md:col-span-2">
               <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
-                Alamat
+                Alamat Lengkap
               </label>
               <div className="relative">
                 <MapPin className="absolute left-3 top-3 text-gray-400" size={18} />
