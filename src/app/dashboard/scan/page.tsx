@@ -530,7 +530,6 @@ export default function ScanQR() {
         )}
       </div>
       <hr className="border-t border-none mb-4" />
-      <hr className="border-t border-none mb-2" />
     </div>
   );
 }
