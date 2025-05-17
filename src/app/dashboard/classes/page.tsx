@@ -224,7 +224,7 @@ export default function ClassesPage() {
              <div className="flex justify-between items-start mb-0">
                <div>
                 
-                 <h3 className="font-semibold text-lg"> {classItem.level} </h3>
+                 <h3 className="font-semibold text-sm"> {classItem.level} </h3>
                 {/*<p className="text-sm text-gray-500">{classItem.name}</p>*/}
                </div>
                {userRole === 'admin' && (
@@ -239,7 +239,7 @@ export default function ClassesPage() {
                    <button
                      onClick={() => openDeleteModal(classItem)}
                      className="p-1.5 text-red-600 hover:bg-red-50 rounded"
-                     title="Hapus Kelas"
+                     title="Hapus Kepegawaian"
                    >
                      <Trash2 size={16} />
                    </button>
