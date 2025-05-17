@@ -128,7 +128,7 @@ export default function Students() {
             <Users className="h-7 w-7 text-primary mr-3" />
             <h1 className="text-2xl font-bold text-gray-800 text-center">DAFTAR PEGAWAI</h1>
           </div>
-          <hr className="border-t border-none mb-1" />
+          <hr className="border-t border-none mb-10" />
           <hr className="border-t border-none mb-1" />
         </div>
         {userRole === 'admin' && (
