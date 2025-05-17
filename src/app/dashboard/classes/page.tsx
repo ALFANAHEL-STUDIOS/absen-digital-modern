@@ -223,8 +223,8 @@ export default function ClassesPage() {
            <div key={classItem.id} className="bg-cyan-100 rounded-xl p-3 sm:p-5 text-gray-700">
              <div className="flex justify-between items-start mb-0">
                <div>
-                <User size={16} className="text-gray-400 mr-2" />
-                 <User className="font-semibold text-lg"> {classItem.level} />
+                
+                 <h3 className="font-semibold text-lg"> {classItem.level} </h3>
                 {/*<p className="text-sm text-gray-500">{classItem.name}</p>*/}
                </div>
                {userRole === 'admin' && (
