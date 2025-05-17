@@ -268,7 +268,7 @@ export default function StudentsQRList() {
               {/* Content */}
               <div className="flex flex-col justify-center items-center flex-grow py-4 mt-0">
                 {/* Student Information - Centered */}
-                <div className="text-center mb-4 mt-0">
+                <div className="text-center mb-5 mt-0">
                   <h3 className="font-bold text-base text-gray-800">{student.name}</h3>
                   <div className="text-xs mt-1">
                     <p className="text-gray-600">{student.nisn}</p>
