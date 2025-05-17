@@ -162,11 +162,11 @@ export default function ScanQR() {
           if (attendanceStatus === 'hadir' || attendanceStatus === 'present') {
             message = `Pegawai dengan Nama : ${student.name} telah hadir di Kantor pada ${formattedDate} pukul ${format(currentDateTime, "HH:mm")} WIB.`;
           } else if (attendanceStatus === 'sakit' || attendanceStatus === 'sick') {
-            message = `egawai dengan Nama  ${student.name} tidak hadir di Kantor pada ${formattedDate} dengan status SAKIT.${attendanceNotes ? `\n\nKeterangan: ${attendanceNotes}` : ''}`;
+            message = `Pegawai dengan Nama : ${student.name} tidak hadir di Kantor pada ${formattedDate} dengan status SAKIT.${attendanceNotes ? `\n\nKeterangan : ${attendanceNotes}` : ''}`;
           } else if (attendanceStatus === 'izin' || attendanceStatus === 'permitted') {
-            message = `egawai dengan Nama  ${student.name} tidak hadir di Kantor pada ${formattedDate} dengan status IZIN.${attendanceNotes ? `\n\nKeterangan: ${attendanceNotes}` : ''}`;
+            message = `Pegawai dengan Nama : ${student.name} tidak hadir di Kantor pada ${formattedDate} dengan status IZIN.${attendanceNotes ? `\n\nKeterangan : ${attendanceNotes}` : ''}`;
           } else if (attendanceStatus === 'alpha' || attendanceStatus === 'absent') {
-            message = `egawai dengan Nama  ${student.name} tidak hadir di Kantor pada ${formattedDate} dengan status ALPHA (tanpa keterangan).${attendanceNotes ? `\n\nKeterangan: ${attendanceNotes}` : ''}`;
+            message = `Pegawai dengan Nama : ${student.name} tidak hadir di Kantor pada ${formattedDate} dengan status ALPHA.${attendanceNotes ? `\n\nKeterangan : ${attendanceNotes}` : ''}`;
           }
           
           // Send notification using the Telegram API
@@ -295,7 +295,7 @@ export default function ScanQR() {
                 </p>
                 <button
                   onClick={resetScan}
-                  className="bg-primary text-white px-5 py-2.5 rounded-lg hover:bg-primary hover:bg-opacity-90 transition-colors"
+                  className="bg-blue-900 text-white px-5 py-2.5 rounded-lg hover:bg-orange-500 active:bg-orange-600 hover:bg-opacity-90 transition-colors"
                 >
                   Scan Pegawai Lain
                 </button>
@@ -390,8 +390,8 @@ export default function ScanQR() {
                     type="button"
                     onClick={handleAttendance}
                     disabled={loading || !attendanceStatus}
-                    className={`flex items-center gap-2 text-white px-5 py-2.5 rounded-lg transition-colors ${
-                      loading || !attendanceStatus ? "bg-gray-400 cursor-not-allowed" : "bg-primary hover:bg-primary/90"
+                    className={`flex items-center gap-2 bg-blue-900 text-white px-5 py-2.5 rounded-lg hover:bg-orange-500 active:bg-orange-600 transition-colors ${
+                      loading || !attendanceStatus ? "bg-gray-400 cursor-not-allowed" : "bg-blue-800 hover:bg-orange-500"
                     }`}
                   >
                     {loading ? (
@@ -423,7 +423,7 @@ export default function ScanQR() {
             
             <button
               onClick={resetScan}
-              className="bg-primary text-white px-5 py-2.5 rounded-lg hover:bg-primary/90 transition-colors mt-4"
+              className="bg-blue-900 text-white px-5 py-2.5 rounded-lg hover:bg-orange-500 active:bg-orange-600 transition-colors mt-4"
             >
               Scan Ulang
             </button>
@@ -498,7 +498,7 @@ export default function ScanQR() {
                   </p>
                   <motion.button
                     onClick={() => setScanning(true)}
-                    className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-orange-500 transition-colors"
+                    className="bg-blue-900 text-white px-6 py-3 rounded-lg hover:bg-orange-500 active:bg-orange-600 transition-colors"
                     whileTap={{ scale: 0.95 }}
                   >
                     <QrCode className="h-5 w-5 inline-block mr-2" /> 
