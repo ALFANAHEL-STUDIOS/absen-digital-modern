@@ -204,13 +204,13 @@ export default function Students() {
                     <h3 className="font-semibold text-sm">{student.name}</h3>
                     <p className="text-gray-500 text-xs">NIK : {student.nisn}</p>
                     <div className="flex items-center mt-1">
-                      
-                      <span className="inline-block px-1.5 py-0.5 text-xs bg-gray-100 text-gray-500 rounded ml-2">
-                        {student.gender === "male" ? "Laki-laki" : "Perempuan"}
-                      </span>
                       <span className="inline-block px-1.5 py-0.5 text-xs bg-blue-100 text-blue-700 rounded">
                         {student.class}
                       </span>
+                      <span className="inline-block px-1.5 py-0.5 text-xs bg-green-100 text-green-600 rounded ml-2">
+                        {student.gender === "male" ? "Laki-laki" : "Perempuan"}
+                      </span>
+                      
                     </div>
                   </div>
                   <div className="flex justify-end gap-2 mt-3">
@@ -221,13 +221,13 @@ export default function Students() {
                     >
                       <ExternalLink size={16} />
                     </Link>
-                    <Link 
+                    {/*<Link 
                       href={`/dashboard/students/edit/${student.id}`}
                       className="p-1.5 text-green-600 rounded hover:bg-green-100 hover:bg-opacity-20"
                       title="Edit Data Siswa"
                     >
                       <Edit size={16} />
-                    </Link>
+                    </Link>*/}
                     {userRole === 'admin' && (
                       <button
                         onClick={() => openDeleteDialog(student.id)}
