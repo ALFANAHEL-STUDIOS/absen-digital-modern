@@ -414,7 +414,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                 onClick={() => setMenuOpen(false)}
               >
                 <BookOpen size={20} />
-                <span>Data Jabatan</span>
+                <span>Daftar Jabatan</span>
               </Link>
               
               <Link 
