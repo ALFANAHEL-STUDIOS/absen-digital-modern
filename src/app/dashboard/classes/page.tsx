@@ -52,16 +52,45 @@ export default function Classes() {
   const [classToDelete, setClassToDelete] = useState<string | null>(null);
   
   const [formData, setFormData] = useState({
-    name: "",
-    level: "1",
-    room: "",
-    teacherName: "",
-  });
+   name: "",
+   level: "1",
+   room: "",
+   teacherName: "",
+ });
+ const [formData, setFormData] = useState({
+   name: "",
+   level: "Kepala Desa",
+   room: "",
+   teacherName: "",
+ });
   
-  const levelOptions = Array.from({ length: 20 }, (_, i) => ({
-    value: `${i + 1}`,
-    label: `${i + 1}`
-  }));
+  const classList = Array.from({ length: 12 }, (_, i) => ({
+ value: `${i + 1}`,
+ label: `${i + 1}`
+}));
+const levelOptions = [
+ { value: "Kepala Desa", label: "Kepala Desa" },
+ { value: "Sekretaris Desa", label: "Sekretaris Desa" },
+ { value: "Kaur Tata Usaha dan Umum", label: "Kaur Tata Usaha dan Umum" },
+ { value: "Kaur Keuangan", label: "Kaur Keuangan" },
+ { value: "Kaur Perencanaan", label: "Kaur Perencanaan" },
+ { value: "Kasi Pemerintahan", label: "Kasi Pemerintahan" },
+ { value: "Kasi Kesejahteraan", label: "Kasi Kesejahteraan" },
+ { value: "Kasi Pelayanan", label: "Kasi Pelayanan" },
+ { value: "Ketua BPK", label: "Ketua BPK" },
+ { value: "Kepala Dusun 1", label: "Kepala Dusun 1" },
+ { value: "Kepala Dusun 2", label: "Kepala Dusun 2" },
+ { value: "Kepala Dusun 3", label: "Kepala Dusun 3" },
+ { value: "Kepala Dusun 4", label: "Kepala Dusun 4" },
+ { value: "Kepala Dusun 5", label: "Kepala Dusun 5" },
+ { value: "Kepala Dusun 6", label: "Kepala Dusun 6" },
+ { value: "Kepala Dusun 7", label: "Kepala Dusun 7" },
+ { value: "Kepala Dusun 8", label: "Kepala Dusun 8" },
+ { value: "Kepala Dusun 9", label: "Kepala Dusun 9" },
+ { value: "Kepala Dusun 10", label: "Kepala Dusun 10" },
+ { value: "Kepala Dusun 111", label: "Kepala Dusun 111" },
+ { value: "Kepala Dusun 12", label: "Kepala Dusun 12" },
+];
 
   useEffect(() => {
     fetchClasses();
@@ -116,32 +145,33 @@ export default function Classes() {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+   const { name, value } = e.target;
+   setFormData((prev) => ({ ...prev, [name]: value }));
+ };
+ const handleSubmit = async (e: React.FormEvent) => {
+   e.preventDefault();
 
-  const handleAddClass = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!schoolId) {
-      toast.error("Tidak dapat mengakses data Instansi");
-      return;
-    }
-    
-    try {
-      const { classApi } = await import('@/lib/api');
-      await classApi.create(schoolId, {
-        ...formData,
-        studentCount: 0
-      });
-      
-      setShowAddModal(false);
-      setFormData({ name: "", level: "1", room: "", teacherName: "" });
-      fetchClasses();
-    } catch (error) {
-      console.error("Error adding class:", error);
-    }
-  };
+   if (!schoolId) {
+     toast.error("Tidak dapat mengakses data sekolah");
+     return;
+   }
+
+   try {
+     setSaving(true);
+
+     const { classApi } = await import('@/lib/api');
+     await classApi.create(schoolId, {
+       ...formData,
+       studentCount: 0
+     });
+
+     setShowAddModal(false);
+     setFormData({ name: "", level: "Kepala Desa", room: "", teacherName: "" });
+     fetchClasses();
+   } catch (error) {
+     console.error("Error adding class:", error);
+   }
+ };
 
   const handleEditClass = (classData: ClassData) => {
     setEditingClassId(classData.id);
@@ -326,25 +356,44 @@ export default function Classes() {
                   />
                 </div>
                 
-                <div>
-                  <label htmlFor="level" className="block text-sm font-medium text-gray-700 mb-1">
-                    Jenis/Jabatan
-                  </label>
-                  <select
-                    id="level"
-                    name="level"
-                    value={formData.level}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                    required
-                  >
-                    {levelOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        Jabatan {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <div> 
+               <label htmlFor="level" className="block text-sm font-medium text-gray-700 mb-1"> 
+                 Tingkat/Kelas 
+               </label> 
+               <select 
+                 id="level" 
+                 name="level" 
+                 value={formData.level} 
+                 onChange={handleChange} 
+                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" 
+                 required 
+               > 
+                 {levelOptions.map((option) => ( 
+                   <option key={option.value} value={option.value}> 
+                     Kelas {option.label} 
+                   </option> 
+                 ))} 
+               </select> 
+             </div> 
+             <div> 
+               <label htmlFor="level" className="block text-sm font-medium text-gray-700 mb-1"> 
+                 Tingkat/Kelas 
+               </label> 
+               <select 
+                 id="level" 
+                 name="level" 
+                 value={formData.level} 
+                 onChange={handleChange} 
+                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" 
+                 required 
+               > 
+                 {levelOptions.map((option) => ( 
+                   <option key={option.value} value={option.value}> 
+                     {option.label} 
+                   </option> 
+                 ))} 
+               </select> 
+             </div>
                 
                 <div>
                   <label htmlFor="teacherName" className="block text-sm font-medium text-gray-700 mb-1">
