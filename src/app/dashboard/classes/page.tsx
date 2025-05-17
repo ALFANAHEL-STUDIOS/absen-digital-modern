@@ -195,21 +195,21 @@ export default function ClassesPage() {
    "Kepala Dusun 12"
  ];
  return (
-   <div className="w-full max-w-6xl mx-auto pb-20 md:pb-6 px-3 sm:px-4 md:px-6">
+   <div className="w-full items-center max-w-6xl mx-auto pb-20 md:pb-6 px-3 sm:px-4 md:px-6">
      <div className="flex items-center mb-6">
        <BookOpen className="h-7 w-7 text-primary mr-3" />
-       <h1 className="text-2xl font-bold text-gray-800 text-center md:text-left">DAFTAR KEPEGAWAIAN</h1>
+       <center><h1 className="text-2xl font-bold text-gray-800 text-center md:text-left">DAFTAR KEPEGAWAIAN</h1></center>
      </div>
 
      {/* Add Class Button */}
      <div className="mb-6">
-       <button
+       <center><button
          onClick={() => setShowAddModal(true)}
-         className="flex items-center justify-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg hover:bg-orange-500 active:bg-orange-600 transition-colors shadow-sm"
+         className="flex items-center items-center justify-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg hover:bg-orange-500 active:bg-orange-600 transition-colors shadow-sm"
        >
          <Plus size={18} />
          Tambah Data Kepegawaian
-       </button>
+       </button></center>
      </div>
 
      {/* Classes List */}
