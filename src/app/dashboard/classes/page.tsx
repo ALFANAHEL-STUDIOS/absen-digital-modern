@@ -494,6 +494,6 @@ export default function ClassesPage() {
        </div>
      )}
    </div>
-   <hr className="border-t border-none mb-8" />
+   
  );
 }
