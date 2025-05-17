@@ -253,7 +253,7 @@ export default function AddStudent() {
                 ) : (
                   <Save size={20} />
                 )}
-                Simpan Data Pegawai
+                Simpan Data
               </button>
             </div>
           </div>
