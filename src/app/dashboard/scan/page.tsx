@@ -529,8 +529,9 @@ export default function ScanQR() {
           </div>
         )}
       </div>
+      <hr className="border-t border-none mb-4" />
+      <hr className="border-t border-none mb-2" />
     </div>
   );
 }
-<hr className="border-t border-none mb-4" />
-<hr className="border-t border-none mb-2" />
+
