@@ -282,6 +282,23 @@ export default function AddStudentPage() {
            </p>
          </div>
 
+{/* QR Code Preview */}
+            {studentData.nisn && (
+              <div className="flex flex-col items-center pt-4 border-t border-gray-200">
+                <h3 className="text-lg font-medium text-gray-700 mb-3">Preview QR Code</h3>
+                <div className="bg-white p-4 border border-gray-300 rounded-lg">
+                  <QRCodeSVG
+                    value={studentData.nisn}
+                    size={150}
+                    level="H"
+                    includeMargin={true}
+                  />
+                </div>
+                <p className="text-sm text-gray-500 mt-2">QR Code dibuat berdasarkan NIK Pegawai.</p>
+              </div>
+            )}
+        
+
          <div className="md:col-span-2 flex justify-end mt-6">
            <button
              type="submit"
