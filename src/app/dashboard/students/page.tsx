@@ -207,7 +207,7 @@ export default function Students() {
                       <span className="inline-block px-1.5 py-0.5 text-xs bg-blue-100 text-blue-500 rounded">
                         {student.class}
                       </span>
-                      <span className="inline-block px-1.5 py-0.5 text-xs bg-gray-100 text-gray-400 rounded ml-2">
+                      <span className="inline-block px-1.5 py-0.5 text-xs bg-purple-100 text-gray-500 rounded ml-2">
                         {student.gender === "male" ? "Laki-laki" : "Perempuan"}
                       </span>
                       
