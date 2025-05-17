@@ -134,7 +134,7 @@ export default function AddStudent() {
               
               <div>
                 <label htmlFor="class" className="block text-sm font-medium text-gray-700 mb-1">
-                  Kepegawaian
+                  Tingkat/Jabatan
                 </label>
                 <select
                   id="class"
