@@ -217,9 +217,9 @@ export default function StudentDetail({ params }: { params: { id: string } }) {
               <p className="text-xl font-bold text-red-600">0%</p>
               <p className="text-xs text-gray-500 mt-1">0/20 hari</p>
             </div>
-          </div>
+          </div>*/}
         </div>
       </div>
-    </div>*/}
+    </div>
   );
 }
