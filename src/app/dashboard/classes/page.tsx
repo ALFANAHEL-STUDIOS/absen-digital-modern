@@ -224,7 +224,7 @@ export default function ClassesPage() {
              <div className="flex justify-between items-start mb-0">
                <div>
                 
-                 <h3 className="font-semibold text-sm"> {classItem.level} </h3>
+                 <h3 className="p-1.5 font-semibold text-sm"> {classItem.level} </h3>
                 {/*<p className="text-sm text-gray-500">{classItem.name}</p>*/}
                </div>
                {userRole === 'admin' && (
