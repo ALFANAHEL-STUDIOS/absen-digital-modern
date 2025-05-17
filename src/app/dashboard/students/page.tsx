@@ -263,7 +263,7 @@ export default function Students() {
           </div>
         </div>
       )}
-      
+      <hr className="border-t border-none mb-5" />
       {/* Confirmation Dialog */}
       <ConfirmDialog
         isOpen={deleteDialogOpen}
