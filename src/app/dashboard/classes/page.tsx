@@ -52,45 +52,16 @@ export default function Classes() {
   const [classToDelete, setClassToDelete] = useState<string | null>(null);
   
   const [formData, setFormData] = useState({
-   name: "",
-   level: "1",
-   room: "",
-   teacherName: "",
- });
- const [formData, setFormData] = useState({
-   name: "",
-   level: "Kepala Desa",
-   room: "",
-   teacherName: "",
- });
+    name: "",
+    level: "1",
+    room: "",
+    teacherName: "",
+  });
   
-  const classList = Array.from({ length: 12 }, (_, i) => ({
- value: `${i + 1}`,
- label: `${i + 1}`
-}));
-const levelOptions = [
- { value: "Kepala Desa", label: "Kepala Desa" },
- { value: "Sekretaris Desa", label: "Sekretaris Desa" },
- { value: "Kaur Tata Usaha dan Umum", label: "Kaur Tata Usaha dan Umum" },
- { value: "Kaur Keuangan", label: "Kaur Keuangan" },
- { value: "Kaur Perencanaan", label: "Kaur Perencanaan" },
- { value: "Kasi Pemerintahan", label: "Kasi Pemerintahan" },
- { value: "Kasi Kesejahteraan", label: "Kasi Kesejahteraan" },
- { value: "Kasi Pelayanan", label: "Kasi Pelayanan" },
- { value: "Ketua BPK", label: "Ketua BPK" },
- { value: "Kepala Dusun 1", label: "Kepala Dusun 1" },
- { value: "Kepala Dusun 2", label: "Kepala Dusun 2" },
- { value: "Kepala Dusun 3", label: "Kepala Dusun 3" },
- { value: "Kepala Dusun 4", label: "Kepala Dusun 4" },
- { value: "Kepala Dusun 5", label: "Kepala Dusun 5" },
- { value: "Kepala Dusun 6", label: "Kepala Dusun 6" },
- { value: "Kepala Dusun 7", label: "Kepala Dusun 7" },
- { value: "Kepala Dusun 8", label: "Kepala Dusun 8" },
- { value: "Kepala Dusun 9", label: "Kepala Dusun 9" },
- { value: "Kepala Dusun 10", label: "Kepala Dusun 10" },
- { value: "Kepala Dusun 111", label: "Kepala Dusun 111" },
- { value: "Kepala Dusun 12", label: "Kepala Dusun 12" },
-];
+  const levelOptions = Array.from({ length: 12 }, (_, i) => ({
+    value: `${i + 1}`,
+    label: `${i + 1}`
+  }));
 
   useEffect(() => {
     fetchClasses();
@@ -138,40 +109,39 @@ const levelOptions = [
       setClasses(fetchedClasses);
     } catch (error) {
       console.error("Error fetching classes:", error);
-      toast.error("Gagal mengambil data kepegawaian dari database");
+      toast.error("Gagal mengambil data kelas dari database");
     } finally {
       setLoading(false);
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-   const { name, value } = e.target;
-   setFormData((prev) => ({ ...prev, [name]: value }));
- };
- const handleSubmit = async (e: React.FormEvent) => {
-   e.preventDefault();
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-   if (!schoolId) {
-     toast.error("Tidak dapat mengakses data sekolah");
-     return;
-   }
-
-   try {
-     setSaving(true);
-
-     const { classApi } = await import('@/lib/api');
-     await classApi.create(schoolId, {
-       ...formData,
-       studentCount: 0
-     });
-
-     setShowAddModal(false);
-     setFormData({ name: "", level: "Kepala Desa", room: "", teacherName: "" });
-     fetchClasses();
-   } catch (error) {
-     console.error("Error adding class:", error);
-   }
- };
+  const handleAddClass = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!schoolId) {
+      toast.error("Tidak dapat mengakses data sekolah");
+      return;
+    }
+    
+    try {
+      const { classApi } = await import('@/lib/api');
+      await classApi.create(schoolId, {
+        ...formData,
+        studentCount: 0
+      });
+      
+      setShowAddModal(false);
+      setFormData({ name: "", level: "1", room: "", teacherName: "" });
+      fetchClasses();
+    } catch (error) {
+      console.error("Error adding class:", error);
+    }
+  };
 
   const handleEditClass = (classData: ClassData) => {
     setEditingClassId(classData.id);
@@ -216,10 +186,10 @@ const levelOptions = [
       const { classApi } = await import('@/lib/api');
       await classApi.delete(schoolId, classId);
       fetchClasses();
-      toast.success("Data Kepegawaian berhasil dihapus");
+      toast.success("Kelas berhasil dihapus");
     } catch (error) {
       console.error("Error deleting class:", error);
-      toast.error("Gagal menghapus kepegawaian");
+      toast.error("Gagal menghapus kelas");
     }
   };
   
@@ -233,7 +203,7 @@ const levelOptions = [
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
         <div className="flex items-center mb-4 md:mb-0">
           <BookOpen className="h-7 w-7 text-primary mr-3" />
-          <h1 className="text-2xl font-bold text-gray-800 text-center md:text-left">DATA KEPEGAWAIAN</h1>
+          <h1 className="text-2xl font-bold text-gray-800 text-center md:text-left">DAFTAR KELAS</h1>
         </div>
         {userRole === 'admin' && (
           <button
@@ -242,10 +212,10 @@ const levelOptions = [
               setFormData({ name: "", level: "1", room: "", teacherName: "" });
               setShowAddModal(true);
             }}
-            className="flex items-center justify-center w-full md:w-auto gap-2 bg-primary text-white px-5 py-2.5 rounded-lg hover:bg-orange-500 active:bg-orange-600 transition-colors"
+            className="flex items-center justify-center w-full md:w-auto gap-2 bg-orange-500 text-white px-5 py-2.5 rounded-lg hover:bg-blue-600 active:bg-blue-700 transition-colors"
           >
             <Plus size={18} />
-            Tambah Data Kepegawaian
+            Tambah Kelas
           </button>
         )}
       </div>
@@ -273,7 +243,7 @@ const levelOptions = [
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center gap-2">
                     <User className="h-4 w-4 text-gray-400" />
-                    <span className="text-gray-700">Kepala Desa: {classData.teacherName}</span>
+                    <span className="text-gray-700">Wali Kelas: {classData.teacherName}</span>
                   </div>
                 </div>
                 
@@ -283,14 +253,14 @@ const levelOptions = [
                       <button
                         onClick={() => handleEditClass(classData)}
                         className="p-2 text-blue-600 rounded hover:bg-blue-100 hover:bg-opacity-20"
-                        title="Edit Kepegawaian"
+                        title="Edit Kelas"
                       >
                         <Edit size={18} />
                       </button>
                       <button
                         onClick={() => openDeleteDialog(classData.id)}
                         className="p-2 text-red-600 rounded hover:bg-red-100 hover:bg-opacity-20"
-                        title="Hapus Data"
+                        title="Hapus Kelas"
                       >
                         <Trash2 size={18} />
                       </button>
@@ -314,9 +284,9 @@ const levelOptions = [
                 setFormData({ name: "", level: "1", room: "", teacherName: "" });
                 setShowAddModal(true);
               }}
-              className="bg-orange-500 text-white px-5 py-2.5 rounded-lg hover:bg-primaru active:bg-orange transition-colors"
+              className="bg-primary text-white px-5 py-2.5 rounded-lg hover:bg-primary/90 transition-colors"
             >
-              Tambah Data
+              Tambah Kelas
             </button>
           </div>
         </div>
@@ -328,7 +298,7 @@ const levelOptions = [
           <div className="bg-white rounded-xl shadow-lg max-w-md w-full mx-3 sm:mx-auto">
             <div className="flex justify-between items-center p-5 border-b">
               <h3 className="text-lg font-semibold">
-                {editingClassId ? "Edit Data" : "Tambah Data Baru"}
+                {editingClassId ? "Edit Kelas" : "Tambah Kelas Baru"}
               </h3>
               <button
                 onClick={() => setShowAddModal(false)}
@@ -342,7 +312,7 @@ const levelOptions = [
               <div className="p-5 space-y-4">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                    Nama Kepegawaian
+                    Nama Kelas
                   </label>
                   <input
                     type="text"
@@ -351,53 +321,34 @@ const levelOptions = [
                     value={formData.name}
                     onChange={handleChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                    placeholder="Contoh: Kepala Desa"
+                    placeholder="Contoh: VII A"
                     required
                   />
                 </div>
                 
-                <div> 
-               <label htmlFor="level" className="block text-sm font-medium text-gray-700 mb-1"> 
-                 Tingkat/Kelas 
-               </label> 
-               <select 
-                 id="level" 
-                 name="level" 
-                 value={formData.level} 
-                 onChange={handleChange} 
-                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" 
-                 required 
-               > 
-                 {levelOptions.map((option) => ( 
-                   <option key={option.value} value={option.value}> 
-                     Kelas {option.label} 
-                   </option> 
-                 ))} 
-               </select> 
-             </div> 
-             <div> 
-               <label htmlFor="level" className="block text-sm font-medium text-gray-700 mb-1"> 
-                 Tingkat/Kelas 
-               </label> 
-               <select 
-                 id="level" 
-                 name="level" 
-                 value={formData.level} 
-                 onChange={handleChange} 
-                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" 
-                 required 
-               > 
-                 {levelOptions.map((option) => ( 
-                   <option key={option.value} value={option.value}> 
-                     {option.label} 
-                   </option> 
-                 ))} 
-               </select> 
-             </div>
+                <div>
+                  <label htmlFor="level" className="block text-sm font-medium text-gray-700 mb-1">
+                    Tingkat/Kelas
+                  </label>
+                  <select
+                    id="level"
+                    name="level"
+                    value={formData.level}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                    required
+                  >
+                    {levelOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        Kelas {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 
                 <div>
                   <label htmlFor="teacherName" className="block text-sm font-medium text-gray-700 mb-1">
-                    Nama Kepala Desa
+                    Nama Wali Kelas
                   </label>
                   <input
                     type="text"
@@ -406,7 +357,7 @@ const levelOptions = [
                     value={formData.teacherName}
                     onChange={handleChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                    placeholder="Nama lengkap kepala desa"
+                    placeholder="Nama lengkap wali kelas"
                     required
                   />
                 </div>
@@ -422,10 +373,10 @@ const levelOptions = [
                 </button>
                 <button
                   type="submit"
-                  className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-orange-500 active:bg-orange-600 transition-colors"
+                  className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors"
                 >
                   <Save size={18} />
-                  {editingClassId ? "Perbarui" : "Simpan Data"}
+                  {editingClassId ? "Perbarui" : "Simpan"}
                 </button>
               </div>
             </form>
@@ -436,8 +387,8 @@ const levelOptions = [
       {/* Confirmation Dialog */}
       <ConfirmDialog
         isOpen={deleteDialogOpen}
-        title="Konfirmasi Hapus Kepegawaian"
-        message="Apakah Anda yakin ingin menghapus Data ini? Tindakan ini tidak dapat dibatalkan."
+        title="Konfirmasi Hapus Kelas"
+        message="Apakah Anda yakin ingin menghapus kelas ini? Tindakan ini tidak dapat dibatalkan."
         confirmLabel="Hapus"
         cancelLabel="Batal"
         confirmColor="bg-red-500 hover:bg-red-600" 
