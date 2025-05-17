@@ -340,7 +340,7 @@ export default function Classes() {
                   >
                     {levelOptions.map((option) => (
                       <option key={option.value} value={option.value}>
-                        Kelas {option.label}
+                        Jabatan {option.label}
                       </option>
                     ))}
                   </select>
