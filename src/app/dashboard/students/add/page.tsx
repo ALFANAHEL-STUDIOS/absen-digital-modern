@@ -62,7 +62,7 @@ export default function AddStudentPage() {
        setClasses(classData || []);
      } catch (error) {
        console.error("Error fetching classes:", error);
-       toast.error("Gagal mengambil data kelas");
+       toast.error("Gagal mengambil data Jabatan");
      }
    };
 
@@ -81,7 +81,7 @@ export default function AddStudentPage() {
      setLoading(true);
 
      if (!schoolId) {
-       toast.error("ID Sekolah tidak ditemukan");
+       toast.error("ID Instansi tidak ditemukan");
        return;
      }
 
@@ -278,7 +278,7 @@ export default function AddStudentPage() {
              />
            </div>
            <p className="text-xs text-gray-500 mt-1">
-             Untuk notifikasi kehadiran (opsional)
+             Untuk notifikasi kehadiran.
            </p>
          </div>
 
@@ -286,7 +286,7 @@ export default function AddStudentPage() {
            <button
              type="submit"
              disabled={loading}
-             className="px-4 py-2.5 bg-primary text-white font-medium rounded-lg hover:bg-primary hover:bg-opacity-90 transition-colors"
+             className="px-4 py-2.5 bg-primary text-white font-medium rounded-lg rounded-lg hover:bg-orange-500 active:bg-orange-600 transition-colors"
            >
              {loading ? (
                <div className="flex items-center">
