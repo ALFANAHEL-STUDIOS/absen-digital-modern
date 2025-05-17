@@ -197,8 +197,8 @@ export default function ClassesPage() {
  return (
    <div className="w-full max-w-6xl mx-auto pb-20 md:pb-6 px-3 sm:px-4 md:px-6">
      <div className="flex items-center mb-6">
-       <center><BookOpen className="h-7 w-7 text-primary mr-3" />
-       <h1 className="text-2xl font-bold text-gray-800">DAFTAR PEGAWAI</h1></center>
+       <BookOpen className="h-7 w-7 text-primary mr-3" />
+       <h1 className="text-2xl font-bold text-gray-800">DAFTAR PEGAWAI</h1>
      </div>
 
      {/* Add Class Button */}
@@ -264,7 +264,7 @@ export default function ClassesPage() {
            <p className="text-gray-500 mb-4">Belum ada kepegawaian yang ditambahkan</p>
            <button
              onClick={() => setShowAddModal(true)}
-             className="bg-primary text-white px-5 py-2.5 rounded-lg hover:bg-orange-500 active:bg-orange-600 transition-colors"
+             className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
            >
              Tambah Data
            </button>
