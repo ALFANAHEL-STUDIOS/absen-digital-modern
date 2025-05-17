@@ -212,7 +212,7 @@ export default function Classes() {
               setFormData({ name: "", level: "1", room: "", teacherName: "" });
               setShowAddModal(true);
             }}
-            className="flex items-center justify-center w-full md:w-auto gap-2 bg-orange-500 text-white px-5 py-2.5 rounded-lg hover:bg-blue-600 active:bg-blue-700 transition-colors"
+            className="flex items-center justify-center w-full md:w-auto gap-2 bg-primary text-white px-5 py-2.5 rounded-lg hover:bg-orange-500 active:bg-orange-600 transition-colors"
           >
             <Plus size={18} />
             Tambah Data Kepegawaian
@@ -284,7 +284,7 @@ export default function Classes() {
                 setFormData({ name: "", level: "1", room: "", teacherName: "" });
                 setShowAddModal(true);
               }}
-              className="bg-primary text-white px-5 py-2.5 rounded-lg hover:bg-primary/90 transition-colors"
+              className="bg-orange-500 text-white px-5 py-2.5 rounded-lg hover:bg-primaru active:bg-orange transition-colors"
             >
               Tambah Data
             </button>
