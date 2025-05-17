@@ -272,7 +272,7 @@ export default function StudentsQRList() {
                   <h3 className="font-bold text-base text-gray-800">{student.name}</h3>
                   <div className="text-xs mt-2">
                     <p className="text-gray-600">NIK : {student.nisn}</p>
-                    <p className="text-gray-600">Kepegawaian : {student.class}</p>
+                    <p className="text-gray-600">{student.class}</p>
                   </div>
                 </div>
 
