@@ -563,14 +563,14 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           {/* Home - All users */}
           <Link href="/dashboard" className="flex flex-col items-center p-2">
             <Home size={24} className={isActive('/dashboard') ? 'text-primary' : 'text-gray-500'} />
-            <span className={`text-xs mt-1 ${isActive('/dashboard') ? 'text-primary' : 'text-gray-500'}`}>Home</span>
+            <span className={`text-xs mt-1 ${isActive('/dashboard') ? 'text-primary' : 'text-gray-500'}`}>Beranda</span>
           </Link>
           
           {/* Admin and Teacher */}
           {(userRole === 'admin' || userRole === 'teacher') && (
             <Link href="/dashboard/students" className="flex flex-col items-center p-2">
               <Users size={24} className={isActive('/dashboard/students') ? 'text-primary' : 'text-gray-500'} />
-              <span className={`text-xs mt-1 ${isActive('/dashboard/students') ? 'text-primary' : 'text-gray-500'}`}>Siswa</span>
+              <span className={`text-xs mt-1 ${isActive('/dashboard/students') ? 'text-primary' : 'text-gray-500'}`}>Pegawai</span>
             </Link>
           )}
           
@@ -598,7 +598,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           {(userRole === 'admin' || userRole === 'teacher') && (
             <Link href="/dashboard/classes" className="flex flex-col items-center p-2">
               <BookOpen size={24} className={isActive('/dashboard/classes') ? 'text-primary' : 'text-gray-500'} />
-              <span className={`text-xs mt-1 ${isActive('/dashboard/classes') ? 'text-primary' : 'text-gray-500'}`}>Kelas</span>
+              <span className={`text-xs mt-1 ${isActive('/dashboard/classes') ? 'text-primary' : 'text-gray-500'}`}>Jabatan</span>
             </Link>
           )}
           
