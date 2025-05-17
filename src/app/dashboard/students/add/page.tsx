@@ -316,7 +316,7 @@ export default function AddStudentPage() {
              ) : (
                <div className="flex items-center gap-1">
                  <UserCheck className="h-5 w-5" />
-                 Simpan Data
+                 Simpan Data Pegawai
                </div>
              )}
            </button>
