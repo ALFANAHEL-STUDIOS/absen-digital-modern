@@ -223,8 +223,8 @@ export default function ClassesPage() {
            <div key={classItem.id} className="bg-white rounded-xl shadow-sm p-5 border border-gray-200">
              <div className="flex justify-between items-start mb-3">
                <div>
-                 <h3 className="font-semibold text-lg">{classItem.name}</h3>
-                 <p className="text-sm text-gray-500">{classItem.level}</p>
+                 <h3 className="font-semibold text-lg">{classItem.level}</h3>
+                {/*<p className="text-sm text-gray-500">{classItem.name}</p>*/}
                </div>
                {userRole === 'admin' && (
                  <div className="flex space-x-1">
