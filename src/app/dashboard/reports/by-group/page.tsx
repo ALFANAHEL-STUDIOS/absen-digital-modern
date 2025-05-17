@@ -214,7 +214,7 @@ export default function GroupAttendanceReport() {
       // Add date range
       const startDate = format(new Date(dateRange.start), "d MMMM yyyy", { locale: id });
       const endDate = format(new Date(dateRange.end), "d MMMM yyyy", { locale: id });
-      doc.text(`Dari Tanggal : ${startDate} Sampai Tanggal : ${endDate}`, pageWidth / 2, margin + 38, { align: "center" });
+      doc.text(`Dari Tanggal : ${startDate} - Sampai Tanggal : ${endDate}`, pageWidth / 2, margin + 38, { align: "center" });
       // Draw table headers
      
       const headers = ["NO.", "NAMA PEGAWAI", "           NIK", "     JABATAN", "HADIR", " SAKIT", "   IZIN", " ALPHA", "        TOTAL"];
@@ -357,10 +357,10 @@ export default function GroupAttendanceReport() {
       doc.text(`NIP. ${schoolInfo.principalNip}`, margin + signatureWidth * 0.25, yPos + 50, { align: "center" });
       
       // Generate filename with current date
-      const fileName = `Laporan_Kehadiran_Rombel_${format(new Date(), "yyyyMMdd")}.pdf`;
+      const fileName = `Laporan_Kehadiran_Per_Tanggal_${format(new Date(), "yyyyMMdd")}.pdf`;
       doc.save(fileName);
       
-      toast.success(`Laporan pegawai ${selectedClass === "all" ? "Semua Jabatan" : selectedClass} berhasil diunduh sebagai ${fileName}`);
+      toast.success(`Laporan ${selectedClass === "all" ? "Per Tanggal" : selectedClass} berhasil diunduh : ${fileName}`);
     } catch (error) {
       console.error("Error generating PDF:", error);
       toast.error("Gagal mengunduh laporan PDF");
@@ -382,7 +382,7 @@ export default function GroupAttendanceReport() {
         [],
         ["REKAPITULASI LAPORAN ABSENSI PEGAWAI"],
         [`Jabatan : ${selectedClass === "all" ? "Semua Jabatan" : selectedClass}`],
-        [`Dari Tanggal : ${format(new Date(dateRange.start), "d MMMM yyyy", { locale: id })} Sampai Tanggal : ${format(new Date(dateRange.end), "d MMMM yyyy", { locale: id })}`],
+        [`Dari Tanggal : ${format(new Date(dateRange.start), "d MMMM yyyy", { locale: id })} - Sampai Tanggal : ${format(new Date(dateRange.end), "d MMMM yyyy", { locale: id })}`],
         [],
         ["No.", "Nama Pegawai", "NIK", "Jabatan", "Hadir", "Sakit", "Izin", "Alpha", "Total"]
       ];
@@ -450,10 +450,10 @@ export default function GroupAttendanceReport() {
       XLSX.utils.book_append_sheet(wb, ws, "Laporan Kehadiran");
       
       // Generate filename with current date
-      const fileName = `Laporan_Kehadiran_Rombel_${format(new Date(), "yyyyMMdd")}.xlsx`;
+      const fileName = `Laporan_Kehadiran_Per_Tanggal_${format(new Date(), "yyyyMMdd")}.xlsx`;
       XLSX.writeFile(wb, fileName);
       
-      toast.success(`Laporan jabatan ${selectedClass === "all" ? "Semua Jabatan" : selectedClass} berhasil diunduh sebagai ${fileName}`);
+      toast.success(`Laporan ${selectedClass === "all" ? "Per Tanggal" : selectedClass} berhasil diunduh : ${fileName}`);
     } catch (error) {
       console.error("Error generating Excel:", error);
       toast.error("Gagal mengunduh laporan Excel");
@@ -519,7 +519,7 @@ export default function GroupAttendanceReport() {
           <h3 className="text-base sm:text-gray-600 uppercase">REKAP LAPORAN KEHADIRAN PEGAWAI</h3>
         
           <p className="text-xs sm:text-sm sm:text-gray-600 mt-1">
-            Dari Tanggal : {format(new Date(dateRange.start), "d MMMM yyyy", { locale: id })} <br className="sm:hidden" /> Sampai Tanggal : {format(new Date(dateRange.end), "d MMMM yyyy", { locale: id })}
+            Dari Tanggal : {format(new Date(dateRange.start), "d MMMM yyyy", { locale: id })} <br className="sm:hidden" /> - Sampai Tanggal : {format(new Date(dateRange.end), "d MMMM yyyy", { locale: id })}
           </p>
         </div>
         
