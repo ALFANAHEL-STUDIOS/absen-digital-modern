@@ -57,10 +57,10 @@ export default function StudentReport() {
     name: "Sekolah Dasar Negeri 1",
     address: "Jl. Pendidikan No. 123, Kota",
     npsn: "12345678",
-    principalName: "Drs. Ahmad Sulaiman, M.Pd.",
+    principalName: "............................",
     principalNip: ""
   });
-  const [teacherName, setTeacherName] = useState("Budi Santoso, S.Pd.");
+  const [teacherName, setTeacherName] = useState("............................");
   const [classesList, setClassesList] = useState([]);
   
   useEffect(() => {
@@ -74,7 +74,7 @@ export default function StudentReport() {
               name: data.name || "Sekolah Dasar Negeri 1",
               address: data.address || "Jl. Pendidikan No. 123, Kota",
               npsn: data.npsn || "12345678",
-              principalName: data.principalName || "Drs. Ahmad Sulaiman, M.Pd.",
+              principalName: data.principalName || "............................",
               principalNip: data.principalNip || ""
             });
           }
@@ -203,7 +203,7 @@ export default function StudentReport() {
       // No need to set loading state here as it's handled by the component's useState
     } catch (error) {
       console.error("Error fetching student attendance data:", error);
-      toast.error("Gagal mengambil data kehadiran siswa");
+      toast.error("Gagal mengambil data kehadiran pegawai");
       
       // Fallback to empty data if fetching fails
       setAttendanceData([]);
@@ -280,33 +280,33 @@ export default function StudentReport() {
       
       const pageWidth = doc.internal.pageSize.getWidth();
       const pageHeight = doc.internal.pageSize.getHeight();
-      const margin = 15;
+      const margin = 20;
       
       // Add school header
       doc.setFontSize(16);
       doc.setFont("helvetica", "bold");
       doc.text(schoolInfo.name.toUpperCase(), pageWidth / 2, margin, { align: "center" });
       
-      doc.setFontSize(11);
+      doc.setFontSize(14);
       doc.setFont("helvetica", "normal");
       doc.text(schoolInfo.address || "Alamat Sekolah", pageWidth / 2, margin + 7, { align: "center" });
-      doc.text(`NPSN ${schoolInfo.npsn || "12345678"}`, pageWidth / 2, margin + 14, { align: "center" });
+      doc.text(`Kode Pos ${schoolInfo.npsn || "12345678"}`, pageWidth / 2, margin + 14, { align: "center" });
       
       // Add horizontal line
       doc.setLineWidth(0.5);
       doc.line(margin, margin + 20, pageWidth - margin, margin + 20);
       
       // Add report title
-      doc.setFontSize(14);
-      doc.setFont("helvetica", "bold");
+      doc.setFontSize(13);
+      doc.setFont("helvetica", "normal");
       doc.text("REKAPITULASI LAPORAN ABSENSI PEGAWAI", pageWidth / 2, margin + 30, { align: "center" });
       
       // Add month, student name and class
       const currentMonth = format(new Date(), "MMMM yyyy", { locale: id });
-      doc.setFontSize(12);
-      doc.text(`BULAN: ${currentMonth.toUpperCase()}`, pageWidth / 2, margin + 38, { align: "center" });
-      doc.text(`NAMA SISWA: ${selectedStudent?.name || ""}`, pageWidth / 2, margin + 46, { align: "center" });
-      doc.text(`KELAS: ${selectedStudent?.kelas || selectedStudent?.class || ""}`, pageWidth / 2, margin + 54, { align: "center" });
+      doc.setFontSize(13);
+      doc.text(`BULAN : ${currentMonth.toUpperCase()}`, pageWidth / 2, margin + 38, { align: "center" });
+      doc.text(`NAMA PEGAWAI : ${selectedStudent?.name || ""}`, pageWidth / 2, margin + 46, { align: "center" });
+      doc.text(`JABATAN ${selectedStudent?.kelas || selectedStudent?.class || ""}`, pageWidth / 2, margin + 54, { align: "center" });
       
       // Add attendance summary table
       const tableHeaders = ["Status", "Jumlah", "%"];
@@ -329,7 +329,7 @@ export default function StudentReport() {
       doc.setFillColor(230, 230, 230);
       doc.rect(tableX, tableY, tableWidth, rowHeight, 'F');
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(10);
+      doc.setFontSize(12);
       
       for (let i = 0; i < tableHeaders.length; i++) {
         doc.text(tableHeaders[i], tableX + colWidths[i] / 2 + (i * colWidths[i]), tableY + 6, { align: "center" });
@@ -344,13 +344,14 @@ export default function StudentReport() {
       // Draw data rows
       tableY += rowHeight;
       doc.setFont("helvetica", "normal");
+      doc.setFontSize(12);
       
       tableData.forEach((row, idx) => {
         // Fill background for total row
         if (idx === tableData.length - 1) {
           doc.setFillColor(230, 230, 230);
           doc.rect(tableX, tableY, tableWidth, rowHeight, 'F');
-          doc.setFont("helvetica", "bold");
+          doc.setFont("helvetica", "normal");
         }
         
         for (let i = 0; i < row.length; i++) {
@@ -366,26 +367,26 @@ export default function StudentReport() {
       });
       
       // Add signature section - moved closer to the table (30 units closer)
-      const signatureY = tableY + 30; // Reduced from typical values like 60
+      const signatureY = tableY + 20; // Reduced from typical values like 60
       
-      doc.text("Mengetahui", pageWidth / 4, signatureY);
-      doc.text("Pengelola Data", (pageWidth * 3) / 4, signatureY);
+      doc.text("Mengetahui", pageWidth / 5, signatureY);
+      doc.text("Pengelola Data", (pageWidth * 3) / 5, signatureY);
       
-      doc.text("KEPALA SEKOLAH,", pageWidth / 4, signatureY + 5);
-      doc.text("Administrator Sekolah,", (pageWidth * 3) / 4, signatureY + 5);
+      doc.text("Kepala Desa,", pageWidth / 5, signatureY + 5);
+      doc.text("Administrator Sekolah,", (pageWidth * 3) / 5, signatureY + 5);
       
       // Add space for signatures
-      doc.text(schoolInfo.principalName || "Kepala Sekolah", pageWidth / 4, signatureY + 30);
-      doc.text(userData?.name || "Administrator", (pageWidth * 3) / 4, signatureY + 30);
+      doc.text(schoolInfo.principalName || "Kepala Desa", pageWidth / 5, signatureY + 30);
+      doc.text(userData?.name || "Administrator", (pageWidth * 3) / 5, signatureY + 30);
       
-      doc.text(`NIP. ${schoolInfo.principalNip || "..............................................."}`, pageWidth / 4, signatureY + 35);
-      doc.text("NIP. ...............................................", (pageWidth * 3) / 4, signatureY + 35);
+      doc.text(`NIP. ${schoolInfo.principalNip || ".................................."}`, pageWidth / 5, signatureY + 35);
+      doc.text("NIP. ..................................", (pageWidth * 3) / 5, signatureY + 35);
       
       // Save the PDF
-      const fileName = `Rekap_Siswa_${selectedStudent?.name || "Unknown"}_${format(new Date(), "yyyyMMdd")}.pdf`;
+      const fileName = `Rekap_Kehadiran_${selectedStudent?.name || "Unknown"}_${format(new Date(), "yyyyMMdd")}.pdf`;
       doc.save(fileName);
       
-      toast.success(`Laporan Pegawai ${selectedStudent?.name || ""} berhasil diunduh sebagai ${fileName}`);
+      toast.success(`Laporan ${selectedStudent?.name || ""} berhasil diunduh sebagai ${fileName}`);
     } catch (error) {
       console.error("Error generating PDF:", error);
       toast.error("Gagal mengunduh laporan PDF");
@@ -483,13 +484,13 @@ export default function StudentReport() {
         [schoolInfo.address],
         [`Kode Pos ${schoolInfo.npsn}`],
         [""],
-        ["LAPORAN KEHADIRAN PEGAWAI"],
+        ["LAPORAN KEHADIRAN SISWA"],
         [`Periode: ${startDateFormatted} - ${endDateFormatted}`],
         [""],
-        ["DATA PEGAWAI:"],
+        ["DATA SISWA:"],
         ["Nama", ":", selectedStudent?.name || "-"],
-        ["NIK", ":", selectedStudent?.nisn || "-"],
-        ["Jabatan", ":", selectedStudent?.class || "-"],
+        ["NISN", ":", selectedStudent?.nisn || "-"],
+        ["Kelas", ":", selectedStudent?.class || "-"],
         ["Jenis Kelamin", ":", selectedStudent?.gender === "male" ? "Laki-laki" : "Perempuan"],
         [""],
         ["RINGKASAN KEHADIRAN:"],
@@ -548,14 +549,14 @@ export default function StudentReport() {
       headerData.push(
         [""],
         [""],
-        [`${schoolInfo.address}, ${currentDate}`],
+        //[`${schoolInfo.address}, ${currentDate}`],
         [""],
-        ["Mengetahui,", "", "", "", "Administrator Data"],
-        ["Kepala Desa", "", "", "", ""],
+        ["Mengetahui,", "", "", "", "Wali Kelas,"],
+        ["Kepala Sekolah,", "", "", "", ""],
         ["", "", "", "", ""],
         ["", "", "", "", ""],
         ["", "", "", "", ""],
-        [schoolInfo.principalName || "Kepala Desa", "", "", "", teacherName || "Administrator"],
+        [schoolInfo.principalName || "Kepala Sekolah", "", "", "", teacherName || "Wali Kelas,"],
         [`NIP. ${schoolInfo.principalNip || "..........................."}`, "", "", "", "NIP. ..............................."]
       );
       
@@ -597,7 +598,7 @@ export default function StudentReport() {
         <Link href="/dashboard/reports" className="p-2 mr-2 hover:bg-gray-100 rounded-full">
           <ArrowLeft size={20} />
         </Link>
-        <h1 className="text-2xl font-bold text-gray-800">Rekap Per Pegawai</h1>
+        <h1 className="text-2xl font-bold text-gray-800">Rekap Per Siswa</h1>
       </div>
       
       <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-3 lg:gap-6 mb-20 md:mb-6">
@@ -608,7 +609,7 @@ export default function StudentReport() {
               <div className="bg-indigo-100 p-2 rounded-lg mr-3">
                 <User className="h-6 w-6 text-indigo-600" />
               </div>
-              <h2 className="text-xl font-semibold">Cari Pegawai</h2>
+              <h2 className="text-xl font-semibold">Cari Siswa</h2>
             </div>
             
             <div className="space-y-4 mb-6">
@@ -640,22 +641,23 @@ export default function StudentReport() {
                   >
                     <div className="flex items-center gap-1.5">
                       <div className="font-medium">{student.name}</div>
-                      <span className={`text-xs px-2 py-0.5 rounded-full ${
-                        selectedStudent?.id === student.id
-                          ? "bg-blue-500/30 text-white"
-                          : "bg-gray-100 text-gray-600"
-                      }`}>
-                        Kelas {student.class || student.kelas || '-'}
-                      </span>
+                      
                     </div>
                     <div className="text-sm opacity-80">
-                      NISN: {student.nisn}
+                      NISN : {student.nisn}
                     </div>
-                  </div>
+                  <span className={`text-xs rounded ${
+                        selectedStudent?.id === student.id
+                          ? "bg-blue text-white"
+                          : "bg-white text-gray-800"
+                      }`}>
+                       KELAS {student.class || student.kelas || '-'}
+                      </span>
+                    </div>
                 ))
               ) : (
                 <div className="text-center py-8 text-gray-500">
-                  Tidak ada pegawai yang sesuai dengan pencarian.
+                  Tidak ada pegawai yang sesuai dengan pencarian
                 </div>
               )}
             </div>
@@ -675,8 +677,8 @@ export default function StudentReport() {
                   <div>
                     <h3 className="text-xl font-semibold">{selectedStudent.name}</h3>
                     <div className="opacity-90 space-y-1 mt-1">
-                      <div>NISN: {selectedStudent.nisn}</div>
-                      <div>Kelas: {selectedStudent.class || selectedStudent.kelas}</div>
+                      <div>NISN : {selectedStudent.nisn}</div>
+                      <div>Kelas : {selectedStudent.class || selectedStudent.kelas}</div>
                       
                     </div>
                   </div>
@@ -692,29 +694,7 @@ export default function StudentReport() {
                     </div>
                     <h2 className="text-lg font-semibold">Rekap Bulan : {currentMonth}</h2>
                   </div>
-                  
-                  <div className="w-full sm:w-48">
-                    <select 
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                      onChange={(e) => {
-                        // This would normally fetch data for the selected month
-                        toast.success(`Data bulan ${e.target.value} berhasil dimuat`);
-                      }}
-                    >
-                      <option value="Januari">Januari 2025</option>
-                      <option value="Februari">Februari 2025</option>
-                      <option value="Maret">Maret 2025</option>
-                      <option value="April">April 2025</option>
-                      <option value="Mei" selected>Mei 2025</option>
-                      <option value="Juni">Juni 2025</option>
-                      <option value="Juli">Juli 2025</option>
-                      <option value="Agustus">Agustus 2025</option>
-                      <option value="September">September 2025</option>
-                      <option value="Oktober">Oktober 2025</option>
-                      <option value="November">November 2025</option>
-                      <option value="Desember">Desember 2025</option>
-                    </select>
-                  </div>
+                                   
                 </div>
                 
                 {monthlySummary && (
@@ -769,6 +749,7 @@ export default function StudentReport() {
                   )}
                   <span className="font-medium">Download Laporan Excel</span>
                 </button>
+                <hr className="border-t border-none mb-1" />
               </div>
             </div>
           ) : (
@@ -777,9 +758,9 @@ export default function StudentReport() {
                 <div className="bg-gray-100 rounded-full p-4 mb-4">
                   <User className="h-10 w-10 text-gray-400" />
                 </div>
-                <h3 className="text-lg font-medium text-gray-800 mb-2">Pilih Siswa</h3>
+                <h3 className="text-lg font-medium text-gray-800 mb-2">Pilih Pegawai</h3>
                 <p className="text-gray-500 mb-4">
-                  Silakan pilih pegawai dari daftar untuk melihat laporan kehadiran.
+                  Silakan pilih pegawai dari daftar untuk melihat laporan kehadiran
                 </p>
               </div>
             </div>
