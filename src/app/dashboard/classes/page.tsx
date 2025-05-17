@@ -220,7 +220,7 @@ export default function ClassesPage() {
      ) : classes.length > 0 ? (
        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
          {classes.map((classItem) => (
-           <div key={classItem.id} className={`${gradientClass} rounded-xl shadow-sm overflow-hidden`}>
+           <div key={classItem.id} className="bg-blue-500 rounded-xl p-3 sm:p-5 text-white"}>
              <div className="flex justify-between items-start mb-0">
                <div>
                  <h3 className="font-semibold text-lg">{classItem.level}</h3>
