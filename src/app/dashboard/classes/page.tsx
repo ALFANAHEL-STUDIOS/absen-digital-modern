@@ -58,7 +58,7 @@ export default function Classes() {
     teacherName: "",
   });
   
-  const levelOptions = Array.from({ length: 12 }, (_, i) => ({
+  const levelOptions = Array.from({ length: 20 }, (_, i) => ({
     value: `${i + 1}`,
     label: `${i + 1}`
   }));
