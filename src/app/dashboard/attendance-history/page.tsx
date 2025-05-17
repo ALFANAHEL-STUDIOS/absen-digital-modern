@@ -231,26 +231,26 @@ export default function AttendanceHistory() {
       const contentWidth = pageWidth - (margin * 2);
       
       // Add KOP Sekolah
-      pdfDoc.setFontSize(16);
+      pdfDoc.setFontSize(14);
       pdfDoc.setFont("helvetica", "bold");
       pdfDoc.text(schoolInfo.name.toUpperCase(), pageWidth / 2, margin + 6, { align: "center" });
       
-      pdfDoc.setFontSize(11);
+      pdfDoc.setFontSize(12);
       pdfDoc.setFont("helvetica", "normal");
       pdfDoc.text(schoolInfo.address, pageWidth / 2, margin + 12, { align: "center" });
-      pdfDoc.text(`NPSN: ${schoolInfo.npsn}`, pageWidth / 2, margin + 18, { align: "center" });
+      pdfDoc.text(`Kode Pos ${schoolInfo.npsn}`, pageWidth / 2, margin + 18, { align: "center" });
       
       // Add horizontal line
       pdfDoc.setLineWidth(0.5);
       pdfDoc.line(margin, margin + 22, pageWidth - margin, margin + 22);
       
       // Add title
-      pdfDoc.setFontSize(14);
+      pdfDoc.setFontSize(12);
       pdfDoc.setFont("helvetica", "bold");
-      pdfDoc.text("LAPORAN RIWAYAT KEHADIRAN SISWA", pageWidth / 2, margin + 32, { align: "center" });
+      pdfDoc.text("LAPORAN RIWAYAT KEHADIRAN PEGAWAI", pageWidth / 2, margin + 32, { align: "center" });
       
       // Add filter information
-      pdfDoc.setFontSize(10);
+      pdfDoc.setFontSize(11);
       pdfDoc.setFont("helvetica", "normal");
       
       // Add date range
@@ -264,7 +264,7 @@ export default function AttendanceHistory() {
       }
       
       // Table headers
-      const headers = ["Tanggal", "Waktu", "Nama Siswa", "Kelas", "Status", "Catatan"];
+      const headers = ["Tanggal", "Waktu", "Nama Pegawai", "Jabatan", "Status", "Catatan"];
       const colWidths = [25, 20, 60, 20, 20, 40];
       
       let yPos = margin + 55;
@@ -340,10 +340,10 @@ export default function AttendanceHistory() {
           pdfDoc.addPage();
           
           // Add KOP Sekolah to new page (simplified)
-          pdfDoc.setFontSize(12);
+          pdfDoc.setFontSize(14);
           pdfDoc.setFont("helvetica", "bold");
           pdfDoc.text(schoolInfo.name.toUpperCase(), pageWidth / 2, margin + 6, { align: "center" });
-          pdfDoc.setFontSize(9);
+          pdfDoc.setFontSize(12);
           pdfDoc.setFont("helvetica", "normal");
           pdfDoc.text(schoolInfo.address, pageWidth / 2, margin + 12, { align: "center" });
           pdfDoc.text(`NPSN: ${schoolInfo.npsn}`, pageWidth / 2, margin + 18, { align: "center" });
@@ -360,7 +360,7 @@ export default function AttendanceHistory() {
           
           xPos = margin;
           pdfDoc.setFont("helvetica", "bold");
-          pdfDoc.setFontSize(10);
+          pdfDoc.setFontSize(11);
           
           headers.forEach((header, i) => {
             pdfDoc.text(header, xPos + 3, yPos);
@@ -379,14 +379,14 @@ export default function AttendanceHistory() {
       
       const currentDate = format(new Date(), "d MMMM yyyy", { locale: id });
       
-      pdfDoc.setFontSize(10);
-      pdfDoc.text(`${schoolInfo.address}, ${currentDate}`, pageWidth - margin - 40, signatureY - 10, { align: "right" });
+      pdfDoc.setFontSize(11);
+      //pdfDoc.text(`${schoolInfo.address}, ${currentDate}`, pageWidth - margin - 40, signatureY - 10, { align: "right" });
       
-      pdfDoc.text("Mengetahui,", leftSignatureX, signatureY, { align: "center" });
-      pdfDoc.text("Kepala Sekolah", leftSignatureX, signatureY + 5, { align: "center" });
+      pdfDoc.text("Mengetahui", leftSignatureX, signatureY, { align: "center" });
+      pdfDoc.text("Kepala Desa,", leftSignatureX, signatureY + 5, { align: "center" });
       
-      pdfDoc.text("Administrator", rightSignatureX, signatureY, { align: "center" });
-      pdfDoc.text("Sekolah", rightSignatureX, signatureY + 5, { align: "center" });
+      pdfDoc.text("Pengelola Data", rightSignatureX, signatureY, { align: "center" });
+      pdfDoc.text("Absensi QR Code,", rightSignatureX, signatureY + 5, { align: "center" });
       
       // Space for signatures
       const nameY = signatureY + 25;
@@ -467,11 +467,11 @@ export default function AttendanceHistory() {
       const headerData = [
         [schoolInfo.name.toUpperCase()],
         [schoolInfo.address],
-        [`NPSN: ${schoolInfo.npsn}`],
+        [`Kode Pos ${schoolInfo.npsn}`],
         [""],
-        ["LAPORAN KEHADIRAN SISWA"],
+        ["LAPORAN KEHADIRAN PEGAWAI"],
         [`Periode: ${format(new Date(dateRange.start), "d MMMM yyyy", { locale: id })} - ${format(new Date(dateRange.end), "d MMMM yyyy", { locale: id })}`],
-        [selectedClass !== "all" ? `Kelas: ${selectedClass}` : "Semua Kelas"],
+        [selectedClass !== "all" ? `Kelas: ${selectedClass}` : "Semua Jabatan"],
         [""],
       ];
       
@@ -489,11 +489,11 @@ export default function AttendanceHistory() {
       ws[`A${lastRow+1}`] = { t: 's', v: "" };
       
       // Add signature headers
-      ws[`B${lastRow+2}`] = { t: 's', v: "Mengetahui," };
-      ws[`E${lastRow+2}`] = { t: 's', v: "Administrator" };
+      ws[`B${lastRow+2}`] = { t: 's', v: "Mengetahui" };
+      ws[`E${lastRow+2}`] = { t: 's', v: "Pengelola Data" };
       
-      ws[`B${lastRow+3}`] = { t: 's', v: "Kepala Sekolah" };
-      ws[`E${lastRow+3}`] = { t: 's', v: "Sekolah" };
+      ws[`B${lastRow+3}`] = { t: 's', v: "Kepala Sekolah," };
+      ws[`E${lastRow+3}`] = { t: 's', v: "Absensi QR Code," };
       
       // Add empty rows for signature space
       ws[`A${lastRow+4}`] = { t: 's', v: "" };
@@ -541,7 +541,7 @@ export default function AttendanceHistory() {
     <div className="pb-20 md:pb-6">
       <div className="flex items-center mb-6">
         <Calendar className="h-7 w-7 text-primary mr-3" />
-        <h1 className="text-2xl font-bold text-gray-800">Riwayat Kehadiran</h1>
+        <h1 className="text-2xl font-bold text-gray-800">Riwayat Kehadiran Pegawai</h1>
       </div>
       
       {/* Filters */}
@@ -580,7 +580,7 @@ export default function AttendanceHistory() {
           
           <div className="w-full">
             <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-1">
-              Cari Siswa
+              Cari Data
             </label>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
@@ -600,7 +600,7 @@ export default function AttendanceHistory() {
         <div className="mt-4">
           <div className="flex items-center justify-between">
             <label className="block text-sm font-medium text-gray-700">
-              Filter Kelas
+              Filter Jabatan
             </label>
             <button 
               onClick={() => setClassFilterVisible(!classFilterVisible)}
@@ -623,7 +623,7 @@ export default function AttendanceHistory() {
                     : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
                 }`}
               >
-                Semua Kelas
+                Semua Jabatan
               </button>
               
               {classes.map((className) => (
@@ -636,7 +636,7 @@ export default function AttendanceHistory() {
                       : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
                   }`}
                 >
-                  Kelas {className}
+                  Jabatan {className}
                 </button>
               ))}
             </div>
@@ -694,22 +694,22 @@ export default function AttendanceHistory() {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th scope="col" className="px-6 py-3 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-3 text-left text-sm font-bold text-gray-500 uppercase tracking-wider">
                     Tanggal
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">
-                    Waktu Absensi
+                  <th scope="col" className="px-6 py-3 text-left text-sm font-bold text-gray-500 uppercase tracking-wider">
+                    Waktu
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">
-                    Nama Siswa
+                  <th scope="col" className="px-6 py-3 text-left text-sm font-bold text-gray-500 uppercase tracking-wider">
+                    Nama Pegawai
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">
-                    Kelas
+                  <th scope="col" className="px-6 py-3 text-left text-sm font-bold text-gray-500 uppercase tracking-wider">
+                    Jabatan
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-3 text-left text-sm font-bold text-gray-500 uppercase tracking-wider">
                     Status
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-3 text-left text-sm font-bold text-gray-500 uppercase tracking-wider">
                     Catatan
                   </th>
                 </tr>
@@ -731,17 +731,17 @@ export default function AttendanceHistory() {
                         {record.time}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-xs font-medium text-gray-900">{record.studentName}</div>
+                        <div className="text-sm text-gray-500">{record.studentName}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {record.class}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadgeClass(record.status)}`}>
+                        <span className={`px-2 py-1 inline-flex text-sm leading-5 text-gray-600 font-semibold rounded-full ${getStatusBadgeClass(record.status)}`}>
                           {getStatusText(record.status)}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                         {record.notes || record.note || record.catatan || '-'}
                       </td>
                     </tr>
