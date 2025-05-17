@@ -606,7 +606,7 @@ export default function AttendanceHistory() {
               onClick={() => setClassFilterVisible(!classFilterVisible)}
               className="text-sm text-primary flex items-center"
             >
-              {classFilterVisible ? 'Sembunyikan' : 'Tampilkan'} Filter Kelas
+              {classFilterVisible ? 'Sembunyikan' : 'Tampilkan'} Filter Jabatan
               <ChevronDown 
                 className={`ml-1 h-4 w-4 transition-transform ${classFilterVisible ? 'rotate-180' : ''}`} 
               />
