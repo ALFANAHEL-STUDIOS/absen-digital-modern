@@ -126,21 +126,21 @@ export default function SchoolProfile() {
               localStorage.removeItem('needsSchoolSetup');
             }
             
-            toast.success("Sekolah berhasil dibuat");
+            toast.success("Instansi berhasil dibuat");
           } catch (firestoreError: any) {
             console.error("Firestore error:", firestoreError);
             
             if (firestoreError.code === 'permission-denied') {
-              toast.error("Akses ditolak. Anda tidak memiliki izin untuk membuat sekolah.");
+              toast.error("Akses ditolak. Anda tidak memiliki izin untuk membuat Instansi.");
             } else {
-              toast.error("Gagal membuat sekolah: " + firestoreError.message);
+              toast.error("Gagal membuat Instansi : " + firestoreError.message);
             }
             return;
           }
         } else {
           // Update existing school
           if (!schoolId) {
-            toast.error("Tidak dapat mengakses data sekolah");
+            toast.error("Tidak dapat mengakses data Instansi");
             return;
           }
           
@@ -151,14 +151,14 @@ export default function SchoolProfile() {
               updatedAt: serverTimestamp()
             });
             
-            toast.success("Data sekolah berhasil diperbarui");
+            toast.success("Data Instansi berhasil diperbarui");
           } catch (firestoreError: any) {
             console.error("Firestore error:", firestoreError);
             
             if (firestoreError.code === 'permission-denied') {
-              toast.error("Akses ditolak. Anda tidak memiliki izin untuk memperbarui data sekolah.");
+              toast.error("Akses ditolak. Anda tidak memiliki izin untuk memperbarui data Instansi.");
             } else {
-              toast.error("Gagal memperbarui data sekolah: " + firestoreError.message);
+              toast.error("Gagal memperbarui data Instansi : " + firestoreError.message);
             }
             return;
           }
@@ -173,11 +173,11 @@ export default function SchoolProfile() {
         }, 1500);
       } catch (apiError) {
         console.error("API error:", apiError);
-        toast.error("Gagal menyimpan data sekolah - kesalahan API");
+        toast.error("Gagal menyimpan data Instansi - kesalahan API");
       }
     } catch (error) {
-      console.error("Error saving school data:", error);
-      toast.error("Gagal menyimpan data sekolah");
+      console.error("Error saving instansi data:", error);
+      toast.error("Gagal menyimpan data Instansi");
     } finally {
       setSaving(false);
     }
@@ -199,7 +199,7 @@ export default function SchoolProfile() {
     <div className="w-full max-w-3xl mx-auto px-3 sm:px-4 md:px-6 pb-24 md:pb-6">
       <div className="flex items-center mb-6">
         <School className="h-8 w-8 text-primary mr-3" />
-        <h1 className="text-2xl font-bold text-gray-800">Profil Sekolah</h1>
+        <h1 className="text-2xl font-bold text-gray-800">Profil Lembagai / Instansi</h1>
       </div>
 
       {!showForm && isNewSchool ? (
@@ -208,9 +208,9 @@ export default function SchoolProfile() {
             <div className="bg-primary/10 p-6 rounded-full mb-6">
               <School className="h-16 w-16 text-primary" />
             </div>
-            <h2 className="text-xl font-semibold mb-3">Belum Ada Data Sekolah</h2>
+            <h2 className="text-xl font-semibold mb-3">Belum Ada Data Instansi</h2>
             <p className="text-gray-600 mb-8">
-              Anda belum memiliki data sekolah yang terdaftar. Tambahkan data sekolah untuk menggunakan fitur absensi.
+              Anda belum memiliki data Instansi yang terdaftar. Tambahkan data instansi untuk menggunakan fitur absensi.
             </p>
             <motion.button
               onClick={handleAddNewSchool}
@@ -218,7 +218,7 @@ export default function SchoolProfile() {
               whileTap={{ scale: 0.95 }}
             >
               <PlusCircle size={20} />
-              <span>Tambah Data Sekolah</span>
+              <span>Tambah Data Instnasi</span>
             </motion.button>
           </div>
         </div>
@@ -228,7 +228,7 @@ export default function SchoolProfile() {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
               <div className="md:col-span-2">
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                  Nama Sekolah
+                  Nama Instansi
                 </label>
                 <input
                   type="text"
@@ -237,14 +237,14 @@ export default function SchoolProfile() {
                   value={schoolData.name}
                   onChange={handleChange}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white shadow-sm text-base"
-                  placeholder="Masukkan nama sekolah"
+                  placeholder="Masukkan nama instansi"
                   required
                 />
               </div>
 
               <div className="mb-1">
                 <label htmlFor="npsn" className="block text-sm font-medium text-gray-700 mb-1">
-                  NPSN (Nomor Pokok Sekolah Nasional)
+                  Kode Pos
                 </label>
                 <input
                   type="text"
@@ -253,14 +253,14 @@ export default function SchoolProfile() {
                   value={schoolData.npsn}
                   onChange={handleChange}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white shadow-sm text-base"
-                  placeholder="Masukkan NPSN"
+                  placeholder="Masukkan Kode Pos"
                   required
                 />
               </div>
               
               <div className="mb-1">
                 <label htmlFor="website" className="block text-sm font-medium text-gray-700 mb-1">
-                  Website Sekolah (jika ada)
+                  Website Instansi (jika ada)
                 </label>
                 <input
                   type="text"
@@ -269,13 +269,13 @@ export default function SchoolProfile() {
                   value={schoolData.website}
                   onChange={handleChange}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white shadow-sm text-base"
-                  placeholder="https://www.sekolah.sch.id"
+                  placeholder="https://www.nama.desa.id"
                 />
               </div>
 
               <div className="md:col-span-2 mb-1">
                 <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
-                  Alamat Sekolah
+                  Alamat Instansi
                 </label>
                 <textarea
                   id="address"
@@ -284,14 +284,14 @@ export default function SchoolProfile() {
                   onChange={handleChange}
                   rows={3}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white shadow-sm text-base"
-                  placeholder="Masukkan alamat lengkap sekolah"
+                  placeholder="Masukkan alamat lengkap Instansi"
                   required
                 />
               </div>
               
               <div className="mb-1">
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                  Email Sekolah
+                  Email Instansi
                 </label>
                 <input
                   type="email"
@@ -300,7 +300,7 @@ export default function SchoolProfile() {
                   value={schoolData.email}
                   onChange={handleChange}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white shadow-sm text-base"
-                  placeholder="email@sekolah.sch.id"
+                  placeholder="email@instansi.desa.id"
                 />
               </div>
               
@@ -321,7 +321,7 @@ export default function SchoolProfile() {
 
               <div className="mb-1">
                 <label htmlFor="principalName" className="block text-sm font-medium text-gray-700 mb-1">
-                  Nama Kepala Sekolah
+                  Nama Kepala Desa
                 </label>
                 <input
                   type="text"
@@ -330,14 +330,14 @@ export default function SchoolProfile() {
                   value={schoolData.principalName}
                   onChange={handleChange}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white shadow-sm text-base"
-                  placeholder="Masukkan nama kepala sekolah"
+                  placeholder="Masukkan nama kepala desa"
                   required
                 />
               </div>
 
               <div className="mb-1">
                 <label htmlFor="principalNip" className="block text-sm font-medium text-gray-700 mb-1">
-                  NIP Kepala Sekolah
+                  NIP Kepala Desa (Jika Ada)
                 </label>
                 <input
                   type="text"
@@ -346,7 +346,7 @@ export default function SchoolProfile() {
                   value={schoolData.principalNip}
                   onChange={handleChange}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white shadow-sm text-base"
-                  placeholder="Masukkan NIP kepala sekolah"
+                  placeholder="Masukkan NIP kepala desa"
                   required
                 />
               </div>
@@ -355,7 +355,7 @@ export default function SchoolProfile() {
                 <motion.button
                   type="submit"
                   disabled={saving}
-                  className="flex items-center justify-center gap-2 bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors shadow-sm w-full md:w-auto"
+                  className="flex items-center justify-center gap-2 bg-primary text-white px-6 py-3 hover:bg-orange-500 rounded-lg active:bg-orange-600 transition-colors shadow-sm w-full md:w-auto"
                   whileTap={{ scale: 0.95 }}
                 >
                   {saving ? (
@@ -366,7 +366,7 @@ export default function SchoolProfile() {
                     <Save size={20} />
                   )}
                   <span className="font-medium">
-                    {saveSuccess ? "Tersimpan" : isNewSchool ? "Tambah Sekolah" : "Simpan Perubahan"}
+                    {saveSuccess ? "Tersimpan" : isNewSchool ? "Tambah Instansi" : "Simpan Perubahan"}
                   </span>
                 </motion.button>
               </div>
