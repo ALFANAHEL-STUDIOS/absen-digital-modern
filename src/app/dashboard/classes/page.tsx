@@ -60,7 +60,7 @@ export default function ClassesPage() {
        setClasses(fetchedClasses);
      } catch (error) {
        console.error("Error fetching classes:", error);
-       toast.error("Gagal mengambil data kelas");
+       toast.error("Gagal mengambil data Kepegawaian");
      } finally {
        setLoading(false);
      }
@@ -72,7 +72,7 @@ export default function ClassesPage() {
    e.preventDefault();
 
    if (!schoolId) {
-     toast.error("Tidak dapat mengakses data sekolah");
+     toast.error("Tidak dapat mengakses data instansi");
      return;
    }
 
@@ -93,17 +93,17 @@ export default function ClassesPage() {
      setFormData({ name: "", level: "Kepala Desa", teacherName: "" });
      setShowAddModal(false);
 
-     toast.success("Kelas berhasil ditambahkan");
+     toast.success("Kepegawaian berhasil ditambahkan");
    } catch (error) {
      console.error("Error adding class:", error);
-     toast.error("Gagal menambahkan kelas");
+     toast.error("Gagal menambahkan Kepegawaian");
    }
  };
  const handleEditClass = async (e: React.FormEvent) => {
    e.preventDefault();
 
    if (!schoolId || !selectedClass) {
-     toast.error("Tidak dapat mengakses data kelas");
+     toast.error("Tidak dapat mengakses data kepegawaian");
      return;
    }
 
@@ -128,15 +128,15 @@ export default function ClassesPage() {
      setSelectedClass(null);
      setShowEditModal(false);
 
-     toast.success("Kelas berhasil diperbarui");
+     toast.success("Kepegawaian berhasil diperbarui");
    } catch (error) {
      console.error("Error updating class:", error);
-     toast.error("Gagal memperbarui kelas");
+     toast.error("Gagal memperbarui kepegawaian");
    }
  };
  const handleDeleteClass = async () => {
    if (!schoolId || !selectedClass) {
-     toast.error("Tidak dapat mengakses data kelas");
+     toast.error("Tidak dapat mengakses data kepegawaian");
      return;
    }
 
@@ -151,10 +151,10 @@ export default function ClassesPage() {
      setSelectedClass(null);
      setShowDeleteModal(false);
 
-     toast.success("Kelas berhasil dihapus");
+     toast.success("Kepegawaian berhasil dihapus");
    } catch (error) {
      console.error("Error deleting class:", error);
-     toast.error("Gagal menghapus kelas");
+     toast.error("Gagal menghapus kepegawaian");
    }
  };
  const openEditModal = (classItem: Class) => {
@@ -191,24 +191,24 @@ export default function ClassesPage() {
    "Kepala Dusun 8",
    "Kepala Dusun 9",
    "Kepala Dusun 10",
-   "Kepala Dusun 111",
+   "Kepala Dusun 11",
    "Kepala Dusun 12"
  ];
  return (
    <div className="w-full max-w-6xl mx-auto pb-20 md:pb-6 px-3 sm:px-4 md:px-6">
      <div className="flex items-center mb-6">
        <BookOpen className="h-7 w-7 text-primary mr-3" />
-       <h1 className="text-2xl font-bold text-gray-800">DAFTAR KELAS</h1>
+       <h1 className="text-2xl font-bold text-gray-800 text-center md:text-left">DAFTAR KEPEGAWAIAN</h1>
      </div>
 
      {/* Add Class Button */}
      <div className="mb-6">
        <button
          onClick={() => setShowAddModal(true)}
-         className="flex items-center justify-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg hover:bg-primary hover:bg-opacity-90 transition-colors shadow-sm"
+         className="flex items-center justify-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg hover:bg-orange-500 active:bg-orange-600 transition-colors shadow-sm"
        >
          <Plus size={18} />
-         Tambah Kelas
+         Tambah Data Kepegawaian
        </button>
      </div>
 
@@ -249,7 +249,7 @@ export default function ClassesPage() {
              <div className="flex items-center mt-3">
                <User size={16} className="text-gray-400 mr-2" />
                <p className="text-sm text-gray-600">
-                 {classItem.teacherName || "Belum ada wali kelas"}
+                 {classItem.teacherName || "Belum ada data pimpinan"}
                </p>
              </div>
            </div>
@@ -261,12 +261,12 @@ export default function ClassesPage() {
            <div className="bg-gray-100 rounded-full p-3 mb-4">
              <BookOpen className="h-8 w-8 text-gray-400" />
            </div>
-           <p className="text-gray-500 mb-4">Belum ada kelas yang ditambahkan</p>
+           <p className="text-gray-500 mb-4">Belum ada kepegawaian yang ditambahkan</p>
            <button
              onClick={() => setShowAddModal(true)}
-             className="bg-primary text-white px-5 py-2.5 rounded-lg hover:bg-primary hover:bg-opacity-90 transition-colors"
+             className="bg-primary text-white px-5 py-2.5 rounded-lg hover:bg-orange-500 active:bg-orange-600 transition-colors"
            >
-             Tambah Kelas
+             Tambah Data
            </button>
          </div>
        </div>
@@ -283,7 +283,7 @@ export default function ClassesPage() {
            transition={{ duration: 0.2 }}
          >
            <div className="flex justify-between items-center mb-4">
-             <h3 className="text-xl font-bold text-gray-800">Tambah Kelas Baru</h3>
+             <h3 className="text-xl font-bold text-gray-800">Tambah Kepegawaian Baru</h3>
              <button
                onClick={() => setShowAddModal(false)}
                className="text-gray-500 hover:text-gray-700"
@@ -296,7 +296,7 @@ export default function ClassesPage() {
              <div className="space-y-4">
                <div>
                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                   Nama Kelas
+                   Nama Kepegawaian
                  </label>
                  <input
                    type="text"
@@ -304,14 +304,14 @@ export default function ClassesPage() {
                    value={formData.name}
                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                   placeholder="Contoh: VII A"
+                   placeholder="Contoh: Kepala Desa"
                    required
                  />
                </div>
 
                <div>
                  <label htmlFor="level" className="block text-sm font-medium text-gray-700 mb-1">
-                   Tingkat/Kelas
+                   Tingkat/Jabatan
                  </label>
                  <select
                    id="level"
@@ -330,7 +330,7 @@ export default function ClassesPage() {
 
                <div>
                  <label htmlFor="teacherName" className="block text-sm font-medium text-gray-700 mb-1">
-                   Nama Wali Kelas
+                   Nama Pimpinan
                  </label>
                  <input
                    type="text"
@@ -338,7 +338,7 @@ export default function ClassesPage() {
                    value={formData.teacherName}
                    onChange={(e) => setFormData({ ...formData, teacherName: e.target.value })}
                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                   placeholder="Nama lengkap wali kelas"
+                   placeholder="Nama lengkap pimpinan"
                  />
                </div>
              </div>
@@ -353,10 +353,10 @@ export default function ClassesPage() {
                </button>
                <button
                  type="submit"
-                 className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary hover:bg-opacity-90 transition-colors"
+                 className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-orange-500 active:bg-orange-600 transition-colors"
                >
                  <Save size={18} />
-                 Simpan
+                 Simpan Data
                </button>
              </div>
            </form>
@@ -375,7 +375,7 @@ export default function ClassesPage() {
            transition={{ duration: 0.2 }}
          >
            <div className="flex justify-between items-center mb-4">
-             <h3 className="text-xl font-bold text-gray-800">Edit Kelas</h3>
+             <h3 className="text-xl font-bold text-gray-800">Edit Kepegawaian</h3>
              <button
                onClick={() => setShowEditModal(false)}
                className="text-gray-500 hover:text-gray-700"
@@ -388,7 +388,7 @@ export default function ClassesPage() {
              <div className="space-y-4">
                <div>
                  <label htmlFor="edit-name" className="block text-sm font-medium text-gray-700 mb-1">
-                   Nama Kelas
+                   Nama Kepegawaian
                  </label>
                  <input
                    type="text"
@@ -403,7 +403,7 @@ export default function ClassesPage() {
 
                <div>
                  <label htmlFor="edit-level" className="block text-sm font-medium text-gray-700 mb-1">
-                   Tingkat/Kelas
+                   Tingkat/Jabatan
                  </label>
                  <select
                    id="edit-level"
@@ -422,7 +422,7 @@ export default function ClassesPage() {
 
                <div>
                  <label htmlFor="edit-teacherName" className="block text-sm font-medium text-gray-700 mb-1">
-                   Nama Wali Kelas
+                   Nama Pimpinan
                  </label>
                  <input
                    type="text"
@@ -430,7 +430,7 @@ export default function ClassesPage() {
                    value={formData.teacherName}
                    onChange={(e) => setFormData({ ...formData, teacherName: e.target.value })}
                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                   placeholder="Nama lengkap wali kelas"
+                   placeholder="Nama lengkap pimpinan"
                  />
                </div>
              </div>
@@ -445,10 +445,10 @@ export default function ClassesPage() {
                </button>
                <button
                  type="submit"
-                 className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary hover:bg-opacity-90 transition-colors"
+                 className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-orange-500 active:bg-orange-600 transition-colors"
                >
                  <Save size={18} />
-                 Simpan
+                 Perbarui Data
                </button>
              </div>
            </form>
@@ -471,7 +471,7 @@ export default function ClassesPage() {
              <h3 className="text-lg font-semibold">Konfirmasi Hapus</h3>
            </div>
            <p className="text-gray-600 mb-6">
-             Apakah Anda yakin ingin menghapus kelas <span className="font-semibold">{selectedClass.name}</span>? Tindakan ini tidak dapat dibatalkan.
+             Apakah Anda yakin ingin menghapus data <span className="font-semibold">{selectedClass.name}</span>? Tindakan ini tidak dapat dibatalkan.
            </p>
            <div className="flex justify-end gap-3">
              <button
