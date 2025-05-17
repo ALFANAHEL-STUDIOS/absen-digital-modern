@@ -1,264 +1,311 @@
 "use client";
-
-import React, { useState, useRef } from "react";
-import { useAuth } from "@/context/AuthContext";
-import { db, storage } from "@/lib/firebase";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { QRCodeSVG } from "qrcode.react";
-import { 
-  User, 
-  Hash, 
-  Calendar, 
-  MapPin,
-  Phone,
-  Image as ImageIcon,
-  Save,
-  ArrowLeft
-} from "lucide-react";
+import React, { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
+import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { ArrowLeft, User, UserCheck, Mail, Phone, Calendar, MapPin, Buildings, Book, Hash } from "lucide-react";
 import Link from "next/link";
+import { motion } from "framer-motion";
+export default function AddStudentPage() {
+ const { schoolId } = useAuth();
+ const router = useRouter();
+ const [loading, setLoading] = useState(false);
+ const [classes, setClasses] = useState<any[]>([]);
 
-const classList = Array.from({ length: 12 }, (_, i) => ({
-  value: `${i + 1}`,
-  label: `${i + 1}`
-}));
+ const [formData, setFormData] = useState({
+   name: "",
+   nisn: "",
+   gender: "male",
+   birthPlace: "",
+   birthDate: "",
+   address: "",
+   parentName: "",
+   parentPhone: "",
+   email: "",
+   class: "",
+   telegramNumber: "",
+   position: "" // Changed from class to position to better reflect the field purpose
+ });
 
-export default function AddStudent() {
-  const { schoolId } = useAuth();
-  const router = useRouter();
-  const [saving, setSaving] = useState(false);
-  // Removed file input references
-  
-  const [studentData, setStudentData] = useState({
-    name: "",
-    nisn: "",
-    class: "1",
-    gender: "male",
-    birthPlace: "",
-    birthDate: "",
-    telegramNumber: "",
-  });
-  
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setStudentData((prev) => ({ ...prev, [name]: value }));
-  };
-  
-  // Image change handler removed
-  
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!schoolId) {
-      toast.error("Tidak dapat mengakses data Instansi");
-      return;
-    }
-    
-    try {
-      setSaving(true);
-      
-      // Image upload removed
-      const photoUrl = "";
-      
-      // Add student to Firestore using the improved API
-      const { studentApi } = await import('@/lib/api');
-      await studentApi.create(schoolId, {
-        ...studentData,
-        photoUrl,
-        qrCode: studentData.nisn // NISN is used as QR code data
-      });
-      
-      // Redirect back to students list
-      router.push('/dashboard/students');
-    } catch (error) {
-      console.error("Error adding student:", error);
-    } finally {
-      setSaving(false);
-    }
-  };
-  
-  return (
-    <div className="w-full max-w-3xl mx-auto pb-20 md:pb-6 px-3 sm:px-4 md:px-6">
-      <div className="flex items-center mb-6">
-        <Link href="/dashboard/students" className="p-2 mr-2 hover:bg-gray-100 rounded-full">
-          <ArrowLeft size={20} />
-        </Link>
-        <h1 className="text-2xl font-bold text-gray-800">Tambah Data Baru</h1>
-      </div>
-      
-      <div className="bg-white rounded-xl shadow-sm p-3 sm:p-4 md:p-6">
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-6">
-            
-            {/* Student Information */}
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                  Nama Lengkap
-                </label>
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={studentData.name}
-                    onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white"
-                    placeholder="Nama lengkap pegawai"
-                    required
-                  />
-                </div>
-              </div>
-              
-              <div>
-                <label htmlFor="nisn" className="block text-sm font-medium text-gray-700 mb-1">
-                  NIK
-                </label>
-                <div className="relative">
-                  <Hash className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                  <input
-                    type="text"
-                    id="nisn"
-                    name="nisn"
-                    value={studentData.nisn}
-                    onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white"
-                    placeholder="Nomor Induk Kependudukan (NIK)"
-                    required
-                  />
-                </div>
-              </div>
-              
-              <div>
-                <label htmlFor="class" className="block text-sm font-medium text-gray-700 mb-1">
-                  Tingkat/Jabatan
-                </label>
-                <select
-                  id="class"
-                  name="class"
-                  value={studentData.class}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white"
-                  required
-                >
-                  {classList.map((item) => (
-                    <option key={item.value} value={item.value}>
-                      Jabatan {item.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              
-              <div>
-                <label htmlFor="gender" className="block text-sm font-medium text-gray-700 mb-1">
-                  Jenis Kelamin
-                </label>
-                <select
-                  id="gender"
-                  name="gender"
-                  value={studentData.gender}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white"
-                  required
-                >
-                  <option value="male">Laki-laki</option>
-                  <option value="female">Perempuan</option>
-                </select>
-              </div>
-              
-              <div>
-                <label htmlFor="birthPlace" className="block text-sm font-medium text-gray-700 mb-1">
-                  Tempat Lahir
-                </label>
-                <div className="relative">
-                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                  <input
-                    type="text"
-                    id="birthPlace"
-                    name="birthPlace"
-                    value={studentData.birthPlace}
-                    onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white"
-                    placeholder="Tempat lahir"
-                    required
-                  />
-                </div>
-              </div>
-              
-              <div>
-                <label htmlFor="birthDate" className="block text-sm font-medium text-gray-700 mb-1">
-                  Tanggal Lahir
-                </label>
-                <div className="relative">
-                  <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                  <input
-                    type="date"
-                    id="birthDate"
-                    name="birthDate"
-                    value={studentData.birthDate}
-                    onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white"
-                    required
-                  />
-                </div>
-              </div>
-              
-              <div>
-                <label htmlFor="telegramNumber" className="block text-sm font-medium text-gray-700 mb-1">
-                  ID Telegram
-                </label>
-                <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                  <input
-                    type="text"
-                    id="telegramNumber"
-                    name="telegramNumber"
-                    value={studentData.telegramNumber}
-                    onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white"
-                    placeholder="ID Telegram"
-                    required
-                  />
-                </div>
-              </div>
-            </div>
-            
-            {/* QR Code Preview */}
-            {studentData.nisn && (
-              <div className="flex flex-col items-center pt-4 border-t border-gray-200">
-                <h3 className="text-lg font-medium text-gray-700 mb-3">Preview QR Code</h3>
-                <div className="bg-white p-4 border border-gray-300 rounded-lg">
-                  <QRCodeSVG
-                    value={studentData.nisn}
-                    size={150}
-                    level="H"
-                    includeMargin={true}
-                  />
-                </div>
-                <p className="text-sm text-gray-500 mt-2">QR Code dibuat berdasarkan NIK Pegawai.</p>
-              </div>
-            )}
-            
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                disabled={saving}
-                className="flex items-center gap-2 bg-primary text-white px-6 py-2.5 rounded-lg hover:bg-orange-500 active:bg-orange-600 transition-colors"
-              >
-                {saving ? (
-                  <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
-                ) : (
-                  <Save size={20} />
-                )}
-                Simpan Data
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
+ // Village positions list as provided
+ const villagePositions = [
+   "Kepala Desa",
+   "Sekretaris Desa",
+   "Kaur Tata Usaha dan Umum",
+   "Kaur Keuangan",
+   "Kaur Perencanaan",
+   "Kasi Pemerintahan",
+   "Kasi Kesejahteraan",
+   "Kasi Pelayanan",
+   "Ketua BPK",
+   "Kepala Dusun 1",
+   "Kepala Dusun 2",
+   "Kepala Dusun 3",
+   "Kepala Dusun 4",
+   "Kepala Dusun 5",
+   "Kepala Dusun 6",
+   "Kepala Dusun 7",
+   "Kepala Dusun 8",
+   "Kepala Dusun 9",
+   "Kepala Dusun 10",
+   "Kepala Dusun 11",
+   "Kepala Dusun 12"
+ ];
+
+ useEffect(() => {
+   const fetchClasses = async () => {
+     if (!schoolId) return;
+
+     try {
+       const { classApi } = await import('@/lib/api');
+       const classData = await classApi.getAll(schoolId);
+       setClasses(classData || []);
+     } catch (error) {
+       console.error("Error fetching classes:", error);
+       toast.error("Gagal mengambil data kelas");
+     }
+   };
+
+   fetchClasses();
+ }, [schoolId]);
+
+ const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+   const { name, value } = e.target;
+   setFormData({ ...formData, [name]: value });
+ };
+
+ const handleSubmit = async (e: React.FormEvent) => {
+   e.preventDefault();
+
+   try {
+     setLoading(true);
+
+     if (!schoolId) {
+       toast.error("ID Sekolah tidak ditemukan");
+       return;
+     }
+
+     // Validation
+     if (!formData.name || !formData.nisn) {
+       toast.error("Nama dan NIK harus diisi");
+       return;
+     }
+
+     // Process data submission
+     const { studentApi } = await import('@/lib/api');
+
+     // Create student/staff record
+     await studentApi.create(schoolId, {
+       name: formData.name,
+       nisn: formData.nisn,
+       class: formData.position, // Use position field as class
+       gender: formData.gender,
+       birthPlace: formData.birthPlace,
+       birthDate: formData.birthDate,
+       address: formData.address,
+       parentName: formData.parentName,
+       parentPhone: formData.parentPhone,
+       email: formData.email,
+       telegramNumber: formData.telegramNumber
+     });
+
+     toast.success("Data berhasil disimpan");
+     router.push("/dashboard/students");
+   } catch (error: any) {
+     console.error("Error adding student:", error);
+     toast.error(error?.message || "Gagal menambahkan data");
+   } finally {
+     setLoading(false);
+   }
+ };
+
+ return (
+   <div className="w-full max-w-4xl mx-auto pb-20 md:pb-10 px-3 sm:px-4 md:px-6">
+     <div className="flex items-center mb-6">
+       <Link href="/dashboard/students" className="p-2 mr-2 hover:bg-gray-100 rounded-full">
+         <ArrowLeft size={20} />
+       </Link>
+       <h1 className="text-2xl font-bold text-gray-800">Tambah Data Baru</h1>
+     </div>
+
+     <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+         {/* Full Name */}
+         <div>
+           <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+             Nama Lengkap
+           </label>
+           <div className="relative">
+             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+               <User className="h-5 w-5 text-gray-400" />
+             </div>
+             <input
+               type="text"
+               id="name"
+               name="name"
+               value={formData.name}
+               onChange={handleChange}
+               className="bg-white focus:bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-10 p-2.5"
+               placeholder="Nama lengkap"
+               required
+             />
+           </div>
+         </div>
+
+         {/* NIK */}
+         <div>
+           <label htmlFor="nisn" className="block text-sm font-medium text-gray-700 mb-1">
+             NIK
+           </label>
+           <div className="relative">
+             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+               <Hash className="h-5 w-5 text-gray-400" />
+             </div>
+             <input
+               type="text"
+               id="nisn"
+               name="nisn"
+               value={formData.nisn}
+               onChange={handleChange}
+               className="bg-white focus:bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-10 p-2.5"
+               placeholder="Nomor Induk Kependudukan (NIK)"
+               required
+             />
+           </div>
+         </div>
+
+         {/* Position/Role */}
+         <div>
+           <label htmlFor="position" className="block text-sm font-medium text-gray-700 mb-1">
+             Tingkat/Jabatan
+           </label>
+           <select
+             id="position"
+             name="position"
+             value={formData.position}
+             onChange={handleChange}
+             className="bg-white focus:bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+             required
+           >
+             <option value="" disabled>Pilih Jabatan</option>
+             {villagePositions.map((position, index) => (
+               <option key={index} value={position}>
+                 {position}
+               </option>
+             ))}
+           </select>
+         </div>
+
+         {/* Gender */}
+         <div>
+           <label htmlFor="gender" className="block text-sm font-medium text-gray-700 mb-1">
+             Jenis Kelamin
+           </label>
+           <select
+             id="gender"
+             name="gender"
+             value={formData.gender}
+             onChange={handleChange}
+             className="bg-white focus:bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+             required
+           >
+             <option value="male">Laki-laki</option>
+             <option value="female">Perempuan</option>
+           </select>
+         </div>
+
+         {/* Birth Place */}
+         <div>
+           <label htmlFor="birthPlace" className="block text-sm font-medium text-gray-700 mb-1">
+             Tempat Lahir
+           </label>
+           <div className="relative">
+             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+               <MapPin className="h-5 w-5 text-gray-400" />
+             </div>
+             <input
+               type="text"
+               id="birthPlace"
+               name="birthPlace"
+               value={formData.birthPlace}
+               onChange={handleChange}
+               className="bg-white focus:bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-10 p-2.5"
+               placeholder="Tempat lahir"
+             />
+           </div>
+         </div>
+
+         {/* Birth Date */}
+         <div>
+           <label htmlFor="birthDate" className="block text-sm font-medium text-gray-700 mb-1">
+             Tanggal Lahir
+           </label>
+           <div className="relative">
+             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+               <Calendar className="h-5 w-5 text-gray-400" />
+             </div>
+             <input
+               type="date"
+               id="birthDate"
+               name="birthDate"
+               value={formData.birthDate}
+               onChange={handleChange}
+               className="bg-white focus:bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-10 p-2.5"
+             />
+           </div>
+         </div>
+
+         {/* Telegram ID */}
+         <div>
+           <label htmlFor="telegramNumber" className="block text-sm font-medium text-gray-700 mb-1">
+             ID Telegram
+           </label>
+           <div className="relative">
+             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400">
+                 <path d="m22 2-7 20-4-9-9-4Z"></path>
+                 <path d="M22 2 11 13"></path>
+               </svg>
+             </div>
+             <input
+               type="text"
+               id="telegramNumber"
+               name="telegramNumber"
+               value={formData.telegramNumber}
+               onChange={handleChange}
+               className="bg-white focus:bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-10 p-2.5"
+               placeholder="ID Telegram"
+             />
+           </div>
+           <p className="text-xs text-gray-500 mt-1">
+             Untuk notifikasi kehadiran (opsional)
+           </p>
+         </div>
+
+         <div className="md:col-span-2 flex justify-end mt-6">
+           <button
+             type="submit"
+             disabled={loading}
+             className="px-4 py-2.5 bg-primary text-white font-medium rounded-lg hover:bg-primary hover:bg-opacity-90 transition-colors"
+           >
+             {loading ? (
+               <div className="flex items-center">
+                 <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                 </svg>
+                 Menyimpan...
+               </div>
+             ) : (
+               <div className="flex items-center gap-1">
+                 <UserCheck className="h-5 w-5" />
+                 Simpan Data
+               </div>
+             )}
+           </button>
+         </div>
+       </div>
+     </form>
+   </div>
+ );
 }
