@@ -518,7 +518,7 @@ export default function ScanQR() {
                   >
                     <button
                       onClick={() => setScanning(false)}
-                      className="bg-gray-200 border border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors"
+                      className="bg-gray-200 border border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 active:bg-orange-700 transition-colors"
                     >
                       Batalkan Scan...
                     </button>
@@ -532,5 +532,5 @@ export default function ScanQR() {
     </div>
   );
 }
-<hr className="border-t border-none mb-1" />
-<hr className="border-t border-none mb-1" />
+<hr className="border-t border-none mb-5" />
+<hr className="border-t border-none mb-5" />
