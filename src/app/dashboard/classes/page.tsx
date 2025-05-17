@@ -210,8 +210,8 @@ export default function ClassesPage() {
          <Plus size={18} />
          Tambah Data Kepegawaian
        </button></center>
-      <hr className="border-t border-none mb-5" />
-      <hr className="border-t border-none mb-2" />
+      <hr className="border-t border-none mb-4" />
+      <hr className="border-t border-none mb-1" />
      </div>
 
      {/* Classes List */}
