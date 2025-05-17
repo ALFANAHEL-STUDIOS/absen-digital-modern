@@ -89,10 +89,10 @@ export default function Students() {
       setStudents(students.filter(student => student.id !== studentId));
       
       // Show confirmation toast
-      toast.success("Data siswa berhasil dihapus");
+      toast.success("Data pegawai berhasil dihapus");
     } catch (error) {
       console.error("Error deleting student:", error);
-      toast.error("Gagal menghapus data siswa");
+      toast.error("Gagal menghapus data pegawai");
     }
   };
   
@@ -136,7 +136,7 @@ export default function Students() {
               className="flex items-center justify-center gap-2 bg-primary text-white px-5 py-2 rounded-lg hover:bg-orange-500 active:bg-orange-600 transition-colors shadow-sm text-sm w-full sm:w-auto"
             >
               <Plus size={16} />
-              Tambah Data
+              Tambah Data Siswa
             </Link>
           </div>
         )}
@@ -150,7 +150,7 @@ export default function Students() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
               <input
                 type="text"
-                placeholder="Cari nama atau NIK pegawai..."
+                placeholder="Cari Nama atau NIK Pegawai..."
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -166,7 +166,7 @@ export default function Students() {
                 value={selectedClass}
                 onChange={(e) => setSelectedClass(e.target.value)}
               >
-                <option value="all">Semua Kepegawaian</option>
+                <option value="all">Semua Jabatan</option>
                 {classes.map((className) => (
                   <option key={className} value={className}>
                     Kelas {className}
@@ -200,9 +200,9 @@ export default function Students() {
                 <div className="p-4">
                   <div>
                     <h3 className="font-semibold text-sm">{student.name}</h3>
-                    <p className="text-gray-500 text-xs">NIK: {student.nisn}</p>
+                    <p className="text-gray-500 text-xs">NISN: {student.nisn}</p>
                     <div className="flex items-center mt-1">
-                      <span className="inline-block px-1.5 py-0.5 text-xs bg-green-100 text-green-700 rounded">
+                      <span className="inline-block px-1.5 py-0.5 text-xs bg-blue-100 text-blue-700 rounded">
                         Kelas {student.class}
                       </span>
                       <span className="inline-block px-1.5 py-0.5 text-xs bg-gray-100 text-gray-700 rounded ml-2">
@@ -214,7 +214,7 @@ export default function Students() {
                     <Link 
                       href={`/dashboard/students/${student.id}`}
                       className="p-1.5 text-blue-600 rounded hover:bg-blue-100 hover:bg-opacity-20"
-                      title="Detail Siswa"
+                      title="Detail Pegawai"
                     >
                       <ExternalLink size={16} />
                     </Link>
@@ -229,7 +229,7 @@ export default function Students() {
                       <button
                         onClick={() => openDeleteDialog(student.id)}
                         className="p-1.5 text-red-600 rounded hover:bg-red-100 hover:bg-opacity-20"
-                        title="Hapus Siswa"
+                        title="Hapus Pegawai"
                       >
                         <Trash2 size={16} />
                       </button>
@@ -248,14 +248,14 @@ export default function Students() {
             </div>
             <p className="text-gray-500 mb-4">
               {searchQuery || selectedClass !== "all"
-                ? "Tidak ada siswa yang sesuai dengan pencarian atau filter"
+                ? "Tidak ada pegawai yang sesuai dengan pencarian atau filter"
                 : "Belum ada data."}
             </p>
             <Link
               href="/dashboard/students/add"
-              className="bg-primary text-white px-5 py-2.5 rounded-lg hover:bg-orange-500 transition-colors"
+              className="flex items-center justify-center w-full md:w-auto gap-2 bg-blue-500 bg-primary text-white px-5 py-2.5 rounded-lg hover:bg-orange-500 transition-colors"
             >
-              Tambah Data
+              Tambah Data Pegawai
             </Link>
           </div>
         </div>
@@ -265,7 +265,7 @@ export default function Students() {
       <ConfirmDialog
         isOpen={deleteDialogOpen}
         title="Konfirmasi Hapus Data"
-        message="Apakah Anda yakin ingin menghapus data siswa ini? Tindakan ini tidak dapat dibatalkan."
+        message="Apakah Anda yakin ingin menghapus data pegawai ini? Tindakan ini tidak dapat dibatalkan."
         confirmLabel="Hapus"
         cancelLabel="Batal"
         confirmColor="bg-red-500 hover:bg-red-600"
