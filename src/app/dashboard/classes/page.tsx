@@ -210,6 +210,7 @@ export default function ClassesPage() {
          <Plus size={18} />
          Tambah Data Kepegawaian
        </button></center>
+      <hr className="border-t border-none mb-5" />
      </div>
 
      {/* Classes List */}
@@ -291,7 +292,6 @@ export default function ClassesPage() {
              >
                <X size={20} />
              </button>
-            <hr className="border-t border-none mb-5" />
            </div>
 
            <form onSubmit={handleAddClass}>
