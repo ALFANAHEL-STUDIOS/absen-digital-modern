@@ -149,7 +149,7 @@ export default function Reports() {
     <div className="pb-20 md:pb-6">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-gray-800">
-          Laporan Bulan: {formattedMonth}
+          Laporan Bulan : {formattedMonth}
         </h1>
         
         <div className="flex items-center space-x-2">
@@ -167,7 +167,6 @@ export default function Reports() {
           </button>
         </div>
       </div>
-      
       <p className="text-gray-500 mb-6">Ringkasan Kehadiran Pegawai dan Rekap Laporan</p>
       
       {/* Attendance Summary Cards */}
@@ -284,26 +283,26 @@ export default function Reports() {
         
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 md:gap-4">
           {/* Monthly Report - All users */}
-          <Link href="https://absensi-digital-modern.vercel.app/dashboard/reports/monthly-attendance/" className="bg-blue-50 rounded-xl shadow-sm p-5 hover:shadow-md transition-all border border-blue-200 text-gray-800">
+          <Link href="https://absen-digital-ku.vercel.app/dashboard/reports/monthly-attendance/" className="bg-red-50 rounded-xl shadow-sm p-5 hover:shadow-md transition-all border border-red-200 text-gray-800">
             <div className="flex flex-col items-center text-center">
-              <div className="bg-blue-100 p-3 rounded-full mb-3">
-                <Calendar className="h-6 w-6 text-blue-600" />
+              <div className="bg-red-100 p-3 rounded-full mb-3">
+                <Calendar className="h-6 w-6 text-red-600" />
               </div>
               <h3 className="font-medium text-gray-800 mb-1">Rekap Bulanan</h3>
-              <p className="text-sm text-gray-500">Laporan Absensi Setiap Bulan</p>
+              <p className="text-sm text-gray-500">Laporan Pegawai Per bulan</p>
             </div>
           </Link>
           
           
           {/* Group Report - Admin and Teacher only */}
           {(userRole === 'admin' || userRole === 'teacher') && (
-            <Link href="/dashboard/reports/by-group" className="bg-amber-50 rounded-xl shadow-sm p-5 hover:shadow-md transition-all border border-amber-200 text-gray-800">
+            <Link href="/dashboard/reports/by-group" className="bg-green-50 rounded-xl shadow-sm p-5 hover:shadow-md transition-all border border-green-200 text-gray-800">
               <div className="flex flex-col items-center text-center">
-                <div className="bg-amber-100 p-3 rounded-full mb-3">
-                  <Users className="h-6 w-6 text-amber-600" />
+                <div className="bg-green-100 p-3 rounded-full mb-3">
+                  <Users className="h-6 w-6 text-green-600" />
                 </div>
-                <h3 className="font-medium text-gray-800 mb-1">Rekap Per Jabatan</h3>
-                <p className="text-sm text-gray-500">Laporan Absensi Setiap Jabatan</p>
+                <h3 className="font-medium text-gray-800 mb-1">Rekap Per Tanggal</h3>
+                <p className="text-sm text-gray-500">Laporan Kehadiran Pegawai</p>
               </div>
             </Link>
           )}
@@ -311,10 +310,10 @@ export default function Reports() {
           {/* Student Report - Different behavior based on role */}
           {userRole === 'student' ? (
             // For students - direct link to their own report
-            <Link href={`/dashboard/reports/by-student?id=${userData?.id || ''}`} className="bg-green-50 rounded-xl shadow-sm p-5 hover:shadow-md transition-all border border-green-200 text-gray-800">
+            <Link href={`/dashboard/reports/by-student?id=${userData?.id || ''}`} className="bg-amber-50 rounded-xl shadow-sm p-5 hover:shadow-md transition-all border border-amber-200 text-gray-800">
               <div className="flex flex-col items-center text-center">
-                <div className="bg-green-100 p-3 rounded-full mb-3">
-                  <User className="h-6 w-6 text-green-600" />
+                <div className="bg-amber-100 p-3 rounded-full mb-3">
+                  <User className="h-6 w-6 text-amber-600" />
                 </div>
                 <h3 className="font-medium text-gray-800 mb-1">Rekap Kehadiran Saya</h3>
                 <p className="text-sm text-gray-500">Laporan Kehadiran Pribadi</p>
@@ -322,13 +321,13 @@ export default function Reports() {
             </Link>
           ) : (
             // For admin and teacher - link to student selection
-            <Link href="/dashboard/reports/by-student" className="bg-green-50 rounded-xl shadow-sm p-5 hover:shadow-md transition-all border border-green-200 text-gray-800">
+            <Link href="/dashboard/reports/by-student" className="bg-amber-50 rounded-xl shadow-sm p-5 hover:shadow-md transition-all border border-amber-200 text-gray-800">
               <div className="flex flex-col items-center text-center">
-                <div className="bg-green-100 p-3 rounded-full mb-3">
-                  <User className="h-6 w-6 text-green-600" />
+                <div className="bg-amber-100 p-3 rounded-full mb-3">
+                  <User className="h-6 w-6 text-amber-600" />
                 </div>
                 <h3 className="font-medium text-gray-800 mb-1">Rekap Per Pegawai</h3>
-                <p className="text-sm text-gray-500">Laporan Absensi Setiap Pegawai</p>
+                <p className="text-sm text-gray-500">Laporan Kehadiran Setiap Pegawai</p>
               </div>
             </Link>
           )}
