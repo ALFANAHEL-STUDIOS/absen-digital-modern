@@ -89,10 +89,10 @@ export default function Students() {
       setStudents(students.filter(student => student.id !== studentId));
       
       // Show confirmation toast
-      toast.success("Data pegawai berhasil dihapus");
+      toast.success("Data siswa berhasil dihapus");
     } catch (error) {
       console.error("Error deleting student:", error);
-      toast.error("Gagal menghapus data pegawai");
+      toast.error("Gagal menghapus data Pegawai");
     }
   };
   
@@ -136,7 +136,7 @@ export default function Students() {
               className="flex items-center justify-center gap-2 bg-primary text-white px-5 py-2 rounded-lg hover:bg-orange-500 active:bg-orange-600 transition-colors shadow-sm text-sm w-full sm:w-auto"
             >
               <Plus size={16} />
-              Tambah Data Siswa
+              Tambah Data Pegawai
             </Link>
           </div>
         )}
@@ -150,7 +150,7 @@ export default function Students() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
               <input
                 type="text"
-                placeholder="Cari Nama atau NIK Pegawai..."
+                placeholder="Cari nama atau NISN siswa..."
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -166,10 +166,10 @@ export default function Students() {
                 value={selectedClass}
                 onChange={(e) => setSelectedClass(e.target.value)}
               >
-                <option value="all">Semua Jabatan</option>
+                <option value="all">Semua Pegawai</option>
                 {classes.map((className) => (
                   <option key={className} value={className}>
-                    Kelas {className}
+                    Jabatan {className}
                   </option>
                 ))}
               </select>
@@ -200,7 +200,7 @@ export default function Students() {
                 <div className="p-4">
                   <div>
                     <h3 className="font-semibold text-sm">{student.name}</h3>
-                    <p className="text-gray-500 text-xs">NISN: {student.nisn}</p>
+                    <p className="text-gray-500 text-xs">NIK : {student.nisn}</p>
                     <div className="flex items-center mt-1">
                       <span className="inline-block px-1.5 py-0.5 text-xs bg-blue-100 text-blue-700 rounded">
                         Kelas {student.class}
@@ -214,7 +214,7 @@ export default function Students() {
                     <Link 
                       href={`/dashboard/students/${student.id}`}
                       className="p-1.5 text-blue-600 rounded hover:bg-blue-100 hover:bg-opacity-20"
-                      title="Detail Pegawai"
+                      title="Detail Siswa"
                     >
                       <ExternalLink size={16} />
                     </Link>
@@ -229,7 +229,7 @@ export default function Students() {
                       <button
                         onClick={() => openDeleteDialog(student.id)}
                         className="p-1.5 text-red-600 rounded hover:bg-red-100 hover:bg-opacity-20"
-                        title="Hapus Pegawai"
+                        title="Hapus Siswa"
                       >
                         <Trash2 size={16} />
                       </button>
