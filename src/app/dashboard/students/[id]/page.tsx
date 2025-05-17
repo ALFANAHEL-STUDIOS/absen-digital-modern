@@ -83,20 +83,20 @@ export default function StudentDetail({ params }: { params: { id: string } }) {
               className="text-sm text-primary hover:underline"
             >
               Lihat Kartu QR
-            </Link>*/}
+            </Link>
             <Link 
               href={`/dashboard/students/add/${student.id}`}
               className="text-sm text-blue-600 hover:underline flex items-center"
             >
-              {/*<User size={14} className="mr-1" />*/}
+              {/*<User size={14} className="mr-1" />
               Tambah Data Baru
-            </Link>
+            </Link>*/}
           </div>
         </div>
 
         {/* Student Information */}
         <div className="bg-white rounded-xl shadow-sm p-5 md:col-span-2">
-          <h2 className="text-sm font-semibold mb-3 border-b pb-2">INFORMASI PEGAWAI</h2>
+          <h2 className="text-base font-semibold mb-4 border-b pb-2">INFORMASI PEGAWAI</h2>
         
           <div className="space-y-3">
             <div className="flex items-start">
