@@ -183,7 +183,7 @@ export default function GroupAttendanceReport() {
     try {
       // Create PDF document
       const doc = new jsPDF({
-        orientation: "portrait",
+        orientation: "landscape",
         unit: "mm",
         format: "a4"
       });
@@ -192,40 +192,34 @@ export default function GroupAttendanceReport() {
       const pageHeight = doc.internal.pageSize.getHeight();
       const margin = 15;
       const contentWidth = pageWidth - (margin * 2);
+
       
       // Add KOP Sekolah
-      doc.setFontSize(16);
-      doc.setFont("helvetica", "bold");
+      doc.setFontSize(15);
+      doc.setFont("helvetica");
       doc.text(schoolInfo.name.toUpperCase(), pageWidth / 2, margin, { align: "center" });
       
-      doc.setFontSize(11);
-      doc.setFont("helvetica", "normal");
+      doc.setFontSize(14);
+      doc.setFont("helvetica");
       doc.text(schoolInfo.address, pageWidth / 2, margin + 7, { align: "center" });
-      doc.text(`NPSN: ${schoolInfo.npsn}`, pageWidth / 2, margin + 14, { align: "center" });
-      
-      // Add horizontal line
+      doc.text(`Kode Pos ${schoolInfo.npsn}`, pageWidth / 2, margin + 14, { align: "center" });
       doc.setLineWidth(0.5);
-      doc.line(margin, margin + 22, pageWidth - margin, margin + 22);
+      doc.line(margin, margin + 18, pageWidth - margin, margin + 18);
+
       
       // Add report title and class information
-      doc.setFontSize(14);
-      doc.setFont("helvetica", "bold");
-      doc.text("REKAPITULASI LAPORAN ABSENSI PESERTA DIDIK", pageWidth / 2, margin + 32, { align: "center" });
-      
-      // Add class information
       doc.setFontSize(12);
-      doc.text(`KELAS : ${selectedClass === "all" ? "Semua Kelas" : selectedClass}`, pageWidth / 2, margin + 40, { align: "center" });
-      
+      doc.setFont("helvetica");
+      doc.text("REKAPITULASI LAPORAN ABSENSI PEGAWAI", pageWidth / 2, margin + 31, { align: "center" });
       // Add date range
       const startDate = format(new Date(dateRange.start), "d MMMM yyyy", { locale: id });
       const endDate = format(new Date(dateRange.end), "d MMMM yyyy", { locale: id });
-      doc.text(`Dari Tanggal : ${startDate} Sampai Tanggal : ${endDate}`, pageWidth / 2, margin + 48, { align: "center" });
-      
+      doc.text(`Dari Tanggal : ${startDate} Sampai Tanggal : ${endDate}`, pageWidth / 2, margin + 38, { align: "center" });
       // Draw table headers
-      const headers = ["No.", "Nama Siswa", "NISN", "Kelas", "Hadir", "Sakit", "Izin", "Alpha", "Total"];
-      const colWidths = [10, 50, 25, 15, 15, 15, 15, 15, 15];
-      
-      let yPos = margin + 58;
+     
+      const headers = ["NO.", "NAMA PEGAWAI", "           NIK", "     JABATAN", "HADIR", " SAKIT", "   IZIN", " ALPHA", "        TOTAL"];
+      const colWidths = [11, 85, 38, 28, 18, 18, 18, 18, 33];
+      let yPos = margin + 48;
       
       // Draw header row with green background
       doc.setFillColor(144, 238, 144); // Light green
@@ -236,7 +230,7 @@ export default function GroupAttendanceReport() {
       let xPos = margin;
       
       // Draw column headers
-      doc.setFontSize(10);
+      doc.setFontSize(11);
       doc.setTextColor(0);
       headers.forEach((header, i) => {
         if (i > 0) {
@@ -249,7 +243,7 @@ export default function GroupAttendanceReport() {
       yPos += 8;
       
       // Draw table rows
-      doc.setFontSize(9);
+      //doc.setFontSize(10);
       students.forEach((student, index) => {
         // Alternating row background
         if (index % 2 === 0) {
@@ -306,21 +300,20 @@ export default function GroupAttendanceReport() {
           doc.addPage();
           
           // Add header to new page (simplified)
-          doc.setFontSize(12);
-          doc.setFont("helvetica", "bold");
-          doc.text(schoolInfo.name.toUpperCase(), pageWidth / 2, margin + 6, { align: "center" });
-          doc.setFontSize(9);
-          doc.setFont("helvetica", "normal");
-          doc.text(schoolInfo.address, pageWidth / 2, margin + 12, { align: "center" });
-          doc.text(`NPSN: ${schoolInfo.npsn}`, pageWidth / 2, margin + 18, { align: "center" });
-          
-          // Add horizontal line
-          doc.setLineWidth(0.5);
-          doc.line(margin, margin + 22, pageWidth - margin, margin + 22);
+          doc.setFontSize(15);
+      doc.setFont("helvetica");
+      doc.text(schoolInfo.name.toUpperCase(), pageWidth / 2, margin, { align: "center" });
+      
+      doc.setFontSize(14);
+      doc.setFont("helvetica");
+      doc.text(schoolInfo.address, pageWidth / 2, margin + 7, { align: "center" });
+      doc.text(`Kode Pos ${schoolInfo.npsn}`, pageWidth / 2, margin + 14, { align: "center" });
+      doc.setLineWidth(0.5);
+      doc.line(margin, margin + 18, pageWidth - margin, margin + 18);
           
           // Add title (simplified for continuation pages)
           doc.setFontSize(12);
-          doc.text(`REKAP LAPORAN KEHADIRAN SISWA - ${selectedClass === "all" ? "Semua Kelas" : selectedClass}`, pageWidth / 2, margin + 30, { align: "center" });
+          doc.text(`REKAPITULASI LAPORAN ABSENSI PEGAWAI - ${selectedClass === "all" ? "(LANJUTAN)" : selectedClass}`, pageWidth / 2, margin + 30, { align: "center" });
           
           yPos = margin + 40;
           
@@ -334,6 +327,7 @@ export default function GroupAttendanceReport() {
             if (i > 0) {
               doc.line(xPos, yPos, xPos, yPos + 8);
             }
+            doc.setFontSize(11);
             doc.text(header, xPos + 2, yPos + 5.5);
             xPos += colWidths[i];
           });
@@ -344,16 +338,16 @@ export default function GroupAttendanceReport() {
       
       // Add footer with signature section
       const currentDate = format(new Date(), "d MMMM yyyy", { locale: id });
-      doc.setFontSize(10);
-      doc.text(`${schoolInfo.address}, ${currentDate}`, pageWidth - margin, yPos + 15, { align: "right" });
+      doc.setFontSize(11);
+      //doc.text(`${schoolInfo.address}, ${currentDate}`, pageWidth - margin, yPos + 15, { align: "right" });
       
       const signatureWidth = (pageWidth - margin * 2) / 2;
       
-      doc.text("Mengetahui,", margin + signatureWidth * 0.25, yPos + 20, { align: "center" });
-      doc.text("Administrator", margin + signatureWidth * 1.75, yPos + 20, { align: "center" });
+      doc.text("Mengetahui", margin + signatureWidth * 0.25, yPos + 20, { align: "center" });
+      doc.text("Admin Pengelola Data", margin + signatureWidth * 1.75, yPos + 20, { align: "center" });
       
-      doc.text("Kepala Sekolah", margin + signatureWidth * 0.25, yPos + 25, { align: "center" });
-      doc.text("Sekolah", margin + signatureWidth * 1.75, yPos + 25, { align: "center" });
+      doc.text("Kepala Desa,", margin + signatureWidth * 0.25, yPos + 25, { align: "center" });
+      doc.text("Absensi QR Code,", margin + signatureWidth * 1.75, yPos + 25, { align: "center" });
       
       doc.setFont("helvetica", "bold");
       doc.text(schoolInfo.principalName, margin + signatureWidth * 0.25, yPos + 45, { align: "center" });
@@ -366,7 +360,7 @@ export default function GroupAttendanceReport() {
       const fileName = `Laporan_Kehadiran_Rombel_${format(new Date(), "yyyyMMdd")}.pdf`;
       doc.save(fileName);
       
-      toast.success(`Laporan kelas ${selectedClass === "all" ? "Semua Kelas" : selectedClass} berhasil diunduh sebagai ${fileName}`);
+      toast.success(`Laporan pegawai ${selectedClass === "all" ? "Semua Jabatan" : selectedClass} berhasil diunduh sebagai ${fileName}`);
     } catch (error) {
       console.error("Error generating PDF:", error);
       toast.error("Gagal mengunduh laporan PDF");
@@ -382,15 +376,15 @@ export default function GroupAttendanceReport() {
     try {
       // Create worksheet data with school information
       const wsData = [
-        ["NAMA SEKOLAH"],
-        ["Alamat"],
-        ["NPSN"],
+        //["NAMA SEKOLAH"],
+        //["Alamat"],
+        //["NPSN"],
         [],
-        ["REKAPITULASI LAPORAN ABSENSI PESERTA DIDIK"],
-        [`KELAS : ${selectedClass === "all" ? "Semua Kelas" : selectedClass}`],
+        ["REKAPITULASI LAPORAN ABSENSI PEGAWAI"],
+        [`Jabatan : ${selectedClass === "all" ? "Semua Jabatan" : selectedClass}`],
         [`Dari Tanggal : ${format(new Date(dateRange.start), "d MMMM yyyy", { locale: id })} Sampai Tanggal : ${format(new Date(dateRange.end), "d MMMM yyyy", { locale: id })}`],
         [],
-        ["No.", "Nama Siswa", "NISN", "Kelas", "Hadir", "Sakit", "Izin", "Alpha", "Total"]
+        ["No.", "Nama Pegawai", "NIK", "Jabatan", "Hadir", "Sakit", "Izin", "Alpha", "Total"]
       ];
       
       // Add student data
@@ -423,10 +417,10 @@ export default function GroupAttendanceReport() {
       wsData.push(
         [],
         [],
-        [`${schoolInfo.address}, ${format(new Date(), "d MMMM yyyy", { locale: id })}`],
+        //[`${schoolInfo.address}, ${format(new Date(), "d MMMM yyyy", { locale: id })}`],
         [],
-        ["Mengetahui,", "", "", "", "Administrator"],
-        ["Kepala Sekolah", "", "", "", "Sekolah"],
+        ["Mengetahui", "", "", "", "Pengelola Data"],
+        ["Kepala Desa,", "", "", "", "Absensi QR Code,"],
         [],
         [],
         [schoolInfo.principalName, "", "", "", "Administrator"],
@@ -459,7 +453,7 @@ export default function GroupAttendanceReport() {
       const fileName = `Laporan_Kehadiran_Rombel_${format(new Date(), "yyyyMMdd")}.xlsx`;
       XLSX.writeFile(wb, fileName);
       
-      toast.success(`Laporan kelas ${selectedClass === "all" ? "Semua Kelas" : selectedClass} berhasil diunduh sebagai ${fileName}`);
+      toast.success(`Laporan jabatan ${selectedClass === "all" ? "Semua Jabatan" : selectedClass} berhasil diunduh sebagai ${fileName}`);
     } catch (error) {
       console.error("Error generating Excel:", error);
       toast.error("Gagal mengunduh laporan Excel");
@@ -468,13 +462,13 @@ export default function GroupAttendanceReport() {
     }
   };
 
-return (
+  return (
     <div className="w-full max-w-6xl mx-auto px-3 sm:px-4 md:px-6">
       <div className="flex items-center mb-6">
         <Link href="/dashboard/reports" className="p-2 mr-2 hover:bg-gray-100 rounded-full">
           <ArrowLeft size={20} />
         </Link>
-        <h1 className="text-xl sm:text-2xl font-bold text-gray-800">Laporan Absen Pegawai</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-800">Laporan Absen Per Tanggal</h1>
       </div>
       
       {/* Filters and Date Range */}
@@ -516,11 +510,11 @@ return (
       {/* School Information and Table */}
       <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 mb-8">
         <div className="text-center mb-4 sm:mb-3">
-          <h2 className="text-gray-600 sm:text-xl font-bold uppercase">{schoolInfo.name}</h2>
-          <p className="text-gray-600 text-sm sm:text-base font-bold">{schoolInfo.address}</p>
-          <p className="text-gray-600 text-sm sm:text-base font-bold">Kode Pos {schoolInfo.npsn}</p>
+          <h2 className="text-gray-700 sm:text-xl font-bold uppercase">{schoolInfo.name}</h2>
+          <p className="text-gray-700 text-sm sm:text-base font-bold">{schoolInfo.address}</p>
+          <p className="text-gray-700 text-sm sm:text-base font-bold">Kode Pos {schoolInfo.npsn}</p>
         </div>
-        <hr className="border-t border-gray-800 mt-1 mb-6" />
+        <hr className="border-t border-gray-800 mt-1 mb-6" /> 
         <div className="text-center mb-4 sm:mb-6">
           <h3 className="text-base sm:text-gray-600 uppercase">REKAP LAPORAN KEHADIRAN PEGAWAI</h3>
         
@@ -540,27 +534,27 @@ return (
                 <table className="min-w-full bg-white border">
                   <thead className="bg-green-100">
                     <tr>
-                      <th className="border px-2 sm:px-4 py-2 text-center font-bold text-xs sm:text-sm">Nama Pegawai</th>
-                      <th className="border px-2 sm:px-4 py-2 text-center font-bold text-xs sm:text-sm">NIK</th>
-                      <th className="border px-2 sm:px-4 py-2 text-center font-bold text-xs sm:text-sm">Jabatan</th>
-                      <th className="border px-2 sm:px-4 py-2 text-center font-bold text-xs sm:text-sm">Hadir</th>
-                      <th className="border px-2 sm:px-4 py-2 text-center font-bold text-xs sm:text-sm">Sakit</th>
-                      <th className="border px-2 sm:px-4 py-2 text-center font-bold text-xs sm:text-sm">Izin</th>
-                      <th className="border px-2 sm:px-4 py-2 text-center font-bold text-xs sm:text-sm">Alpha</th>
-                      <th className="border px-2 sm:px-4 py-2 text-center font-bold text-xs sm:text-sm">Total</th>
+                      <th className="text-gray-600 border px-2 sm:px-4 py-2 text-left font-bold text-xs sm:text-sm">NAMA PEGAWAI</th>
+                      <th className="text-gray-600 border px-2 sm:px-4 py-2 text-center font-bold text-xs sm:text-sm">NIK</th>
+                      <th className="text-gray-600 border px-2 sm:px-4 py-2 text-center font-bold text-xs sm:text-sm">JABATAN</th>
+                      <th className="text-gray-600 border px-2 sm:px-4 py-2 text-center font-bold text-xs sm:text-sm">HADIR</th>
+                      <th className="text-gray-600 border px-2 sm:px-4 py-2 text-center font-bold text-xs sm:text-sm">SAKIT</th>
+                      <th className="text-gray-600 border px-2 sm:px-4 py-2 text-center font-bold text-xs sm:text-sm">IZIN</th>
+                      <th className="text-gray-600 border px-2 sm:px-4 py-2 text-center font-bold text-xs sm:text-sm">ALPHA</th>
+                      <th className="text-gray-600 border px-2 sm:px-4 py-2 text-center font-bold text-xs sm:text-sm">TOTAL</th>
                     </tr>
                   </thead>
                   <tbody>
                     {students.map((student, index) => (
                       <tr key={student.id} className={index % 2 === 0 ? "bg-gray-50" : ""}>
-                        <td className="border px-2 sm:px-4 py-1 sm:py-2 text-xs sm:text-sm">{student.name}</td>
-                        <td className="border px-2 sm:px-4 py-1 sm:py-2 text-center text-xs sm:text-sm">{student.nisn}</td>
-                        <td className="border px-2 sm:px-4 py-1 sm:py-2 text-center text-xs sm:text-sm">{student.class}</td>
-                        <td className="border px-2 sm:px-4 py-1 sm:py-2 text-center text-xs sm:text-sm">{student.hadir}</td>
-                        <td className="border px-2 sm:px-4 py-1 sm:py-2 text-center text-xs sm:text-sm">{student.sakit}</td>
-                        <td className="border px-2 sm:px-4 py-1 sm:py-2 text-center text-xs sm:text-sm">{student.izin}</td>
-                        <td className="border px-2 sm:px-4 py-1 sm:py-2 text-center text-xs sm:text-sm">{student.alpha}</td>
-                        <td className="border px-2 sm:px-4 py-1 sm:py-2 text-center text-xs sm:text-sm">{student.total}</td>
+                        <td className="text-gray-600 border px-2 sm:px-4 py-1 sm:py-2 text-xs sm:text-sm">{student.name}</td>
+                        <td className="text-gray-600 border px-2 sm:px-4 py-1 sm:py-2 text-center text-xs sm:text-sm">{student.nisn}</td>
+                        <td className="text-gray-600 border px-2 sm:px-4 py-1 sm:py-2 text-center text-xs sm:text-sm">{student.class}</td>
+                        <td className="text-gray-600 border px-2 sm:px-4 py-1 sm:py-2 text-center text-xs sm:text-sm">{student.hadir}</td>
+                        <td className="text-gray-600 border px-2 sm:px-4 py-1 sm:py-2 text-center text-xs sm:text-sm">{student.sakit}</td>
+                        <td className="text-gray-600 border px-2 sm:px-4 py-1 sm:py-2 text-center text-xs sm:text-sm">{student.izin}</td>
+                        <td className="text-gray-600 border px-2 sm:px-4 py-1 sm:py-2 text-center text-xs sm:text-sm">{student.alpha}</td>
+                        <td className="text-gray-600 border px-2 sm:px-4 py-1 sm:py-2 text-center text-xs sm:text-sm">{student.total}</td>
                       </tr>
                     ))}
                   </tbody>
