@@ -145,7 +145,7 @@ export default function HomePage() {
                       <div className="bg-white rounded-lg p-2.5 xs:p-3 shadow-sm mb-3 border border-gray-100">
                         <div className="font-medium text-[#0088cc] flex items-center text-sm xs:text-base">
                           <span className="mr-2">🤖</span>
-                          Bot Absensi Sekolah
+                          Bot Absensi Digital
                         </div>
                         <div className="text-xs xs:text-sm mt-1.5">
                           <p className="font-bold text-gray-800">👨‍🎓 INFO KEHADIRAN PEGAWAI</p>
@@ -164,7 +164,7 @@ export default function HomePage() {
                       <div className="bg-white rounded-lg p-2.5 xs:p-3 shadow-sm border border-gray-100">
                         <div className="font-medium text-[#0088cc] flex items-center text-sm xs:text-base">
                           <span className="mr-2">🤖</span>
-                          Bot Absensi Sekolah
+                          Bot Absensi Digital
                         </div>
                         <div className="text-xs xs:text-sm mt-1.5">
                           <p className="font-bold text-gray-800">👩‍🎓 INFO KEHADIRAN PEGAWAI</p>
