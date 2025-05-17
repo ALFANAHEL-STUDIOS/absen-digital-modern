@@ -99,12 +99,12 @@ export default function ScanQR() {
         const studentDoc = snapshot.docs[0];
         setStudent({ id: studentDoc.id, ...studentDoc.data() });
       } else {
-        setScanError("Siswa tidak ditemukan dalam database");
+        setScanError("Pegawai tidak ditemukan dalam database");
         setStudent(null);
       }
     } catch (error) {
       console.error("Error fetching student:", error);
-      toast.error("Gagal mengambil data siswa");
+      toast.error("Gagal mengambil data pegawai");
     } finally {
       setLoading(false);
     }
@@ -128,7 +128,7 @@ export default function ScanQR() {
       const todayAttendanceSnapshot = await getDocs(todayAttendanceQuery);
       
       if (!todayAttendanceSnapshot.empty) {
-        setScanError(`Siswa ${student.name} sudah melakukan absensi hari ini`);
+        setScanError(`Pegawai ${student.name} sudah melakukan absensi hari ini`);
         setLoading(false);
         return;
       }
@@ -160,13 +160,13 @@ export default function ScanQR() {
           let message = "";
           
           if (attendanceStatus === 'hadir' || attendanceStatus === 'present') {
-            message = `Ananda ${student.name} telah hadir di sekolah pada ${formattedDate} pukul ${format(currentDateTime, "HH:mm")} WIB.`;
+            message = `Pegawai dengan Nama : ${student.name} telah hadir di Kantor pada ${formattedDate} pukul ${format(currentDateTime, "HH:mm")} WIB.`;
           } else if (attendanceStatus === 'sakit' || attendanceStatus === 'sick') {
-            message = `Ananda ${student.name} tidak hadir di sekolah pada ${formattedDate} dengan status SAKIT.${attendanceNotes ? `\n\nKeterangan: ${attendanceNotes}` : ''}`;
+            message = `egawai dengan Nama  ${student.name} tidak hadir di Kantor pada ${formattedDate} dengan status SAKIT.${attendanceNotes ? `\n\nKeterangan: ${attendanceNotes}` : ''}`;
           } else if (attendanceStatus === 'izin' || attendanceStatus === 'permitted') {
-            message = `Ananda ${student.name} tidak hadir di sekolah pada ${formattedDate} dengan status IZIN.${attendanceNotes ? `\n\nKeterangan: ${attendanceNotes}` : ''}`;
+            message = `egawai dengan Nama  ${student.name} tidak hadir di Kantor pada ${formattedDate} dengan status IZIN.${attendanceNotes ? `\n\nKeterangan: ${attendanceNotes}` : ''}`;
           } else if (attendanceStatus === 'alpha' || attendanceStatus === 'absent') {
-            message = `Ananda ${student.name} tidak hadir di sekolah pada ${formattedDate} dengan status ALPHA (tanpa keterangan).${attendanceNotes ? `\n\nKeterangan: ${attendanceNotes}` : ''}`;
+            message = `egawai dengan Nama  ${student.name} tidak hadir di Kantor pada ${formattedDate} dengan status ALPHA (tanpa keterangan).${attendanceNotes ? `\n\nKeterangan: ${attendanceNotes}` : ''}`;
           }
           
           // Send notification using the Telegram API
@@ -190,7 +190,7 @@ export default function ScanQR() {
       }
       
       setSubmitted(true);
-      toast.success("Absensi berhasil disimpan dan notifikasi dikirim");
+      toast.success("Absensi berhasil disimpan dan notifikasi dikirim ke Telegram");
       
     } catch (error) {
       console.error("Error recording attendance:", error);
@@ -308,7 +308,7 @@ export default function ScanQR() {
                   </div>
                   <div className="ml-4">
                     <h2 className="font-semibold text-lg">QR Code Terdeteksi</h2>
-                    <p className="text-sm text-gray-500">NIK: {detectedCode}</p>
+                    <p className="text-sm text-gray-500">NIK : {detectedCode}</p>
                   </div>
                 </div>
                 
@@ -317,7 +317,7 @@ export default function ScanQR() {
                   <h3 className="font-semibold text-lg mb-2 text-blue-800">{student.name}</h3>
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div className="bg-white p-3 rounded-md border border-blue-100">
-                      <p className="text-gray-500 text-xs">Kepegawaian</p>
+                      <p className="text-gray-500 text-xs">Jabatan</p>
                       <p className="font-medium text-gray-700">{student.class}</p>
                     </div>
                     <div className="bg-white p-3 rounded-md border border-blue-100">
