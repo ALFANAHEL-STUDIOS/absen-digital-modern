@@ -1,401 +1,495 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { db } from "@/lib/firebase";
-import { 
-  collection, 
-  getDocs, 
-  doc, 
-  addDoc, 
-  deleteDoc, 
-  updateDoc, 
-  serverTimestamp, 
-  query, 
-  orderBy 
-} from "firebase/firestore";
-import { 
-  Plus, 
-  Edit, 
-  Trash2, 
-  BookOpen, 
-  User, 
-  Users, 
-  School, 
-  Save, 
-  X,
-  AlertTriangle
+import { collection, query, orderBy, getDocs, addDoc, serverTimestamp, doc, deleteDoc } from "firebase/firestore";
+import {
+ BookOpen,
+ Plus,
+ Trash2,
+ Edit,
+ AlertTriangle,
+ Loader2,
+ X,
+ Save,
+ User
 } from "lucide-react";
 import { toast } from "react-hot-toast";
-import dynamic from 'next/dynamic';
-
-const ConfirmDialog = dynamic(() => import('@/components/ConfirmDialog'), {
-  ssr: false
-});
-
-interface ClassData {
-  id: string;
-  name: string;
-  level: string;
-  room: string;
-  teacherName: string;
-  studentCount: number;
+import Link from "next/link";
+import { motion } from "framer-motion";
+interface Class {
+ id: string;
+ name: string;
+ level: string;
+ teacherName: string;
 }
+export default function ClassesPage() {
+ const { schoolId, userRole } = useAuth();
+ const [classes, setClasses] = useState<Class[]>([]);
+ const [loading, setLoading] = useState(true);
+ const [showAddModal, setShowAddModal] = useState(false);
+ const [showEditModal, setShowEditModal] = useState(false);
+ const [showDeleteModal, setShowDeleteModal] = useState(false);
+ const [selectedClass, setSelectedClass] = useState<Class | null>(null);
+ const [formData, setFormData] = useState({
+   name: "",
+   level: "Kepala Desa",
+   teacherName: ""
+ });
+ // Fetch classes when component mounts
+ useEffect(() => {
+   const fetchClasses = async () => {
+     if (!schoolId) return;
 
-export default function Classes() {
-  const { schoolId, userRole } = useAuth();
-  const [classes, setClasses] = useState<ClassData[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [editingClassId, setEditingClassId] = useState<string | null>(null);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [classToDelete, setClassToDelete] = useState<string | null>(null);
-  
-  const [formData, setFormData] = useState({
-    name: "",
-    level: "1",
-    room: "",
-    teacherName: "",
-  });
-  
-  const levelOptions = Array.from({ length: 12 }, (_, i) => ({
-    value: `${i + 1}`,
-    label: `${i + 1}`
-  }));
+     try {
+       setLoading(true);
+       const classesRef = collection(db, `schools/${schoolId}/classes`);
+       const q = query(classesRef, orderBy("name"));
+       const snapshot = await getDocs(q);
 
-  useEffect(() => {
-    fetchClasses();
-  }, [schoolId]);
+       const fetchedClasses: Class[] = [];
+       snapshot.forEach((doc) => {
+         fetchedClasses.push({
+           id: doc.id,
+           name: doc.data().name || "",
+           level: doc.data().level || "",
+           teacherName: doc.data().teacherName || ""
+         });
+       });
 
-  const fetchClasses = async () => {
-    if (!schoolId) return;
-    
-    try {
-      setLoading(true);
-      const { collection, getDocs, query, orderBy } = await import('firebase/firestore');
-      const classesRef = collection(db, `schools/${schoolId}/classes`);
-      const classesQuery = query(classesRef, orderBy('name', 'asc'));
-      const snapshot = await getDocs(classesQuery);
-      
-      const fetchedClasses: ClassData[] = [];
-      snapshot.forEach((doc) => {
-        fetchedClasses.push({
-          id: doc.id,
-          ...doc.data()
-        } as ClassData);
-      });
-      
-      // Calculate student count for each class
-      if (fetchedClasses.length > 0) {
-        const studentsRef = collection(db, `schools/${schoolId}/students`);
-        const studentsSnapshot = await getDocs(studentsRef);
-        
-        const studentsByClass: {[key: string]: number} = {};
-        studentsSnapshot.forEach((doc) => {
-          const studentData = doc.data();
-          const studentClass = studentData.class;
-          
-          if (studentClass) {
-            studentsByClass[studentClass] = (studentsByClass[studentClass] || 0) + 1;
-          }
-        });
-        
-        // Update student count in fetched classes
-        fetchedClasses.forEach(classData => {
-          classData.studentCount = studentsByClass[classData.name] || 0;
-        });
-      }
-      
-      setClasses(fetchedClasses);
-    } catch (error) {
-      console.error("Error fetching classes:", error);
-      toast.error("Gagal mengambil data kelas dari database");
-    } finally {
-      setLoading(false);
-    }
-  };
+       setClasses(fetchedClasses);
+     } catch (error) {
+       console.error("Error fetching classes:", error);
+       toast.error("Gagal mengambil data kelas");
+     } finally {
+       setLoading(false);
+     }
+   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+   fetchClasses();
+ }, [schoolId]);
+ const handleAddClass = async (e: React.FormEvent) => {
+   e.preventDefault();
 
-  const handleAddClass = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!schoolId) {
-      toast.error("Tidak dapat mengakses data sekolah");
-      return;
-    }
-    
-    try {
-      const { classApi } = await import('@/lib/api');
-      await classApi.create(schoolId, {
-        ...formData,
-        studentCount: 0
-      });
-      
-      setShowAddModal(false);
-      setFormData({ name: "", level: "1", room: "", teacherName: "" });
-      fetchClasses();
-    } catch (error) {
-      console.error("Error adding class:", error);
-    }
-  };
+   if (!schoolId) {
+     toast.error("Tidak dapat mengakses data sekolah");
+     return;
+   }
 
-  const handleEditClass = (classData: ClassData) => {
-    setEditingClassId(classData.id);
-    setFormData({
-      name: classData.name,
-      level: classData.level,
-      room: classData.room,
-      teacherName: classData.teacherName,
-    });
-    setShowAddModal(true);
-  };
+   try {
+     const classData = {
+       name: formData.name,
+       level: formData.level,
+       teacherName: formData.teacherName,
+       createdAt: serverTimestamp()
+     };
 
-  const handleUpdateClass = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!schoolId || !editingClassId) {
-      return;
-    }
-    
-    try {
-      const { classApi } = await import('@/lib/api');
-      await classApi.update(schoolId, editingClassId, formData);
-      
-      setShowAddModal(false);
-      setEditingClassId(null);
-      setFormData({ name: "", level: "1", room: "", teacherName: "" });
-      fetchClasses();
-    } catch (error) {
-      console.error("Error updating class:", error);
-    }
-  };
+     const docRef = await addDoc(collection(db, `schools/${schoolId}/classes`), classData);
 
-  const handleDeleteClass = async (classId: string) => {
-    if (!schoolId) {
-      return;
-    }
-    
-    setClassToDelete(null);
-    setDeleteDialogOpen(false);
-    
-    try {
-      const { classApi } = await import('@/lib/api');
-      await classApi.delete(schoolId, classId);
-      fetchClasses();
-      toast.success("Kelas berhasil dihapus");
-    } catch (error) {
-      console.error("Error deleting class:", error);
-      toast.error("Gagal menghapus kelas");
-    }
-  };
-  
-  const openDeleteDialog = (classId: string) => {
-    setClassToDelete(classId);
-    setDeleteDialogOpen(true);
-  };
+     // Add the new class to the state
+     setClasses([...classes, { id: docRef.id, ...classData as any }]);
 
-  return (
-    <div className="pb-20 md:pb-6">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-        <div className="flex items-center mb-4 md:mb-0">
-          <BookOpen className="h-7 w-7 text-primary mr-3" />
-          <h1 className="text-2xl font-bold text-gray-800 text-center md:text-left">DAFTAR KELAS</h1>
-        </div>
-        {userRole === 'admin' && (
-          <button
-            onClick={() => {
-              setEditingClassId(null);
-              setFormData({ name: "", level: "1", room: "", teacherName: "" });
-              setShowAddModal(true);
-            }}
-            className="flex items-center justify-center w-full md:w-auto gap-2 bg-orange-500 text-white px-5 py-2.5 rounded-lg hover:bg-blue-600 active:bg-blue-700 transition-colors"
-          >
-            <Plus size={18} />
-            Tambah Kelas
-          </button>
-        )}
-      </div>
+     // Reset form and close modal
+     setFormData({ name: "", level: "Kepala Desa", teacherName: "" });
+     setShowAddModal(false);
 
-      {classes.length > 0 ? (
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 md:gap-6">
-          {classes.map((classData) => (
-            <div key={classData.id} className={`${
-              classData.id.charCodeAt(0) % 5 === 0 ? "bg-indigo-100" : 
-              classData.id.charCodeAt(0) % 5 === 1 ? "bg-emerald-100" : 
-              classData.id.charCodeAt(0) % 5 === 2 ? "bg-amber-100" : 
-              classData.id.charCodeAt(0) % 5 === 3 ? "bg-rose-100" : 
-              "bg-cyan-100"
-            } rounded-xl shadow-sm overflow-hidden`}>
-              <div className="p-5">
-                <div className="flex items-center mb-4">
-                  <div className="bg-primary/10 p-2 rounded-full mr-3">
-                    <BookOpen className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-lg">{classData.name}</h3>
-                  </div>
-                </div>
-                
-                <div className="space-y-2 text-sm">
-                  <div className="flex items-center gap-2">
-                    <User className="h-4 w-4 text-gray-400" />
-                    <span className="text-gray-700">Wali Kelas: {classData.teacherName}</span>
-                  </div>
-                </div>
-                
-                <div className="flex justify-end gap-2 mt-4">
-                  {userRole === 'admin' && (
-                    <>
-                      <button
-                        onClick={() => handleEditClass(classData)}
-                        className="p-2 text-blue-600 rounded hover:bg-blue-100 hover:bg-opacity-20"
-                        title="Edit Kelas"
-                      >
-                        <Edit size={18} />
-                      </button>
-                      <button
-                        onClick={() => openDeleteDialog(classData.id)}
-                        className="p-2 text-red-600 rounded hover:bg-red-100 hover:bg-opacity-20"
-                        title="Hapus Kelas"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="bg-white rounded-xl shadow-sm p-10 text-center">
-          <div className="flex flex-col items-center">
-            <div className="bg-gray-100 rounded-full p-3 mb-4">
-              <BookOpen className="h-8 w-8 text-gray-400" />
-            </div>
-            <p className="text-gray-500 mb-4">Belum ada data.</p>
-            <button
-              onClick={() => {
-                setEditingClassId(null);
-                setFormData({ name: "", level: "1", room: "", teacherName: "" });
-                setShowAddModal(true);
-              }}
-              className="bg-primary text-white px-5 py-2.5 rounded-lg hover:bg-primary/90 transition-colors"
-            >
-              Tambah Kelas
-            </button>
-          </div>
-        </div>
-      )}
+     toast.success("Kelas berhasil ditambahkan");
+   } catch (error) {
+     console.error("Error adding class:", error);
+     toast.error("Gagal menambahkan kelas");
+   }
+ };
+ const handleEditClass = async (e: React.FormEvent) => {
+   e.preventDefault();
 
-      {/* Add/Edit Class Modal */}
-      {showAddModal && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50">
-          <div className="bg-white rounded-xl shadow-lg max-w-md w-full mx-3 sm:mx-auto">
-            <div className="flex justify-between items-center p-5 border-b">
-              <h3 className="text-lg font-semibold">
-                {editingClassId ? "Edit Kelas" : "Tambah Kelas Baru"}
-              </h3>
-              <button
-                onClick={() => setShowAddModal(false)}
-                className="rounded-full p-1 hover:bg-gray-100"
-              >
-                <X size={20} />
-              </button>
-            </div>
-            
-            <form onSubmit={editingClassId ? handleUpdateClass : handleAddClass}>
-              <div className="p-5 space-y-4">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                    Nama Kelas
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                    placeholder="Contoh: VII A"
-                    required
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="level" className="block text-sm font-medium text-gray-700 mb-1">
-                    Tingkat/Kelas
-                  </label>
-                  <select
-                    id="level"
-                    name="level"
-                    value={formData.level}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                    required
-                  >
-                    {levelOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        Kelas {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                
-                <div>
-                  <label htmlFor="teacherName" className="block text-sm font-medium text-gray-700 mb-1">
-                    Nama Wali Kelas
-                  </label>
-                  <input
-                    type="text"
-                    id="teacherName"
-                    name="teacherName"
-                    value={formData.teacherName}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                    placeholder="Nama lengkap wali kelas"
-                    required
-                  />
-                </div>
-              </div>
-              
-              <div className="flex justify-end gap-3 p-5 border-t">
-                <button
-                  type="button"
-                  onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-                >
-                  Batal
-                </button>
-                <button
-                  type="submit"
-                  className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors"
-                >
-                  <Save size={18} />
-                  {editingClassId ? "Perbarui" : "Simpan"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-      
-      {/* Confirmation Dialog */}
-      <ConfirmDialog
-        isOpen={deleteDialogOpen}
-        title="Konfirmasi Hapus Kelas"
-        message="Apakah Anda yakin ingin menghapus kelas ini? Tindakan ini tidak dapat dibatalkan."
-        confirmLabel="Hapus"
-        cancelLabel="Batal"
-        confirmColor="bg-red-500 hover:bg-red-600" 
-        onConfirm={() => classToDelete && handleDeleteClass(classToDelete)}
-        onCancel={() => setDeleteDialogOpen(false)}
-        icon={<AlertTriangle size={20} className="text-red-500" />}
-      />
-    </div>
-  );
+   if (!schoolId || !selectedClass) {
+     toast.error("Tidak dapat mengakses data kelas");
+     return;
+   }
+
+   try {
+     const classRef = doc(db, `schools/${schoolId}/classes`, selectedClass.id);
+     await updateDoc(classRef, {
+       name: formData.name,
+       level: formData.level,
+       teacherName: formData.teacherName,
+       updatedAt: serverTimestamp()
+     });
+
+     // Update the class in the state
+     setClasses(classes.map(c =>
+       c.id === selectedClass.id
+         ? { ...c, name: formData.name, level: formData.level, teacherName: formData.teacherName }
+         : c
+     ));
+
+     // Reset form and close modal
+     setFormData({ name: "", level: "Kepala Desa", teacherName: "" });
+     setSelectedClass(null);
+     setShowEditModal(false);
+
+     toast.success("Kelas berhasil diperbarui");
+   } catch (error) {
+     console.error("Error updating class:", error);
+     toast.error("Gagal memperbarui kelas");
+   }
+ };
+ const handleDeleteClass = async () => {
+   if (!schoolId || !selectedClass) {
+     toast.error("Tidak dapat mengakses data kelas");
+     return;
+   }
+
+   try {
+     const classRef = doc(db, `schools/${schoolId}/classes`, selectedClass.id);
+     await deleteDoc(classRef);
+
+     // Remove the class from the state
+     setClasses(classes.filter(c => c.id !== selectedClass.id));
+
+     // Reset selected class and close modal
+     setSelectedClass(null);
+     setShowDeleteModal(false);
+
+     toast.success("Kelas berhasil dihapus");
+   } catch (error) {
+     console.error("Error deleting class:", error);
+     toast.error("Gagal menghapus kelas");
+   }
+ };
+ const openEditModal = (classItem: Class) => {
+   setSelectedClass(classItem);
+   setFormData({
+     name: classItem.name,
+     level: classItem.level,
+     teacherName: classItem.teacherName
+   });
+   setShowEditModal(true);
+ };
+ const openDeleteModal = (classItem: Class) => {
+   setSelectedClass(classItem);
+   setShowDeleteModal(true);
+ };
+ // List of position options for the dropdown
+ const positionOptions = [
+   "Kepala Desa",
+   "Sekretaris Desa",
+   "Kaur Tata Usaha dan Umum",
+   "Kaur Keuangan",
+   "Kaur Perencanaan",
+   "Kasi Pemerintahan",
+   "Kasi Kesejahteraan",
+   "Kasi Pelayanan",
+   "Ketua BPK",
+   "Kepala Dusun 1",
+   "Kepala Dusun 2",
+   "Kepala Dusun 3",
+   "Kepala Dusun 4",
+   "Kepala Dusun 5",
+   "Kepala Dusun 6",
+   "Kepala Dusun 7",
+   "Kepala Dusun 8",
+   "Kepala Dusun 9",
+   "Kepala Dusun 10",
+   "Kepala Dusun 111",
+   "Kepala Dusun 12"
+ ];
+ return (
+   <div className="w-full max-w-6xl mx-auto pb-20 md:pb-6 px-3 sm:px-4 md:px-6">
+     <div className="flex items-center mb-6">
+       <BookOpen className="h-7 w-7 text-primary mr-3" />
+       <h1 className="text-2xl font-bold text-gray-800">DAFTAR KELAS</h1>
+     </div>
+
+     {/* Add Class Button */}
+     <div className="mb-6">
+       <button
+         onClick={() => setShowAddModal(true)}
+         className="flex items-center justify-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg hover:bg-primary hover:bg-opacity-90 transition-colors shadow-sm"
+       >
+         <Plus size={18} />
+         Tambah Kelas
+       </button>
+     </div>
+
+     {/* Classes List */}
+     {loading ? (
+       <div className="flex justify-center items-center h-64">
+         <Loader2 className="h-12 w-12 text-primary animate-spin" />
+       </div>
+     ) : classes.length > 0 ? (
+       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+         {classes.map((classItem) => (
+           <div key={classItem.id} className="bg-white rounded-xl shadow-sm p-5 border border-gray-200">
+             <div className="flex justify-between items-start mb-3">
+               <div>
+                 <h3 className="font-semibold text-lg">{classItem.name}</h3>
+                 <p className="text-sm text-gray-500">{classItem.level}</p>
+               </div>
+               {userRole === 'admin' && (
+                 <div className="flex space-x-1">
+                   <button
+                     onClick={() => openEditModal(classItem)}
+                     className="p-1.5 text-blue-600 hover:bg-blue-50 rounded"
+                     title="Edit Kelas"
+                   >
+                     <Edit size={16} />
+                   </button>
+                   <button
+                     onClick={() => openDeleteModal(classItem)}
+                     className="p-1.5 text-red-600 hover:bg-red-50 rounded"
+                     title="Hapus Kelas"
+                   >
+                     <Trash2 size={16} />
+                   </button>
+                 </div>
+               )}
+             </div>
+
+             <div className="flex items-center mt-3">
+               <User size={16} className="text-gray-400 mr-2" />
+               <p className="text-sm text-gray-600">
+                 {classItem.teacherName || "Belum ada wali kelas"}
+               </p>
+             </div>
+           </div>
+         ))}
+       </div>
+     ) : (
+       <div className="bg-white rounded-xl shadow-sm p-10 text-center">
+         <div className="flex flex-col items-center">
+           <div className="bg-gray-100 rounded-full p-3 mb-4">
+             <BookOpen className="h-8 w-8 text-gray-400" />
+           </div>
+           <p className="text-gray-500 mb-4">Belum ada kelas yang ditambahkan</p>
+           <button
+             onClick={() => setShowAddModal(true)}
+             className="bg-primary text-white px-5 py-2.5 rounded-lg hover:bg-primary hover:bg-opacity-90 transition-colors"
+           >
+             Tambah Kelas
+           </button>
+         </div>
+       </div>
+     )}
+
+     {/* Add Class Modal */}
+     {showAddModal && (
+       <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 p-4">
+         <motion.div
+           className="bg-white rounded-xl shadow-lg max-w-md w-full p-6"
+           initial={{ opacity: 0, scale: 0.9 }}
+           animate={{ opacity: 1, scale: 1 }}
+           exit={{ opacity: 0, scale: 0.9 }}
+           transition={{ duration: 0.2 }}
+         >
+           <div className="flex justify-between items-center mb-4">
+             <h3 className="text-xl font-bold text-gray-800">Tambah Kelas Baru</h3>
+             <button
+               onClick={() => setShowAddModal(false)}
+               className="text-gray-500 hover:text-gray-700"
+             >
+               <X size={20} />
+             </button>
+           </div>
+
+           <form onSubmit={handleAddClass}>
+             <div className="space-y-4">
+               <div>
+                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                   Nama Kelas
+                 </label>
+                 <input
+                   type="text"
+                   id="name"
+                   value={formData.name}
+                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                   placeholder="Contoh: VII A"
+                   required
+                 />
+               </div>
+
+               <div>
+                 <label htmlFor="level" className="block text-sm font-medium text-gray-700 mb-1">
+                   Tingkat/Kelas
+                 </label>
+                 <select
+                   id="level"
+                   value={formData.level}
+                   onChange={(e) => setFormData({ ...formData, level: e.target.value })}
+                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                   required
+                 >
+                   {positionOptions.map((option) => (
+                     <option key={option} value={option}>
+                       {option}
+                     </option>
+                   ))}
+                 </select>
+               </div>
+
+               <div>
+                 <label htmlFor="teacherName" className="block text-sm font-medium text-gray-700 mb-1">
+                   Nama Wali Kelas
+                 </label>
+                 <input
+                   type="text"
+                   id="teacherName"
+                   value={formData.teacherName}
+                   onChange={(e) => setFormData({ ...formData, teacherName: e.target.value })}
+                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                   placeholder="Nama lengkap wali kelas"
+                 />
+               </div>
+             </div>
+
+             <div className="flex justify-end mt-6 gap-3">
+               <button
+                 type="button"
+                 onClick={() => setShowAddModal(false)}
+                 className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+               >
+                 Batal
+               </button>
+               <button
+                 type="submit"
+                 className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary hover:bg-opacity-90 transition-colors"
+               >
+                 <Save size={18} />
+                 Simpan
+               </button>
+             </div>
+           </form>
+         </motion.div>
+       </div>
+     )}
+
+     {/* Edit Class Modal */}
+     {showEditModal && selectedClass && (
+       <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 p-4">
+         <motion.div
+           className="bg-white rounded-xl shadow-lg max-w-md w-full p-6"
+           initial={{ opacity: 0, scale: 0.9 }}
+           animate={{ opacity: 1, scale: 1 }}
+           exit={{ opacity: 0, scale: 0.9 }}
+           transition={{ duration: 0.2 }}
+         >
+           <div className="flex justify-between items-center mb-4">
+             <h3 className="text-xl font-bold text-gray-800">Edit Kelas</h3>
+             <button
+               onClick={() => setShowEditModal(false)}
+               className="text-gray-500 hover:text-gray-700"
+             >
+               <X size={20} />
+             </button>
+           </div>
+
+           <form onSubmit={handleEditClass}>
+             <div className="space-y-4">
+               <div>
+                 <label htmlFor="edit-name" className="block text-sm font-medium text-gray-700 mb-1">
+                   Nama Kelas
+                 </label>
+                 <input
+                   type="text"
+                   id="edit-name"
+                   value={formData.name}
+                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                   placeholder="Contoh: VII A"
+                   required
+                 />
+               </div>
+
+               <div>
+                 <label htmlFor="edit-level" className="block text-sm font-medium text-gray-700 mb-1">
+                   Tingkat/Kelas
+                 </label>
+                 <select
+                   id="edit-level"
+                   value={formData.level}
+                   onChange={(e) => setFormData({ ...formData, level: e.target.value })}
+                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                   required
+                 >
+                   {positionOptions.map((option) => (
+                     <option key={option} value={option}>
+                       {option}
+                     </option>
+                   ))}
+                 </select>
+               </div>
+
+               <div>
+                 <label htmlFor="edit-teacherName" className="block text-sm font-medium text-gray-700 mb-1">
+                   Nama Wali Kelas
+                 </label>
+                 <input
+                   type="text"
+                   id="edit-teacherName"
+                   value={formData.teacherName}
+                   onChange={(e) => setFormData({ ...formData, teacherName: e.target.value })}
+                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                   placeholder="Nama lengkap wali kelas"
+                 />
+               </div>
+             </div>
+
+             <div className="flex justify-end mt-6 gap-3">
+               <button
+                 type="button"
+                 onClick={() => setShowEditModal(false)}
+                 className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+               >
+                 Batal
+               </button>
+               <button
+                 type="submit"
+                 className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary hover:bg-opacity-90 transition-colors"
+               >
+                 <Save size={18} />
+                 Simpan
+               </button>
+             </div>
+           </form>
+         </motion.div>
+       </div>
+     )}
+
+     {/* Delete Confirmation Modal */}
+     {showDeleteModal && selectedClass && (
+       <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 p-4">
+         <motion.div
+           className="bg-white rounded-xl shadow-lg max-w-md w-full p-6"
+           initial={{ opacity: 0, scale: 0.9 }}
+           animate={{ opacity: 1, scale: 1 }}
+           exit={{ opacity: 0, scale: 0.9 }}
+           transition={{ duration: 0.2 }}
+         >
+           <div className="flex items-center mb-4">
+             <AlertTriangle className="h-6 w-6 text-red-500 mr-3" />
+             <h3 className="text-lg font-semibold">Konfirmasi Hapus</h3>
+           </div>
+           <p className="text-gray-600 mb-6">
+             Apakah Anda yakin ingin menghapus kelas <span className="font-semibold">{selectedClass.name}</span>? Tindakan ini tidak dapat dibatalkan.
+           </p>
+           <div className="flex justify-end gap-3">
+             <button
+               onClick={() => setShowDeleteModal(false)}
+               className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+             >
+               Batal
+             </button>
+             <button
+               onClick={handleDeleteClass}
+               className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+             >
+               Hapus
+             </button>
+           </div>
+         </motion.div>
+       </div>
+     )}
+   </div>
+ );
 }
