@@ -61,7 +61,7 @@ export default function StudentDetail({ params }: { params: { id: string } }) {
         <Link href="/dashboard/students" className="p-2 mr-2 hover:bg-gray-100 rounded-full">
           <ArrowLeft size={20} />
         </Link>
-        <h1 className="text-xl font-bold text-gray-800">Detail Data</h1>
+        <h1 className="text-xl font-bold text-gray-800">Detail Data Pegawai</h1>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -78,18 +78,18 @@ export default function StudentDetail({ params }: { params: { id: string } }) {
           </div>
           <p className="text-xs text-center text-gray-500 mb-4">NIK: {student.nisn}</p>
           <div className="flex flex-col space-y-2">
-            <Link 
+            {/*<Link 
               href={`/dashboard/students/qr/${student.id}`}
               className="text-sm text-primary hover:underline"
             >
               Lihat Kartu QR
-            </Link>
+            </Link>*/}
             <Link 
-              href={`/dashboard/students/edit/${student.id}`}
+              href={`/dashboard/students/add/${student.id}`}
               className="text-sm text-blue-600 hover:underline flex items-center"
             >
-              <Edit size={14} className="mr-1" />
-              Edit Data
+              <User size={14} className="mr-1" />
+              Tambah Data Baru
             </Link>
           </div>
         </div>
@@ -190,7 +190,7 @@ export default function StudentDetail({ params }: { params: { id: string } }) {
         </div>
         
         {/* Attendance Summary */}
-        <div className="bg-white rounded-xl shadow-sm p-6 md:col-span-3">
+        {/*<div className="bg-white rounded-xl shadow-sm p-6 md:col-span-3">
           <h2 className="text-base font-semibold mb-4 border-b pb-2">RINGKASAN KEHADIRAN</h2>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -219,7 +219,7 @@ export default function StudentDetail({ params }: { params: { id: string } }) {
             </div>
           </div>
         </div>
-      </div>
+      </div>*/}
     </div>
   );
 }
