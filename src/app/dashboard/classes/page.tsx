@@ -195,11 +195,12 @@ export default function ClassesPage() {
    "Kepala Dusun 12"
  ];
  return (
-   <div className="w-full items-center max-w-6xl mx-auto pb-20 md:pb-6 px-3 sm:px-4 md:px-6">
-     <div className="flex items-center mb-6">
-       <BookOpen className="h-7 items-center w-7 text-primary mr-3" />
-       <h1 className="text-2xl font-bold text-gray-800 text-center md:text-left">DAFTAR KEPEGAWAIAN</h1>
-     </div>
+   <div className="pb-20 md:pb-6">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+        <div className="flex items-center mb-4 md:mb-0">
+          <BookOpen className="h-7 w-7 text-primary mr-3" />
+          <h1 className="text-2xl font-bold text-gray-800 text-center md:text-left">DAFTAR PEGAWAI</h1>
+        </div>
 
      {/* Add Class Button */}
      <div className="mb-6">
