@@ -52,7 +52,7 @@ export default function AddStudent() {
     e.preventDefault();
     
     if (!schoolId) {
-      toast.error("Tidak dapat mengakses data sekolah");
+      toast.error("Tidak dapat mengakses data Instansi");
       return;
     }
     
@@ -107,7 +107,7 @@ export default function AddStudent() {
                     value={studentData.name}
                     onChange={handleChange}
                     className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white"
-                    placeholder="Nama lengkap siswa"
+                    placeholder="Nama lengkap peegawai"
                     required
                   />
                 </div>
@@ -126,7 +126,7 @@ export default function AddStudent() {
                     value={studentData.nisn}
                     onChange={handleChange}
                     className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white"
-                    placeholder="Nomor NISN"
+                    placeholder="Nomor Induk Kependudukan (NIK)"
                     required
                   />
                 </div>
@@ -208,7 +208,7 @@ export default function AddStudent() {
               
               <div>
                 <label htmlFor="telegramNumber" className="block text-sm font-medium text-gray-700 mb-1">
-                  Nomor Telegram (ID Telegram)
+                  ID Telegram
                 </label>
                 <div className="relative">
                   <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
@@ -238,7 +238,7 @@ export default function AddStudent() {
                     includeMargin={true}
                   />
                 </div>
-                <p className="text-sm text-gray-500 mt-2">QR Code dibuat berdasarkan NISN siswa.</p>
+                <p className="text-sm text-gray-500 mt-2">QR Code dibuat berdasarkan NIK Pegawai.</p>
               </div>
             )}
             
@@ -246,14 +246,14 @@ export default function AddStudent() {
               <button
                 type="submit"
                 disabled={saving}
-                className="flex items-center gap-2 bg-primary text-white px-6 py-2.5 rounded-lg hover:bg-primary/90 transition-colors"
+                className="flex items-center gap-2 bg-primary text-white px-6 py-2.5 rounded-lg hover:bg-orange-500 active:bg-orange-600 transition-colors"
               >
                 {saving ? (
                   <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
                 ) : (
                   <Save size={20} />
                 )}
-                Simpan Data
+                Simpan Data Pegawai
               </button>
             </div>
           </div>
