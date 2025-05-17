@@ -341,7 +341,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-500 hover:text-white transition-colors"
                   onClick={() => setProfileOpen(false)}
                 >
-                  Profil Sekolah
+                  Profil Instansi
                 </Link>
                 <Link 
                   href="/dashboard/profile-user" 
@@ -414,7 +414,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                 onClick={() => setMenuOpen(false)}
               >
                 <BookOpen size={20} />
-                <span>Manajemen Kelas</span>
+                <span>Data Jabatan</span>
               </Link>
               
               <Link 
@@ -427,7 +427,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                 onClick={() => setMenuOpen(false)}
               >
                 <Users size={20} />
-                <span>Manajemen Siswa</span>
+                <span>Data Pegawai</span>
               </Link>
               
               <Link 
