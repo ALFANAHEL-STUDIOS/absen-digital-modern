@@ -228,13 +228,13 @@ export default function ClassesPage() {
                </div>
                {userRole === 'admin' && (
                  <div className="flex space-x-1">
-                   <button
+                  {/*<button
                      onClick={() => openEditModal(classItem)}
                      className="p-1.5 text-blue-600 hover:bg-blue-50 rounded"
                      title="Edit Kelas"
                    >
                      <Edit size={16} />
-                   </button>
+                   </button>*/}
                    <button
                      onClick={() => openDeleteModal(classItem)}
                      className="p-1.5 text-red-600 hover:bg-red-50 rounded"
@@ -246,12 +246,12 @@ export default function ClassesPage() {
                )}
              </div>
 
-             <div className="flex items-center mt-3">
+            {/* <div className="flex items-center mt-3">
                <User size={16} className="text-gray-400 mr-2" />
                <p className="text-sm text-gray-600">
                  {classItem.teacherName || "Belum ada data pimpinan"}
                </p>
-             </div>
+             </div>*/}
            </div>
          ))}
        </div>
