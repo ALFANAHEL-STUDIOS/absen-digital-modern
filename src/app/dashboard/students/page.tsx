@@ -128,12 +128,13 @@ export default function Students() {
             <Users className="h-7 w-7 text-primary mr-3" />
             <h1 className="text-2xl font-bold text-gray-800 text-center">DAFTAR PEGAWAI</h1>
           </div>
+          <hr className="border-t border-none mb-1" />
         </div>
         {userRole === 'admin' && (
           <div className="flex flex-col sm:flex-row gap-2">
             <Link 
               href="/dashboard/students/add"
-              className="flex items-center justify-center gap-2 bg-primary text-white px-5 py-2 rounded-lg hover:bg-orange-500 active:bg-orange-600 transition-colors shadow-sm text-sm w-full sm:w-auto"
+              className="flex items-center justify-center w-full md:w-auto gap-2 bg-blue-500 bg-primary text-white px-5 py-2.5 rounded-lg hover:bg-orange-500 transition-colors"
             >
               <Plus size={16} />
               Tambah Data Pegawai
@@ -150,7 +151,7 @@ export default function Students() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
               <input
                 type="text"
-                placeholder="Cari nama atau NISN siswa..."
+                placeholder="Cari Nama atau NIK Pegawai..."
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -253,7 +254,7 @@ export default function Students() {
             </p>
             <Link
               href="/dashboard/students/add"
-              className="flex items-center justify-center w-full md:w-auto gap-2 bg-blue-500 bg-primary text-white px-5 py-2.5 rounded-lg hover:bg-orange-500 transition-colors"
+              className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
             >
               Tambah Data Pegawai
             </Link>
