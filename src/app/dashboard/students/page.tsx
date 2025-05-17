@@ -89,7 +89,7 @@ export default function Students() {
       setStudents(students.filter(student => student.id !== studentId));
       
       // Show confirmation toast
-      toast.success("Data siswa berhasil dihapus");
+      toast.success("Data pegawai berhasil dihapus");
     } catch (error) {
       console.error("Error deleting student:", error);
       toast.error("Gagal menghapus data Pegawai");
@@ -232,7 +232,7 @@ export default function Students() {
                       <button
                         onClick={() => openDeleteDialog(student.id)}
                         className="p-1.5 text-red-600 rounded hover:bg-red-100 hover:bg-opacity-20"
-                        title="Hapus Siswa"
+                        title="Hapus Pegawai"
                       >
                         <Trash2 size={16} />
                       </button>
