@@ -109,7 +109,7 @@ export default function Classes() {
       setClasses(fetchedClasses);
     } catch (error) {
       console.error("Error fetching classes:", error);
-      toast.error("Gagal mengambil data kelas dari database");
+      toast.error("Gagal mengambil data kepegawaian dari database");
     } finally {
       setLoading(false);
     }
@@ -124,7 +124,7 @@ export default function Classes() {
     e.preventDefault();
     
     if (!schoolId) {
-      toast.error("Tidak dapat mengakses data sekolah");
+      toast.error("Tidak dapat mengakses data Instansi");
       return;
     }
     
@@ -186,10 +186,10 @@ export default function Classes() {
       const { classApi } = await import('@/lib/api');
       await classApi.delete(schoolId, classId);
       fetchClasses();
-      toast.success("Kelas berhasil dihapus");
+      toast.success("Data Kepegawaian berhasil dihapus");
     } catch (error) {
       console.error("Error deleting class:", error);
-      toast.error("Gagal menghapus kelas");
+      toast.error("Gagal menghapus kepegawaian");
     }
   };
   
@@ -203,7 +203,7 @@ export default function Classes() {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
         <div className="flex items-center mb-4 md:mb-0">
           <BookOpen className="h-7 w-7 text-primary mr-3" />
-          <h1 className="text-2xl font-bold text-gray-800 text-center md:text-left">DAFTAR KELAS</h1>
+          <h1 className="text-2xl font-bold text-gray-800 text-center md:text-left">DATA KEPEGAWAIAN</h1>
         </div>
         {userRole === 'admin' && (
           <button
@@ -215,7 +215,7 @@ export default function Classes() {
             className="flex items-center justify-center w-full md:w-auto gap-2 bg-orange-500 text-white px-5 py-2.5 rounded-lg hover:bg-blue-600 active:bg-blue-700 transition-colors"
           >
             <Plus size={18} />
-            Tambah Kelas
+            Tambah Data Kepegawaian
           </button>
         )}
       </div>
@@ -243,7 +243,7 @@ export default function Classes() {
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center gap-2">
                     <User className="h-4 w-4 text-gray-400" />
-                    <span className="text-gray-700">Wali Kelas: {classData.teacherName}</span>
+                    <span className="text-gray-700">Kepala Desa: {classData.teacherName}</span>
                   </div>
                 </div>
                 
@@ -253,14 +253,14 @@ export default function Classes() {
                       <button
                         onClick={() => handleEditClass(classData)}
                         className="p-2 text-blue-600 rounded hover:bg-blue-100 hover:bg-opacity-20"
-                        title="Edit Kelas"
+                        title="Edit Kepegawaian"
                       >
                         <Edit size={18} />
                       </button>
                       <button
                         onClick={() => openDeleteDialog(classData.id)}
                         className="p-2 text-red-600 rounded hover:bg-red-100 hover:bg-opacity-20"
-                        title="Hapus Kelas"
+                        title="Hapus Data"
                       >
                         <Trash2 size={18} />
                       </button>
@@ -286,7 +286,7 @@ export default function Classes() {
               }}
               className="bg-primary text-white px-5 py-2.5 rounded-lg hover:bg-primary/90 transition-colors"
             >
-              Tambah Kelas
+              Tambah Data
             </button>
           </div>
         </div>
@@ -298,7 +298,7 @@ export default function Classes() {
           <div className="bg-white rounded-xl shadow-lg max-w-md w-full mx-3 sm:mx-auto">
             <div className="flex justify-between items-center p-5 border-b">
               <h3 className="text-lg font-semibold">
-                {editingClassId ? "Edit Kelas" : "Tambah Kelas Baru"}
+                {editingClassId ? "Edit Data" : "Tambah Data Baru"}
               </h3>
               <button
                 onClick={() => setShowAddModal(false)}
@@ -312,7 +312,7 @@ export default function Classes() {
               <div className="p-5 space-y-4">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                    Nama Kelas
+                    Nama Kepegawaian
                   </label>
                   <input
                     type="text"
@@ -321,14 +321,14 @@ export default function Classes() {
                     value={formData.name}
                     onChange={handleChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                    placeholder="Contoh: VII A"
+                    placeholder="Contoh: Kepala Desa"
                     required
                   />
                 </div>
                 
                 <div>
                   <label htmlFor="level" className="block text-sm font-medium text-gray-700 mb-1">
-                    Tingkat/Kelas
+                    Jenis/Jabatan
                   </label>
                   <select
                     id="level"
@@ -348,7 +348,7 @@ export default function Classes() {
                 
                 <div>
                   <label htmlFor="teacherName" className="block text-sm font-medium text-gray-700 mb-1">
-                    Nama Wali Kelas
+                    Nama Kepala Desa
                   </label>
                   <input
                     type="text"
@@ -357,7 +357,7 @@ export default function Classes() {
                     value={formData.teacherName}
                     onChange={handleChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
-                    placeholder="Nama lengkap wali kelas"
+                    placeholder="Nama lengkap kepala desa"
                     required
                   />
                 </div>
@@ -373,10 +373,10 @@ export default function Classes() {
                 </button>
                 <button
                   type="submit"
-                  className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors"
+                  className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-orange-500 active:bg-orange-600 transition-colors"
                 >
                   <Save size={18} />
-                  {editingClassId ? "Perbarui" : "Simpan"}
+                  {editingClassId ? "Perbarui" : "Simpan Data"}
                 </button>
               </div>
             </form>
@@ -387,8 +387,8 @@ export default function Classes() {
       {/* Confirmation Dialog */}
       <ConfirmDialog
         isOpen={deleteDialogOpen}
-        title="Konfirmasi Hapus Kelas"
-        message="Apakah Anda yakin ingin menghapus kelas ini? Tindakan ini tidak dapat dibatalkan."
+        title="Konfirmasi Hapus Kepegawaian"
+        message="Apakah Anda yakin ingin menghapus Data ini? Tindakan ini tidak dapat dibatalkan."
         confirmLabel="Hapus"
         cancelLabel="Batal"
         confirmColor="bg-red-500 hover:bg-red-600" 
