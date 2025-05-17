@@ -220,9 +220,10 @@ export default function ClassesPage() {
      ) : classes.length > 0 ? (
        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
          {classes.map((classItem) => (
-           <div key={classItem.id} className="bg-purple-300 rounded-xl p-3 sm:p-5 text-white">
+           <div key={classItem.id} className="bg-bg-cyan-100 rounded-xl p-3 sm:p-5 text-gray-700">
              <div className="flex justify-between items-start mb-0">
                <div>
+                <User size={16} className="text-gray-400 mr-2" />
                  <h3 className="font-semibold text-lg">{classItem.level}</h3>
                 {/*<p className="text-sm text-gray-500">{classItem.name}</p>*/}
                </div>
