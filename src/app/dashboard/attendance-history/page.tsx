@@ -587,7 +587,7 @@ export default function AttendanceHistory() {
               <input
                 type="text"
                 id="search"
-                placeholder="Cari nama siswa..."
+                placeholder="Cari nama pegawai..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
