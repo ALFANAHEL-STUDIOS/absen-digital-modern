@@ -107,7 +107,7 @@ export default function AddStudent() {
                     value={studentData.name}
                     onChange={handleChange}
                     className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white"
-                    placeholder="Nama lengkap peegawai"
+                    placeholder="Nama lengkap pegawai"
                     required
                   />
                 </div>
@@ -146,7 +146,7 @@ export default function AddStudent() {
                 >
                   {classList.map((item) => (
                     <option key={item.value} value={item.value}>
-                      Kelas {item.label}
+                      Jabatan {item.label}
                     </option>
                   ))}
                 </select>
@@ -219,7 +219,7 @@ export default function AddStudent() {
                     value={studentData.telegramNumber}
                     onChange={handleChange}
                     className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white"
-                    placeholder="Nomor Telegram"
+                    placeholder="ID Telegram"
                     required
                   />
                 </div>
