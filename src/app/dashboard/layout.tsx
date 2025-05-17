@@ -577,7 +577,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           {/* Admin and Teacher */}
           {(userRole === 'admin' || userRole === 'teacher') && (
             <Link href="/dashboard/scan" className="flex flex-col items-center p-2">
-              <div className="bg-blue-900 hover:bg-orange-500 active:bg-blue-800 rounded-full p-3 -mt-5">
+              <div className="bg-primary hover:bg-orange-600 active:bg-blue-800 rounded-full p-3 -mt-5">
                 <Scan className="h-10 w-10 text-white" />
               </div>
               <span className="text-xs mt-1 text-gray-500">Scan QR</span>
