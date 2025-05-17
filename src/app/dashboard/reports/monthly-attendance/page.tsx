@@ -53,7 +53,7 @@ export default function MonthlyAttendanceReport() {
           setSchoolInfo({
             name: data.name || "NAMA SEKOLAH",
             address: data.address || "Alamat",
-            npsn: data.npsn || "NPSN",
+            npsn: data.npsn || "Kode Pos",
             principalName: data.principalName || "",
             principalNip: data.principalNip || ""
           });
@@ -244,7 +244,7 @@ export default function MonthlyAttendanceReport() {
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal");
       doc.text(schoolInfo.address, pageWidth / 2, margin + 7, { align: "center" });
-      doc.text(`NPSN: ${schoolInfo.npsn}`, pageWidth / 2, margin + 14, { align: "center" });
+      doc.text(`Kode Pos ${schoolInfo.npsn}`, pageWidth / 2, margin + 14, { align: "center" });
       
       // Add horizontal line
       doc.setLineWidth(0.5);
@@ -253,14 +253,14 @@ export default function MonthlyAttendanceReport() {
       // Add title
       doc.setFontSize(14);
       doc.setFont("helvetica", "bold");
-      doc.text("REKAPITULASI LAPORAN ABSENSI PESERTA DIDIK", pageWidth / 2, margin + 30, { align: "center" });
+      doc.text("REKAPITULASI LAPORAN ABSENSI PEGAWAI", pageWidth / 2, margin + 30, { align: "center" });
       doc.text(`BULAN ${formattedMonth.toUpperCase()}`, pageWidth / 2, margin + 38, { align: "center" });
       
       // Main attendance table
       let yPos = margin + 48;
       
       // Table headers
-      const headers = ["No.", "Nama Siswa", "NISN", "Kelas", "Hadir", "Sakit", "Izin", "Alpha", "Total"];
+      const headers = ["No.", "Nama Pegawai", "NIK", "Jabatan", "Hadir", "Sakit", "Izin", "Alpha", "Total"];
       const colWidths = [10, 50, 25, 15, 15, 15, 15, 15, 15];
       
       // Draw table header - Light blue background
@@ -446,7 +446,7 @@ export default function MonthlyAttendanceReport() {
         doc.setFont("helvetica", "bold");
         doc.text(title + " Terbanyak :", margin, startY);
         
-        const tableHeaders = ["No.", "Nama Siswa", "NISN", "Kelas", "Jumlah Hadir"];
+        const tableHeaders = ["No.", "Nama Pegawai", "NIK", "Jabatan", "Jumlah Hadir"];
         const colWidths = [10, 50, 30, 20, 30];
         
         let yPosition = startY + 5;
@@ -500,10 +500,10 @@ export default function MonthlyAttendanceReport() {
           // Count - varies depending on section type
           let count = 0;
           switch(title) {
-            case "Siswa dengan Hadir": count = student.hadir || 0; break;
-            case "Siswa dengan Sakit": count = student.sakit || 0; break;
-            case "Siswa dengan Izin": count = student.izin || 0; break;
-            case "Siswa dengan Alpha": count = student.alpha || 0; break;
+            case "Pegawai dengan Hadir": count = student.hadir || 0; break;
+            case "Pegawai dengan Sakit": count = student.sakit || 0; break;
+            case "Pegawai dengan Izin": count = student.izin || 0; break;
+            case "Pegawai dengan Alpha": count = student.alpha || 0; break;
           }
           doc.text(count.toString(), xPosition + colWidths[4]/2, yPosition + 5, { align: "center" });
           
@@ -520,10 +520,10 @@ export default function MonthlyAttendanceReport() {
       }
       
       // Students with most "Hadir"
-      yPos = addStudentCategorySection("Siswa dengan Hadir", topStudentsByCategory.hadir, yPos) + 5;
+      yPos = addStudentCategorySection("Pegawai dengan Hadir", topStudentsByCategory.hadir, yPos) + 5;
       
       // Students with most "Sakit"
-      yPos = addStudentCategorySection("Siswa dengan Sakit", topStudentsByCategory.sakit, yPos) + 5;
+      yPos = addStudentCategorySection("Pegawai dengan Sakit", topStudentsByCategory.sakit, yPos) + 5;
       
       // Check if we need a new page for the remaining sections
       if (yPos + 80 > pageHeight) {
@@ -532,10 +532,10 @@ export default function MonthlyAttendanceReport() {
       }
       
       // Students with most "Izin"
-      yPos = addStudentCategorySection("Siswa dengan Izin", topStudentsByCategory.izin, yPos) + 5;
+      yPos = addStudentCategorySection("Pegawai dengan Izin", topStudentsByCategory.izin, yPos) + 5;
       
       // Students with most "Alpha"
-      yPos = addStudentCategorySection("Siswa dengan Alpha", topStudentsByCategory.alpha, yPos) + 15;
+      yPos = addStudentCategorySection("Pegawai dengan Alpha", topStudentsByCategory.alpha, yPos) + 15;
       
       // Add signature section
       yPos += 10;
@@ -547,12 +547,12 @@ export default function MonthlyAttendanceReport() {
       doc.setFont("helvetica", "normal");
       
       doc.text("Mengetahui", signatureWidth * 0.25 + margin, yPos, { align: "center" });
-      doc.text("Administrator Desa", signatureWidth * 1.75 + margin, yPos, { align: "center" });
+      doc.text("Pengelola Data", signatureWidth * 1.75 + margin, yPos, { align: "center" });
       
       yPos += 5;
       
       doc.text("KEPALA DESA,", signatureWidth * 0.25 + margin, yPos, { align: "center" });
-      doc.text("Nama Sekolah,", signatureWidth * 1.75 + margin, yPos, { align: "center" });
+      doc.text("Absensi QR Code,", signatureWidth * 1.75 + margin, yPos, { align: "center" });
       
       yPos += 25;
       
@@ -568,7 +568,7 @@ export default function MonthlyAttendanceReport() {
       const fileName = `Rekap_Kehadiran_${formattedMonth.replace(' ', '_')}.pdf`;
       doc.save(fileName);
       
-      toast.success(`Laporan berhasil diunduh sebagai ${fileName}`);
+      toast.success(`Laporan berhasil diunduh ${fileName}`);
     } catch (error) {
       console.error("Error generating PDF:", error);
       toast.error("Gagal mengunduh laporan PDF");
@@ -634,7 +634,7 @@ export default function MonthlyAttendanceReport() {
       const topStudentsByAlpha = [...filteredStudents].sort((a, b) => (b.alpha || 0) - (a.alpha || 0)).slice(0, 3);
       
       // Add "Siswa dengan Hadir Terbanyak" section
-      headerData.push(["Siswa dengan Hadir Terbanyak :"]);
+      headerData.push(["Pegawai dengan Hadir Terbanyak :"]);
       headerData.push(["No.", "Nama Pegawai", "NIK", "Jabatan", "Jumlah Hadir"]);
       topStudentsByHadir.forEach((student, index) => {
         headerData.push([
@@ -650,7 +650,7 @@ export default function MonthlyAttendanceReport() {
       headerData.push([]);
       
       // Add "Siswa dengan Sakit Terbanyak" section
-      headerData.push(["Siswa dengan Sakit Terbanyak :"]);
+      headerData.push(["Pegawai dengan Sakit Terbanyak :"]);
       headerData.push(["No.", "Nama Pegawai", "NIK", "Jabatan", "Jumlah Sakit"]);
       topStudentsBySakit.forEach((student, index) => {
         headerData.push([
@@ -701,7 +701,7 @@ export default function MonthlyAttendanceReport() {
       
       // Add signature
       headerData.push(["", "Mengetahui", "", "", "", "", "", "Pengelola Data"]);
-      headerData.push(["", "KEPALA DESA,", "", "", "", "", "", "Administrator Desa,"]);
+      headerData.push(["", "Kepala Desa,", "", "", "", "", "", "Absensi Siswa QR Code,"]);
       headerData.push([]);
       headerData.push([]);
       headerData.push([]);
@@ -734,7 +734,7 @@ export default function MonthlyAttendanceReport() {
       const fileName = `Rekap_Kehadiran_${formattedMonth.replace(' ', '_')}.xlsx`;
       XLSX.writeFile(wb, fileName);
       
-      toast.success(`Laporan berhasil diunduh sebagai ${fileName}`);
+      toast.success(`Laporan berhasil diunduh ${fileName}`);
     } catch (error) {
       console.error("Error generating Excel:", error);
       toast.error("Gagal mengunduh laporan Excel");
@@ -758,7 +758,7 @@ export default function MonthlyAttendanceReport() {
             <div className="bg-blue-100 p-2 rounded-lg mr-3">
               <Calendar className="h-6 w-6 text-blue-600" />
             </div>
-            <h2 className="text-xl font-semibold">Laporan Bulan: {formattedMonth}</h2>
+            <h2 className="text-xl font-semibold">Laporan Bulan : {formattedMonth}</h2>
           </div>
           
           <div className="flex items-center space-x-2 w-full sm:w-auto justify-between sm:justify-end">
@@ -804,18 +804,21 @@ export default function MonthlyAttendanceReport() {
             <h2 className="text-xl font-bold uppercase">SD NEGERI 2 SENDANG AYU</h2>
             <p className="text-gray-600 font-medium">Sendang Ayu Kecamatan Padang Ratu</p>
           </div>*/}
+
+
           <div className="text-center p-4">
-            <h2 className="text-gray-600 font-bold uppercase">{schoolInfo.name}</h2>
-            <p className="text-gray-600 font-bold">{schoolInfo.address}</p>
-            <p className="text-gray-600 font-bold">Kode Pos {schoolInfo.npsn}</p>
+            <h2 className="text-gray-800 sm:text-xl font-bold uppercase">{schoolInfo.name}</h2>
+            <p className="text-gray-800 font-bold">{schoolInfo.address}</p>
+            <p className="text-gray-800 font-bold">Kode Pos {schoolInfo.npsn}</p>
           </div>
-          
-          <hr className="border-t border-gray-400 mt-1 mb-3" />
-          
-          <div className="text-center mb-4">
-            <h3 className="text-lg uppercase">REKAP LAPORAN KEHADIRAN PEGAWAI</h3>
-            <p className="font-medium">BULAN {formattedMonth.toUpperCase()}</p>
+          <hr className="border-t border-gray-800 mt-1 mb-6" />
+          <div className="text-center mb-4 sm:mb-6">
+           
+            <h3 className="text-gray-600 uppercase">REKAP LAPORAN KEHADIRAN PEGAWAI</h3>
+            <p className="text-gray-600">BULAN {formattedMonth.toUpperCase()}</p>
           </div>
+         
+
           
           {loading ? (
             <div className="flex justify-center items-center h-64">
@@ -826,28 +829,28 @@ export default function MonthlyAttendanceReport() {
               <table className="min-w-full border">
                 <thead>
                   <tr className="bg-green-100">
-                    <th className="border px-2 py-2 text-center text-sm font-bold text-gray-700">Nama Siswa</th>
-                    <th className="border px-2 py-2 text-center text-sm font-bold text-gray-700">NISN</th>
-                    <th className="border px-2 py-2 text-center text-sm font-bold text-gray-700">Kelas</th>
-                    <th className="border px-2 py-2 text-center text-sm font-bold text-gray-700">Hadir</th>
-                    <th className="border px-2 py-2 text-center text-sm font-bold text-gray-700">Sakit</th>
-                    <th className="border px-2 py-2 text-center text-sm font-bold text-gray-700">Izin</th>
-                    <th className="border px-2 py-2 text-center text-sm font-bold text-gray-700">Alpha</th>
-                    <th className="border px-2 py-2 text-center text-sm font-bold text-gray-700">Total</th>
+                    <th className="text-gray-600 border px-2 py-2 text-left text-sm font-bold text-gray-700">NAMA PEGAWAI</th>
+                    <th className="text-gray-600 border px-2 py-2 text-center text-sm font-bold text-gray-700">NIK</th>
+                    <th className="text-gray-600 border px-2 py-2 text-center text-sm font-bold text-gray-700">JABATAN</th>
+                    <th className="text-gray-600 border px-2 py-2 text-center text-sm font-bold text-gray-700">HADIR</th>
+                    <th className="text-gray-600 border px-2 py-2 text-center text-sm font-bold text-gray-700">SAKIT</th>
+                    <th className="text-gray-600 border px-2 py-2 text-center text-sm font-bold text-gray-700">IZIN</th>
+                    <th className="text-gray-600 border px-2 py-2 text-center text-sm font-bold text-gray-700">ALPHA</th>
+                    <th className="text-gray-600 border px-2 py-2 text-center text-sm font-bold text-gray-700">TOTAL</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredStudents.length > 0 ? (
                     filteredStudents.map((student, index) => (
                       <tr key={student.id} className={index % 2 === 0 ? "bg-gray-50" : ""}>
-                        <td className="border px-2 py-1 text-xs sm:text-sm">{student.name}</td>
-                        <td className="border px-2 py-1 text-xs sm:text-sm text-center">{student.nisn}</td>
-                        <td className="border px-2 py-1 text-xs sm:text-sm text-center">{student.class}</td>
-                        <td className="border px-2 py-1 text-xs sm:text-sm text-center">{student.hadir}</td>
-                        <td className="border px-2 py-1 text-xs sm:text-sm text-center">{student.sakit}</td>
-                        <td className="border px-2 py-1 text-xs sm:text-sm text-center">{student.izin}</td>
-                        <td className="border px-2 py-1 text-xs sm:text-sm text-center">{student.alpha}</td>
-                        <td className="border px-2 py-1 text-xs sm:text-sm text-center">{student.total}</td>
+                        <td className="text-gray-600 border px-2 py-1 text-xs sm:text-sm">{student.name}</td>
+                        <td className="text-gray-600 border px-2 py-1 text-xs sm:text-sm text-center">{student.nisn}</td>
+                        <td className="text-gray-600 border px-2 py-1 text-xs sm:text-sm text-center">{student.class}</td>
+                        <td className="text-gray-600 border px-2 py-1 text-xs sm:text-sm text-center">{student.hadir}</td>
+                        <td className="text-gray-600 border px-2 py-1 text-xs sm:text-sm text-center">{student.sakit}</td>
+                        <td className="text-gray-600 border px-2 py-1 text-xs sm:text-sm text-center">{student.izin}</td>
+                        <td className="text-gray-600 border px-2 py-1 text-xs sm:text-sm text-center">{student.alpha}</td>
+                        <td className="text-gray-600 border px-2 py-1 text-xs sm:text-sm text-center">{student.total}</td>
                       </tr>
                     ))
                   ) : (
@@ -861,20 +864,20 @@ export default function MonthlyAttendanceReport() {
                   {/* Total row */}
                   {filteredStudents.length > 0 && (
                     <tr className="bg-gray-200 font-medium">
-                      <td colSpan={3} className="border px-2 py-2 font-bold text-sm text-center">TOTAL</td>
-                      <td className="border px-2 py-2 text-center font-bold text-sm">
+                      <td colSpan={3} className="text-gray-600 border px-2 py-2 font-bold text-sm text-center">TOTAL</td>
+                      <td className="text-gray-600 border px-2 py-2 text-center font-bold text-sm">
                         {filteredStudents.reduce((sum, student) => sum + student.hadir, 0)}
                       </td>
-                      <td className="border px-2 py-2 text-center font-bold text-sm">
+                      <td className="text-gray-600 border px-2 py-2 text-center font-bold text-sm">
                         {filteredStudents.reduce((sum, student) => sum + student.sakit, 0)}
                       </td>
-                      <td className="border px-2 py-2 text-center font-bold text-sm">
+                      <td className="text-gray-600 border px-2 py-2 text-center font-bold text-sm">
                         {filteredStudents.reduce((sum, student) => sum + student.izin, 0)}
                       </td>
-                      <td className="border px-2 py-2 text-center font-bold text-sm">
+                      <td className="text-gray-600 border px-2 py-2 text-center font-bold text-sm">
                         {filteredStudents.reduce((sum, student) => sum + student.alpha, 0)}
                       </td>
-                      <td className="border px-2 py-2 text-center font-bold text-sm">
+                      <td className="text-gray-600 border px-2 py-2 text-center font-bold text-sm">
                         {filteredStudents.reduce((sum, student) => sum + student.total, 0)}
                       </td>
                     </tr>
@@ -899,6 +902,7 @@ export default function MonthlyAttendanceReport() {
           )}
           <span className="font-medium">Download Laporan Excel</span>
         </button>
+        <hr className="border-t border-none mb-1" />
       </div>
     </div>
   );
