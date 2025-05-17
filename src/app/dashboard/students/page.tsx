@@ -125,8 +125,8 @@ export default function Students() {
       <div className="flex flex-col items-center mb-6">
         <div className="flex flex-col md:flex-row">
           <div className="flex mb-4">
-            <Users className="h-7 w-7 text-primary mr-3" />
-            <h1 className="text-2xl font-bold text-gray-800 text-center">DAFTAR PEGAWAI</h1>
+            
+            <h1 className="text-2xl font-bold text-gray-800 text-center">DAFTAR PEGAWAI INSTANSI</h1>
           </div>
           <hr className="border-t border-none mb-1" />
           <hr className="border-t border-none mb-1" />
