@@ -609,7 +609,7 @@ export default function StudentReport() {
               <div className="bg-indigo-100 p-2 rounded-lg mr-3">
                 <User className="h-6 w-6 text-indigo-600" />
               </div>
-              <h2 className="text-xl font-semibold">Cari Siswa</h2>
+              <h2 className="text-xl font-semibold">Cari Pegawai</h2>
             </div>
             
             <div className="space-y-4 mb-6">
