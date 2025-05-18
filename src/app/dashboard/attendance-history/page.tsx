@@ -346,7 +346,7 @@ export default function AttendanceHistory() {
           pdfDoc.setFontSize(12);
           pdfDoc.setFont("helvetica", "normal");
           pdfDoc.text(schoolInfo.address, pageWidth / 2, margin + 12, { align: "center" });
-          pdfDoc.text(`NPSN: ${schoolInfo.npsn}`, pageWidth / 2, margin + 18, { align: "center" });
+          pdfDoc.text(`Kode Pos ${schoolInfo.npsn}`, pageWidth / 2, margin + 18, { align: "center" });
           
           // Add horizontal line
           pdfDoc.setLineWidth(0.5);
