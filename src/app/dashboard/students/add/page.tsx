@@ -307,5 +307,6 @@ export default function AddStudentPage() {
        </div>
      </form>
    </div>
+  <hr className="border-t border-none mb-5" />
  );
 }
