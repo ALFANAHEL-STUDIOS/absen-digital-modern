@@ -644,14 +644,14 @@ export default function StudentReport() {
                       
                     </div>
                     <div className="text-sm opacity-80">
-                      NISN : {student.nisn}
+                      NIK : {student.nisn}
                     </div>
                   <span className={`text-xs rounded ${
                         selectedStudent?.id === student.id
                           ? "bg-blue text-white"
                           : "bg-white text-gray-800"
                       }`}>
-                       KELAS {student.class || student.kelas || '-'}
+                       {student.class || student.kelas || '-'}
                       </span>
                     </div>
                 ))
@@ -677,8 +677,8 @@ export default function StudentReport() {
                   <div>
                     <h3 className="text-xl font-semibold">{selectedStudent.name}</h3>
                     <div className="opacity-90 space-y-1 mt-1">
-                      <div>NISN : {selectedStudent.nisn}</div>
-                      <div>Kelas : {selectedStudent.class || selectedStudent.kelas}</div>
+                      <div>NIK : {selectedStudent.nisn}</div>
+                      <div>{selectedStudent.class || selectedStudent.kelas}</div>
                       
                     </div>
                   </div>
