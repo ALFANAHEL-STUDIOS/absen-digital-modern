@@ -375,7 +375,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           </div>
           <p className="font-bold text-sm text-gray-200 mt-1.5">{userData?.name || user?.displayName || 'User'}</p>
           <div className="mt-1">
-            <span className="px-2 py-0.5 text-[7px] text-green-700 bg-green-100 border border-green-300 rounded flex items-center">
+            <span className="px-2 py-0.5 text-[7px] text-green-700 bg-amber-100 border border-amber-300 rounded flex items-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-circle-check-big mr-0.5" aria-hidden="true">
                 <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
                 <path d="m9 11 3 3L22 4"></path>
