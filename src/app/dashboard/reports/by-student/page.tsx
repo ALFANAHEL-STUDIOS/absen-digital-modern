@@ -304,7 +304,7 @@ export default function StudentReport() {
       // Add month, student name and class
       const currentMonth = format(new Date(), "MMMM yyyy", { locale: id });
       doc.setFontSize(13);
-      doc.text(`BULAN ${currentMonth.toUpperCase()}`, pageWidth / 2, margin + 38, { align: "center" });
+      doc.text(`PERIODE BULAN ${currentMonth.toUpperCase()}`, pageWidth / 2, margin + 38, { align: "center" });
       doc.text(`${selectedStudent?.name || ""}`, pageWidth / 2, margin + 46, { align: "center" });
       doc.text(`${selectedStudent?.kelas || selectedStudent?.class || ""}`, pageWidth / 2, margin + 54, { align: "center" });
       
