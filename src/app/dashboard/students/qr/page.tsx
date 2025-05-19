@@ -350,6 +350,7 @@ export default function StudentsQRList() {
           </div>
         </div>
       )}
+      <hr className="border-t border-none mb-5" />
     </div>
   );
 }
