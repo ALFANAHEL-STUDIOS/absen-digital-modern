@@ -829,7 +829,7 @@ export default function MonthlyAttendanceReport() {
               <table className="min-w-full border">
                 <thead>
                   <tr className="bg-green-100">
-                    <th className="text-gray-600 border px-2 py-2 text-left text-sm font-bold text-gray-700">NAMA PEGAWAI</th>
+                    <th className="text-gray-600 border px-2 py-2 text-center text-sm font-bold text-gray-700">NAMA PEGAWAI</th>
                     <th className="text-gray-600 border px-2 py-2 text-center text-sm font-bold text-gray-700">NIK</th>
                     <th className="text-gray-600 border px-2 py-2 text-center text-sm font-bold text-gray-700">JABATAN</th>
                     <th className="text-gray-600 border px-2 py-2 text-center text-sm font-bold text-gray-700">HADIR</th>
@@ -845,7 +845,7 @@ export default function MonthlyAttendanceReport() {
                       <tr key={student.id} className={index % 2 === 0 ? "bg-gray-50" : ""}>
                         <td className="text-gray-600 border px-2 py-1 text-xs sm:text-sm">{student.name}</td>
                         <td className="text-gray-600 border px-2 py-1 text-xs sm:text-sm text-center">{student.nisn}</td>
-                        <td className="text-gray-600 border px-2 py-1 text-xs sm:text-sm text-center">{student.class}</td>
+                        <td className="text-gray-600 border px-2 py-1 text-xs sm:text-sm text-left">{student.class}</td>
                         <td className="text-gray-600 border px-2 py-1 text-xs sm:text-sm text-center">{student.hadir}</td>
                         <td className="text-gray-600 border px-2 py-1 text-xs sm:text-sm text-center">{student.sakit}</td>
                         <td className="text-gray-600 border px-2 py-1 text-xs sm:text-sm text-center">{student.izin}</td>
