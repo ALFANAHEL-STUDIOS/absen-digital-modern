@@ -453,8 +453,8 @@ export default function AttendanceHistory() {
         return {
           "Tanggal": formattedDate,
           "Waktu": record.time,
-          "Nama Siswa": record.studentName,
-          "Kelas": record.class,
+          "Nama Pegawai": record.studentName,
+          "Jabatan": record.class,
           "Status": statusText,
           "Catatan": record.notes || record.note || '-'
         };
@@ -471,7 +471,7 @@ export default function AttendanceHistory() {
         [""],
         ["LAPORAN KEHADIRAN PEGAWAI"],
         [`Periode: ${format(new Date(dateRange.start), "d MMMM yyyy", { locale: id })} - ${format(new Date(dateRange.end), "d MMMM yyyy", { locale: id })}`],
-        [selectedClass !== "all" ? `Kelas: ${selectedClass}` : "Semua Jabatan"],
+        [selectedClass !== "all" ? `${selectedClass}` : "Semua Jabatan"],
         [""],
       ];
       
