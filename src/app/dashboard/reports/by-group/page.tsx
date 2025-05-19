@@ -534,7 +534,7 @@ export default function GroupAttendanceReport() {
                 <table className="min-w-full bg-white border">
                   <thead className="bg-green-100">
                     <tr>
-                      <th className="text-gray-600 border px-2 sm:px-4 py-2 text-left font-bold text-xs sm:text-sm">NAMA PEGAWAI</th>
+                      <th className="text-gray-600 border px-2 sm:px-4 py-2 text-center font-bold text-xs sm:text-sm">NAMA PEGAWAI</th>
                       {/*<th className="text-gray-600 border px-2 sm:px-4 py-2 text-center font-bold text-xs sm:text-sm">NIK</th>*/}
                       <th className="text-gray-600 border px-2 sm:px-4 py-2 text-center font-bold text-xs sm:text-sm">JABATAN</th>
                       <th className="text-gray-600 border px-2 sm:px-4 py-2 text-center font-bold text-xs sm:text-sm">HADIR</th>
