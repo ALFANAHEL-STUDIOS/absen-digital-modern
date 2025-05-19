@@ -535,7 +535,7 @@ export default function GroupAttendanceReport() {
                   <thead className="bg-green-100">
                     <tr>
                       <th className="text-gray-600 border px-2 sm:px-4 py-2 text-left font-bold text-xs sm:text-sm">NAMA PEGAWAI</th>
-                      <th className="text-gray-600 border px-2 sm:px-4 py-2 text-center font-bold text-xs sm:text-sm">NIK</th>
+                      {/*<th className="text-gray-600 border px-2 sm:px-4 py-2 text-center font-bold text-xs sm:text-sm">NIK</th>*/}
                       <th className="text-gray-600 border px-2 sm:px-4 py-2 text-center font-bold text-xs sm:text-sm">JABATAN</th>
                       <th className="text-gray-600 border px-2 sm:px-4 py-2 text-center font-bold text-xs sm:text-sm">HADIR</th>
                       <th className="text-gray-600 border px-2 sm:px-4 py-2 text-center font-bold text-xs sm:text-sm">SAKIT</th>
@@ -548,7 +548,7 @@ export default function GroupAttendanceReport() {
                     {students.map((student, index) => (
                       <tr key={student.id} className={index % 2 === 0 ? "bg-gray-50" : ""}>
                         <td className="text-gray-600 border px-2 sm:px-4 py-1 sm:py-2 text-xs sm:text-sm">{student.name}</td>
-                        <td className="text-gray-600 border px-2 sm:px-4 py-1 sm:py-2 text-center text-xs sm:text-sm">{student.nisn}</td>
+                        {/*<td className="text-gray-600 border px-2 sm:px-4 py-1 sm:py-2 text-center text-xs sm:text-sm">{student.nisn}</td>*/}
                         <td className="text-gray-600 border px-2 sm:px-4 py-1 sm:py-2 text-center text-xs sm:text-sm">{student.class}</td>
                         <td className="text-gray-600 border px-2 sm:px-4 py-1 sm:py-2 text-center text-xs sm:text-sm">{student.hadir}</td>
                         <td className="text-gray-600 border px-2 sm:px-4 py-1 sm:py-2 text-center text-xs sm:text-sm">{student.sakit}</td>
