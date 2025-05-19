@@ -470,7 +470,7 @@ export default function AttendanceHistory() {
         [`Kode Pos ${schoolInfo.npsn}`],
         [""],
         ["LAPORAN KEHADIRAN PEGAWAI"],
-        [`Periode: ${format(new Date(dateRange.start), "d MMMM yyyy", { locale: id })} - ${format(new Date(dateRange.end), "d MMMM yyyy", { locale: id })}`],
+        [`Periode : ${format(new Date(dateRange.start), "d MMMM yyyy", { locale: id })} - ${format(new Date(dateRange.end), "d MMMM yyyy", { locale: id })}`],
         [selectedClass !== "all" ? `${selectedClass}` : "Semua Jabatan"],
         [""],
       ];
