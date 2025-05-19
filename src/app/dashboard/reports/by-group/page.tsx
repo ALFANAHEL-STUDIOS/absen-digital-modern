@@ -218,7 +218,7 @@ export default function GroupAttendanceReport() {
       // Draw table headers
      
       const headers = ["NO.", "NAMA PEGAWAI", "         NIK", "  JABATAN", "HADIR", " SAKIT", "   IZIN", " ALPHA", "        TOTAL"];
-      const colWidths = [11, 60, 42, 60, 18, 18, 18, 18, 33];
+      const colWidths = [11, 58, 42, 60, 18, 18, 18, 18, 28];
       let yPos = margin + 48;
       
       // Draw header row with green background
