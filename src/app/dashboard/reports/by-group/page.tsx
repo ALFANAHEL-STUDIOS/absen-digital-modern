@@ -519,7 +519,7 @@ export default function GroupAttendanceReport() {
           <h3 className="text-base sm:text-gray-600 uppercase">REKAP LAPORAN KEHADIRAN PEGAWAI</h3>
         
           <p className="text-xs sm:text-sm sm:text-gray-600 mt-1">
-            Dari Tanggal : {format(new Date(dateRange.start), "d MMMM yyyy", { locale: id })} <br className="sm:hidden" /> - Sampai Tanggal : {format(new Date(dateRange.end), "d MMMM yyyy", { locale: id })}
+            Dari Tanggal : {format(new Date(dateRange.start), "d MMMM yyyy", { locale: id })} <br className="sm:hidden" /> Sampai Tanggal : {format(new Date(dateRange.end), "d MMMM yyyy", { locale: id })}
           </p>
         </div>
         
@@ -549,7 +549,7 @@ export default function GroupAttendanceReport() {
                       <tr key={student.id} className={index % 2 === 0 ? "bg-gray-50" : ""}>
                         <td className="text-gray-600 border px-2 sm:px-4 py-1 sm:py-2 text-xs sm:text-sm">{student.name}</td>
                         {/*<td className="text-gray-600 border px-2 sm:px-4 py-1 sm:py-2 text-center text-xs sm:text-sm">{student.nisn}</td>*/}
-                        <td className="text-gray-600 border px-2 sm:px-4 py-1 sm:py-2 text-center text-xs sm:text-sm">{student.class}</td>
+                        <td className="text-gray-600 border px-2 sm:px-4 py-1 sm:py-2 text-left text-xs sm:text-sm">{student.class}</td>
                         <td className="text-gray-600 border px-2 sm:px-4 py-1 sm:py-2 text-center text-xs sm:text-sm">{student.hadir}</td>
                         <td className="text-gray-600 border px-2 sm:px-4 py-1 sm:py-2 text-center text-xs sm:text-sm">{student.sakit}</td>
                         <td className="text-gray-600 border px-2 sm:px-4 py-1 sm:py-2 text-center text-xs sm:text-sm">{student.izin}</td>
