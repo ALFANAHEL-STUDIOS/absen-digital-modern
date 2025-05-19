@@ -304,9 +304,9 @@ export default function StudentReport() {
       // Add month, student name and class
       const currentMonth = format(new Date(), "MMMM yyyy", { locale: id });
       doc.setFontSize(13);
-      doc.text(`BULAN  ${currentMonth.toUpperCase()}`, pageWidth / 2, margin + 38, { align: "center" });
-      doc.text(`NAMA : ${selectedStudent?.name || ""}`, pageWidth / 2, margin + 46, { align: "center" });
-      doc.text(`J${selectedStudent?.kelas || selectedStudent?.class || ""}`, pageWidth / 2, margin + 54, { align: "center" });
+      doc.text(`BULAN ${currentMonth.toUpperCase()}`, pageWidth / 2, margin + 38, { align: "center" });
+      doc.text(`${selectedStudent?.name || ""}`, pageWidth / 2, margin + 46, { align: "center" });
+      doc.text(`${selectedStudent?.kelas || selectedStudent?.class || ""}`, pageWidth / 2, margin + 54, { align: "center" });
       
       // Add attendance summary table
       const tableHeaders = ["Status", "Jumlah", "%"];
@@ -485,7 +485,7 @@ export default function StudentReport() {
         [`Kode Pos ${schoolInfo.npsn}`],
         [""],
         ["LAPORAN KEHADIRAN PEGAWAI"],
-        [`Periode: ${startDateFormatted} - ${endDateFormatted}`],
+        [`Periode : ${startDateFormatted} - ${endDateFormatted}`],
         [""],
         ["DATA PEGAWAI :"],
         ["Nama", ":", selectedStudent?.name || "-"],
